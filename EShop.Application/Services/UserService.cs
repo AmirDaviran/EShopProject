@@ -14,24 +14,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Services
 {
-    public class UserService : IUserService
+    public class UserService
+        (IUserRepository _userRepository
+        , IViewRenderService _viewRender,
+            IEmailService _emailService) : IUserService
     {
-
-        #region Constructor
-
-        private readonly IViewRenderService _viewRender;
-        private readonly IUserRepository _userRepository;
-        private readonly IEmailService _emailService;
-
-        public UserService(IUserRepository userRepository, IViewRenderService viewRender,
-            IEmailService emailService)
-        {
-            _userRepository = userRepository;
-            _viewRender = viewRender;
-            _emailService = emailService;
-        }
-
-        #endregion
 
         #region Account
 

@@ -8,21 +8,12 @@ using EShop.Application.Utilities.Convertors;
 
 namespace EShop.Web.Controllers
 {
-    public class AccountController : BaseController
+    public class AccountController(IUserService userService) : BaseController
     {
-        #region Constructor
-        private readonly IUserService _userService;
-        public AccountController(IUserService userService)
-        {
-            _userService = userService;
-        }
-        #endregion
-
         public IActionResult Index()
         {
             return View();
         }
-
 
         #region Register
 
@@ -52,8 +43,6 @@ namespace EShop.Web.Controllers
         }
 
         #endregion
-
-
 
         #region Login
         [HttpGet("login")]
@@ -107,7 +96,6 @@ namespace EShop.Web.Controllers
         }
 
         #endregion
-
 
         #region LogOut
 

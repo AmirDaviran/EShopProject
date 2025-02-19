@@ -6,23 +6,8 @@ using EShop.Domain.ViewModels.Products;
 
 namespace EShop.Application.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService (ICategoryRepository _categoryRepository) : ICategoryService
     {
-        #region Fields
-
-        private readonly ICategoryRepository _categoryRepository;
-
-        #endregion
-
-        #region Constructor
-
-        public CategoryService(ICategoryRepository categoryRepository)
-        {
-            _categoryRepository = categoryRepository;
-        }
-
-        #endregion 
-
 
         #region Methods
 

@@ -24,7 +24,6 @@ builder.Services.AddAuthentication(options =>
 });
 #endregion
 
-
 #region DataBase Context
 
 builder.Services.AddDbContext<EShopDbContext>(options =>

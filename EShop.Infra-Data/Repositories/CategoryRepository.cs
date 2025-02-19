@@ -5,23 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infra_Data.Repositories
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository(EShopDbContext _context) : ICategoryRepository
     {
-        #region Fields
-
-        private readonly EShopDbContext _context;
-
-        #endregion
-
-        #region Constructor
-
-        public CategoryRepository(EShopDbContext context)
-        {
-            _context = context;
-        }
-
-        #endregion
-
         #region Methods
 
         #region Category

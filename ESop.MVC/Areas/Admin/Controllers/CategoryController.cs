@@ -6,23 +6,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class CategoryController : AdminBaseController
+    public class CategoryController(ICategoryService _categoryService) : AdminBaseController
     {
-        #region Fields
-
-        private readonly ICategoryService _categoryService;
-
-        #endregion
-
-        #region Constuctor
-
-        public CategoryController(ICategoryService categoryService)
-        {
-            _categoryService = categoryService;
-        }
-
-        #endregion
-
         #region Actions
 
         #region List
@@ -47,28 +32,30 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCategoryViewModel model)
         {
+            #region validation
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+            #endregion
 
-            if (ModelState.IsValid)
+
+            var result = await _categoryService.CreateCategoryAsync(model);
+            switch (result)
             {
-                var result = await _categoryService.CreateCategoryAsync(model);
-                switch (result)
-                {
-                    case CreateCategoryResult.Success:
-                        TempData[SuccessMessage] = "عملیات با موفقیت انجام شد.";
-                        return RedirectToAction(nameof(List));
-                        break;
-                    case CreateCategoryResult.Error:
-                        TempData[ErrorMessage] = "خطا در انجام عملیات.";
-                        break;
-                    case CreateCategoryResult.DuplicateTitle:
-                        TempData[ErrorMessage] = "عنوان تکراری است.";
-                        break;
-                }
+                case CreateCategoryResult.Success:
+                    TempData[SuccessMessage] = "عملیات با موفقیت انجام شد.";
+                    return RedirectToAction(nameof(List));
+
+                case CreateCategoryResult.Error:
+                    TempData[ErrorMessage] = "خطا در انجام عملیات.";
+                    break;
+
+                case CreateCategoryResult.DuplicateTitle:
+                    TempData[ErrorMessage] = "عنوان تکراری است.";
+                    break;
             }
+            
             return View();
         }
 
@@ -80,10 +67,9 @@ namespace EShop.Web.Areas.Admin.Controllers
         {
             var category = await _categoryService.GetCategoryByIdAsync(id);
 
-            if (category == null)
-            {
+            if (category is null)
                 return NotFound();
-            }
+            
 
             var model = new EditCategoryViewModel()
             {
@@ -138,9 +124,8 @@ namespace EShop.Web.Areas.Admin.Controllers
         {
             var category= await _categoryService.GetCategoryByIdAsync(id);
             if (category==null)
-            {
                 return NotFound();
-            }
+            
 
             return View(category);
         }
@@ -170,6 +155,7 @@ namespace EShop.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(List));
         }
         #endregion
+
         #endregion
     }
 }

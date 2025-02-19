@@ -53,5 +53,17 @@ namespace EShop.Infra_Data.Context
         public DbSet<Color> Colors { get; set; }
         #endregion
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var item in entity.GetForeignKeys())
+                {
+                    item.DeleteBehavior = DeleteBehavior.NoAction;
+                }
+            }
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }

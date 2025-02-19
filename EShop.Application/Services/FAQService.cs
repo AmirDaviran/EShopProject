@@ -1,36 +1,18 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Domain.Entities.FAQ;
+using EShop.Domain.Enums.FAQEnum;
 using EShop.Domain.Interfaces;
 using EShop.Domain.ViewModels.FAQ;
-using EShop.Domain.ViewModels.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EShop.Application.Services
 {
-    public class FAQService : IFAQService
+    public class FAQService(IFAQRepository _faqRepository) : IFAQService
     {
 
-        #region Private Field To access Repo
-        private readonly IFAQRepository _faqRepository;
-
-        #endregion
-
-        #region Generated Ctor
-        public FAQService(IFAQRepository faqRepository)
-        {
-            _faqRepository = faqRepository;
-        }
-
-        #endregion
-
-        #region Methods
 
         #region Admin Side
-        //List
+
+        #region Get All
         public async Task<List<FAQViewModel>> GetAllAsync()
         {
             var faqs = await _faqRepository.GetAllAsync();
@@ -41,27 +23,34 @@ namespace EShop.Application.Services
                 Answer = c.Answer
             }).ToList();
         }
+        #endregion
 
-        //create
+        #region Create
 
-        public async Task<bool> CreateAsync(CreateFAQViewModel model)
+        public async Task<OperationResult> CreateAsync(CreateFAQViewModel model)
         {
-           
+
+            if (model == null || string.IsNullOrWhiteSpace(model.Question) || string.IsNullOrWhiteSpace(model.Answer))
+            {
+                return OperationResult.Failure;
+            }
+
             FAQs faqs = new FAQs()
             {
                 Question = model.Question,
                 Answer = model.Answer
-
             };
+
             await _faqRepository.InsertAsync(faqs);
             await _faqRepository.SaveAsync();
 
-            return true;
-
+            return OperationResult.Success;
         }
 
+        #endregion
 
-        //Update
+        #region GetForUpdateAsync
+
         public async Task<UpdateFAQViewModel> GetForUpdateAsync(int id)
         {
             var faqs = await _faqRepository.GetByIdAsync(id);
@@ -81,40 +70,55 @@ namespace EShop.Application.Services
 
         }
 
-        public async Task<bool> UpdateAsync(UpdateFAQViewModel model)
+        #endregion
+
+        #region UpdateAsync
+
+        public async Task<OperationResult> UpdateAsync(UpdateFAQViewModel model)
         {
+            if (model == null || model.Id <= 0)
+            {
+                return OperationResult.Failure;
+            }
+
             var faq = await _faqRepository.GetByIdAsync(model.Id);
 
             if (faq == null)
             {
-                return false;
+                return OperationResult.NotFound;
             }
-            else
-            {
-                faq.Question = model.Question;
-            }
+
+            faq.Question = model.Question;
+            faq.Answer = model.Answer;
+
             _faqRepository.Update(faq);
             await _faqRepository.SaveAsync();
 
-            return true;
-
+            return OperationResult.Success;
         }
 
-        //Delete
-        public async Task<bool> DeleteAsync(int id)
+        #endregion
+
+        #region Delete
+        public async Task<OperationResult> DeleteAsync(int id)
         {
-            FAQs faq = await _faqRepository.GetByIdAsync(id);
+            if (id <= 0)
+            {
+                return OperationResult.Failure;
+            }
+
+            var faq = await _faqRepository.GetByIdAsync(id);
+
             if (faq == null)
-
-                return false;
-
-
+            {
+                return OperationResult.NotFound;
+            }
 
             faq.IsDeleted = true;
             _faqRepository.Update(faq);
             await _faqRepository.SaveAsync();
 
-            return true;
+            return OperationResult.Success;
         }
 
         #endregion
@@ -144,4 +148,6 @@ namespace EShop.Application.Services
         #endregion
 
     }
+
+
 }

@@ -1,10 +1,5 @@
-﻿using EShop.Domain.ViewModels.FAQ;
-using EShop.Domain.ViewModels.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EShop.Domain.Enums.FAQEnum;
+using EShop.Domain.ViewModels.FAQ;
 
 namespace EShop.Application.Interfaces
 {
@@ -12,19 +7,15 @@ namespace EShop.Application.Interfaces
     {
         #region Admin Side
 
-        //list
         Task<List<FAQViewModel>> GetAllAsync();
 
-        //Create
-        Task<bool> CreateAsync(CreateFAQViewModel model);
+        Task<OperationResult> CreateAsync(CreateFAQViewModel model);
 
-        //Update 
         Task<UpdateFAQViewModel> GetForUpdateAsync(int id);
 
-        Task<bool> UpdateAsync(UpdateFAQViewModel model);
+        Task<OperationResult> UpdateAsync(UpdateFAQViewModel model);
 
-        //Delete
-        Task<bool> DeleteAsync(int id);
+        Task<OperationResult> DeleteAsync(int id);
 
 
 

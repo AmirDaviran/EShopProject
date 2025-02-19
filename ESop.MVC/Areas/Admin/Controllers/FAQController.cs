@@ -1,23 +1,36 @@
-﻿using EShop.Application.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using EShop.Application.Interfaces;
 using EShop.Domain.ViewModels.FAQ;
-using Microsoft.AspNetCore.Mvc;
+using EShop.Domain.Enums.FAQEnum;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class FAQController(IFAQService fAQService) :AdminBaseController
+    public class FAQController : AdminBaseController
     {
+        #region Fields
 
+        private readonly IFAQService _faqService;
 
-        #region List
-        [HttpGet]
-        public async Task<IActionResult> List() 
+        #endregion
+
+        #region Constructor
+
+        public FAQController(IFAQService faqService)
         {
-            var  model =  await fAQService.GetAllAsync();
-            return View(model);
+            _faqService = faqService;
         }
 
         #endregion
 
+        #region List
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+            var model = await _faqService.GetAllAsync();
+            return View(model);
+        }
+        #endregion
 
         #region Create
 
@@ -28,81 +41,89 @@ namespace EShop.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateFAQViewModel model) 
+        public async Task<IActionResult> Create(CreateFAQViewModel model)
         {
-            #region Validation
-            if (!ModelState.IsValid) 
-            {   
-                return View(model);
-            }
-            #endregion
-
-            var result = await fAQService.CreateAsync(model);
-            if (result) 
-            {
-                return RedirectToAction(nameof(List));
-            }
-            return View();
-        }
-        #endregion
-
-
-
-        #region Update
-        [HttpGet]
-        public async Task<IActionResult> Update(int id) 
-        {
-            var faqs = await fAQService.GetForUpdateAsync(id);
-            if (faqs == null) 
-            {
-                return NotFound();
-            }
-            return View(faqs);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Update(UpdateFAQViewModel model) 
-        {
-            #region Validation
-
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            #endregion
 
-            var result = await fAQService.UpdateAsync(model);
-            if (result)
+            var result = await _faqService.CreateAsync(model);
+            switch (result)
             {
-                return RedirectToAction(nameof(List));
+                case OperationResult.Success:
+                    TempData[SuccessMessage] = "ایجاد با موفقیت انجام شد.";
+                    return RedirectToAction(nameof(List));
+
+                case OperationResult.Failure:
+                    TempData[ErrorMessage] = "خطا در ایجاد سوال متداول.";
+                    break;
+
+                default:
+                    TempData[WarningMessage] = "خطایی رخ داده است.";
+                    break;
             }
-            else 
+            return View(model);
+        }
+        #endregion
+
+        #region Update
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            var faq = await _faqService.GetForUpdateAsync(id);
+            if (faq == null)
+            {
+                return NotFound();
+            }
+            return View(faq);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateFAQViewModel model)
+        {
+            if (!ModelState.IsValid)
             {
                 return View(model);
             }
-        
+
+            var result = await _faqService.UpdateAsync(model);
+            if (result == OperationResult.Success)
+            {
+                TempData[SuccessMessage] = "بروزرسانی با موفقیت انجام شد.";
+                return RedirectToAction(nameof(List));
+            }
+            else if (result == OperationResult.NotFound)
+            {
+                TempData[WarningMessage] = "آیتم موردنظر یافت نشد.";
+                return NotFound();
+            }
+            else
+            {
+                TempData[ErrorMessage] = "خطا در بروزرسانی سوال متداول.";
+                return View(model);
+            }
         }
         #endregion
-
 
         #region Delete
-        public async Task<IActionResult> Delete(int id) 
+        public async Task<IActionResult> Delete(int id)
         {
-            var result = await fAQService.DeleteAsync(id);
-            if (result) 
+            var result = await _faqService.DeleteAsync(id);
+            if (result == OperationResult.Success)
             {
-                TempData["SuccessMessage"] = "حذف با موفقیت انجام شد";
-                return RedirectToAction(nameof(List));
-
-
+                TempData[SuccessMessage] = "حذف با موفقیت انجام شد.";
             }
-            TempData["WarningMessage"] = "محصول مورد نظر یافت نشد.";
+            else if (result == OperationResult.NotFound)
+            {
+                TempData[WarningMessage] = "آیتم موردنظر یافت نشد.";
+            }
+            else
+            {
+                TempData[ErrorMessage] = "خطا در حذف سوال متداول.";
+            }
             return RedirectToAction(nameof(List));
         }
-
         #endregion
-
-
-
     }
 }

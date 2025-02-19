@@ -1,0 +1,15 @@
+﻿@model EShop.Domain.Entities.Account.User
+@{
+    ViewData["Title"] = "_ActivationEmail";
+    Layout = null;
+}
+
+<div style="direction: rtl; padding: 20px">
+    <h2>@Model.FirstName عزیز !</h2>
+    <p>با تشکر از ثبت نام شما در ای شاپ ، جهت ادامه کار میبایست حساب کاربری خود را فعال کنید</p>
+    @*<p>@Model.ActiveCode</p>*@
+    <p>
+        <a href="https://localhost:7225/Account/ActiveAccount/@Model.ActiveCode">فعالسازی حساب کاربری</a>
+    </p>
+</div>
+

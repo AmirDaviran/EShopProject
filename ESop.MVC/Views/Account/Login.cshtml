@@ -1,0 +1,66 @@
+﻿@model EShop.Domain.ViewModels.Account.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<main class="page-content page-auth">
+    <!-- start of auth-container -->
+    <div class="auth-container">
+        <div class="auth-title mb-3">ورود </div>
+        <!-- start of auth-box -->
+        <div class="auth-box ui-box">
+            <!-- start of auth-form -->
+            <form asp-controller="Account" asp-action="Login" method="post" class="auth-form">
+                <!-- start of form-element -->
+                <div class="form-element-row mb-5">
+                    <input type="text" asp-for="Email" class="form-control" placeholder="شماره موبایل یا ایمیل">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-element-row mb-5">
+                    <input type="password" asp-for="Password" class="form-control" placeholder="گذرواژه">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <!-- end of form-element -->
+                <!-- start of form-element -->
+                <div class="form-element-row mb-3">
+                    <button type="submit" class="btn btn-primary">ورود</button>
+                </div>
+                <div>
+                    <ul class="remember-forget-list">
+                        <li>
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" asp-for="RememberMe">
+                                <label class="custom-control-label" for="RememberMe">
+                                    مرا به خاطر بسپار
+                                </label>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="/ForgotPassword">فراموشی رمز عبور؟ </a>
+                        </li>
+                    </ul>
+                </div>
+               <!-- End .custom-checkbox -->
+                <!-- end of form-element -->
+                <!-- start of form-element -->
+                <div class="form-element-row">
+                    <div>
+                        با ورود و یا ثبت نام در سایت شما <a href="#" class="link">
+                            شرایط و
+                            قوانین
+                        </a> استفاده
+                        از تمام سرویس های
+                        سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.
+                    </div>
+                </div>
+                <!-- end of form-element -->
+            </form>
+            <!-- end of auth-form -->
+        </div>
+        <!-- end of auth-box -->
+    </div>
+    <!-- start of auth-container -->
+</main>

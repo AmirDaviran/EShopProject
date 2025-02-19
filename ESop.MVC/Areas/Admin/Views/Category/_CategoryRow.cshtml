@@ -1,0 +1,43 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model EShop.Domain.ViewModels.Products.CategoryViewModel
+
+<tr>
+    <td><strong>@Model.Title</strong></td>
+    <td>@(Model.ParentCategoryTitle ?? "-")</td>
+    <td>@Model.DisplayOrder</td>
+    <td style="display: flex; gap: 10px;">
+        <!-- دکمه ویرایش -->
+        <a asp-action="Update" asp-route-id="@Model.Id" class="btn btn-primary btn-sm">
+            <i class="bx bx-edit-alt me-1"></i> ویرایش
+        </a>
+        <!-- دکمه حذف -->
+        <form asp-action="Delete" method="post" id="delete-form-@Model.Id">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این دسته‌بندی را حذف کنید؟')) { document.getElementById('delete-form-@Model.Id').submit(); }">
+                <i class="bx bx-trash me-1"></i> حذف
+            </button>
+        </form>
+    </td>
+</tr>
+
+@foreach (var subcategory in Model.SubCategories)
+{
+    <tr class="table-light">
+        <td class="ps-4">↳ @subcategory.Title</td>
+        <td>@(subcategory.ParentCategoryTitle ?? "-")</td>
+        <td>@subcategory.DisplayOrder</td>
+        <td style="display: flex; gap: 10px;">
+            <!-- دکمه ویرایش برای زیردسته‌بندی -->
+            <a asp-action="Update" asp-route-id="@subcategory.Id" class="btn btn-primary btn-sm">
+                <i class="bx bx-edit-alt me-1"></i> ویرایش
+            </a>
+            <!-- دکمه حذف برای زیردسته‌بندی -->
+            <form asp-action="Delete" method="post" id="delete-form-@subcategory.Id">
+                <input type="hidden" name="id" value="@subcategory.Id" />
+                <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این زیردسته‌بندی را حذف کنید؟')) { document.getElementById('delete-form-@subcategory.Id').submit(); }">
+                    <i class="bx bx-trash me-1"></i> حذف
+                </button>
+            </form>
+        </td>
+    </tr>
+}

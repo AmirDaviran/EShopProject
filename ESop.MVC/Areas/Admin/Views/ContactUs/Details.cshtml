@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using EShop.Application.Utilities.Convertors
+@using EShop.Domain.ViewModels.ContactUsViewModel
+@model EShop.Domain.ViewModels.ContactUsViewModel.ContactUsDetailsViewModel
+
+@{
+    ViewData["Title"] = "جزئیات پیام";
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="add-new-user pt-0">
+    <div class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label class="form-label">نام</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                <input type="text" class="form-control text-center" value="@Model.FirstName @Model.LastName" disabled>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label">ایمیل</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                <input type="text" class="form-control text-center" value="@Model.Email" disabled>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label">موبایل</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                <input type="text" class="form-control text-center" value="@Model.Mobile" disabled>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label">عنوان</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-tag"></i></span>
+                <input type="text" class="form-control text-center" value="@Model.Title" disabled>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label">توضیحات</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-detail"></i></span>
+                <textarea class="form-control text-center" disabled>@Model.Description</textarea>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label">تاریخ</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                <input type="text" class="form-control text-center" value="@Model.CreatedDate.ToShamsi()" disabled>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label d-block">وضعیت</label>
+            <div class="form-check text-center">
+                <span class="badge @(Model.IsRead ? "bg-label-success" : "bg-label-danger")">
+                    @(Model.IsRead ? "خوانده شده" : "خوانده نشده")
+                </span>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label d-block">پاسخ</label>
+            <div class="form-check text-center">
+                <span class="badge @(Model.IsReplied ? "bg-label-success" : "bg-label-danger")">
+                    @(Model.IsReplied ? "پاسخ داده شده" : "پاسخ داده نشده")
+                </span>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.AttachmentPath))
+        {
+            <div class="mb-3 w-50">
+                <label class="form-label">فایل پیوست</label>
+                <div class="input-group input-group-merge text-center">
+                    <a href="~/Image/ContactUs/@Model.AttachmentPath" download="@System.IO.Path.GetFileName(Model.AttachmentPath)" class="btn btn-secondary">دانلود</a>
+                </div>
+            </div>
+        }
+        <div class="mb-3 w-50">
+            @if (!Model.IsReplied)
+            {
+                <partial name="_AdminResponse" model="new ContactUsAdminResponseViewModel { Id = Model.Id }" />
+            }
+            else
+            {
+                <div class="w-100">
+                    <h3>پاسخ ادمین</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <p>@Model.AdminAnswer</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="mb-3 w-50 text-center">
+            <a class="btn btn-primary" asp-action="List">بازگشت</a>
+        </div>
+    </div>
+</div>

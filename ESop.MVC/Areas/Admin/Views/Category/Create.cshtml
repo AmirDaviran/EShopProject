@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model EShop.Domain.ViewModels.Products.CreateCategoryViewModel
+
+@{
+    ViewData["Title"] = "ایجاد دسته‌بندی جدید";
+}
+
+<form asp-action="Create" method="post" class="add-new-category pt-0" id="addNewCategoryForm">
+    <div class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-category-title">عنوان</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-tag"></i></span>
+                <input asp-for="Title" class="form-control" id="add-category-title" placeholder="عنوان دسته‌بندی">
+            </div>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-category-parent">دسته‌بندی والد</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-folder"></i></span>
+                <select asp-for="ParentCategoryId" asp-items="ViewBag.ParentCategories" class="form-control" id="add-category-parent">
+                    <option value="">(بدون دسته‌بندی والد)</option>
+                </select>
+            </div>
+            <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-category-order">ترتیب نمایش</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-sort"></i></span>
+                <input asp-for="DisplayOrder" class="form-control" id="add-category-order" placeholder="ترتیب نمایش">
+            </div>
+            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary me-2">ذخیره</button>
+            <a asp-action="List" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </div>
+</form>

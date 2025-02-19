@@ -1,0 +1,64 @@
+﻿@model IEnumerable<EShop.Domain.ViewModels.Colors.ColorListsViewModel>
+@using EShop.Application.Utilities.Convertors
+@{
+    ViewData["Title"] = "لیست رنگ ها";
+
+}
+
+
+
+
+
+<div class="card">
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="card-header">لیست رنگ ها</h5>
+
+        </div>
+        <div class="col-md-6 ">
+            <div class="d-flex align-items-center justify-content-end p-2">
+                <a class="btn btn-info" asp-area="Admin" asp-controller="Color" asp-action="CreateColor">افزودن رنگ</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive text-nowrap min-h-100-vh">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>نام رنگ</th>
+                    <th>کد رنگ</th>
+                    <th>تاریخ ثبت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="class=" fa-num"><strong>@item.Name</strong></td>
+                        <td class="d-flex align-items-center">             
+                            <div class="color-show-Div" style="background-color: @item.Code; border: 1px solid #ccc;"></div>
+                            <span> @item.Code</span>
+                        </td>
+                        <td class="fa-num">@item.CreatedDate.ToStringShamsiDate()</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    <a class="dropdown-item" href="/Admin/Product/Details/@item.ColorId"><i class="bx bx-edit-alt me-1"></i> نمایش</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Color" asp-action="EditColor" asp-route-colorId="@item.ColorId"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                                    @*<a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="DeleteProduct" asp-route-productId="@item.productId"><i class="bx bx-trash me-1"></i> حذف</a>*@
+                                    <a class="dropdown-item" onclick="confirmDelete('@Url.Action("DeleteColor" , new  { colorId = item.ColorId })')"><i class="bx bx-trash me-1"></i> حذف</a>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

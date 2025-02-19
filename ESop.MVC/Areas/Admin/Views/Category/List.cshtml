@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<EShop.Domain.ViewModels.Products.CategoryViewModel>
+
+@{
+    ViewData["Title"] = "مدیریت دسته‌بندی‌ها";
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <div class="card">
+            <div class="card-datatable table-responsive">
+
+                @await Html.PartialAsync("_CategoryTableActions")
+
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                    <table class="datatables-categories table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                        <thead>
+                            <tr>
+                                <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 148.25px;" aria-sort="descending">عنوان</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 145.859px;">دسته‌بندی والد</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 148.625px;">ترتیب نمایش</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 191.656px;">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var category in Model.Where(c => c.ParentCategoryId == null))
+                                {
+                                    @Html.Partial("_CategoryRow", category)
+                                }
+                            }
+                            else
+                            {
+                                <tr class="odd">
+                                    <td valign="top" colspan="4" class="text-center">هیچ دسته‌بندی یافت نشد</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- پاورقی جدول (صفحه‌بندی و اطلاعات) -->
+                    @* <partial name="_AdminPagination" model="@Model.GetCurrentPaging()" /> *@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+﻿@model EShop.Domain.ViewModels.UserViewModel.CreateUserViewModel
+
+@{
+    ViewData["Title"] = "افزودن کاربر";
+}
+
+<form method="post" asp-area="Admin" asp-controller="User" asp-action="Create" class="add-new-user pt-0" id="addNewUserForm">
+    <div class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-user-firstname">نام</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                <input type="text" asp-for="FirstName" class="form-control" id="add-user-firstname" placeholder="نام">
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-user-lastname">نام خانوادگی</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                <input type="text" asp-for="LastName" class="form-control" id="add-user-lastname" placeholder="نام خانوادگی">
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-user-email">ایمیل</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                <input type="text" asp-for="Email" class="form-control" id="add-user-email" placeholder="EShop@example.com">
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-user-contact">شماره تماس</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                <input type="text" asp-for="PhoneNumber" class="form-control phone-mask" id="add-user-contact">
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-user-password">کلمه عبور</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-lock"></i></span>
+                <input type="password" asp-for="Password" class="form-control" id="add-user-password" placeholder="············">
+                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label d-block" for="IsActive">وضعیت</label>
+            <div class="form-check">
+                <input class="form-check-input me-2" type="checkbox" asp-for="IsActive" id="IsActive">
+                <label class="form-check-label" for="IsActive">فعال است؟</label>
+            </div>
+        </div>
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary me-2">افزودن کاربر</button>
+            <button type="reset" class="btn btn-secondary">لغو</button>
+        </div>
+    </div>
+</form>

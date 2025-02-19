@@ -1,0 +1,145 @@
+﻿
+@model EShop.Domain.ViewModels.Products.CreateProductViewModel
+@using EShop.Domain.Entities.ProductEntity
+@using EShop.Domain.Entities.Colors
+@{
+    ViewData["Title"] = "افزودن محصول جدید در ادمین";
+    Layout = "_AdminLayout";
+    var categories = TempData["Categories"] as List<Category>;
+    var colors = TempData["Colors"] as List<Color>;
+}
+
+
+<div class="col-xxl">
+    <div class="card mb-4">
+        <h5 class="card-header">افزودن محصول</h5>
+        <form asp-area="Admin" asp-controller="Product" asp-action="CreateProduct" method="post" class="card-body" enctype="multipart/form-data">
+            <h6>1. جزئیات محصول</h6>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-username">عنوان فارسی</label>
+                    <input asp-for="PersianTitle" type="text" id="multicol-username" class="form-control" placeholder="">
+                    <span asp-validation-for="PersianTitle" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-email">عنوان انگلیسی</label>
+                    <input asp-for="EnglishTitle" type="text" id="multicol-email" class="form-control" placeholder="" aria-label="john.doe" aria-describedby="multicol-email2">
+                    <span asp-validation-for="EnglishTitle" class="text-danger"></span>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-password-toggle">
+                        <label class="form-label" for="multicol-password">نقد و بررسی</label>
+                        <textarea asp-for="Review" class="form-control" name="Review"></textarea>
+                        <span asp-validation-for="Review" class="text-danger"></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-password-toggle">
+                        <label class="form-label" for="multicol-confirm-password">نقد و بررسی تخصصی</label>
+                        <textarea asp-for="ExpertReview" class="form-control" name="ExpertReview"></textarea>
+                        <span asp-validation-for="ExpertReview" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-lable">
+                            قیمت محصول
+                        </label>
+                        <input class="form-label" type="number" min="1" asp-for="Price">
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-lable">
+                            تصویر محصول
+                        </label>
+                        <input class="form-control" type="file" name="ImageFile">
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="my-4 mx-n4">
+                <h6>2. دسته بندی ها</h6>
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                @if (categories != null && categories.Any())
+                                {
+                                    <ul>
+                                        @foreach (var category in categories.Where(c => c.ParentCategoryId == null))
+                                        {
+                                            <li>
+                                                <div class="bx-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" name="SelectedCategories" value="@category.Id" />
+                                                        <span class="text">@category.Title</span>
+                                                    </label>
+                                                </div>
+
+                                                @if (categories.Any(c => c.ParentCategoryId == category.ParentCategoryId))
+                                                {
+                                                    <ul>
+                                                        @foreach (var subCategory in categories.Where(c => c.ParentCategoryId == category.Id))
+                                                        {
+                                                            <li>
+                                                                <input type="checkbox" name="SelectedCategories" value="@subCategory.Id" />
+                                                                <span class="text">@subCategory.Title</span>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-md-6">
+                        <label>رنگ محصول</label>
+                        <div class="row">
+                            @foreach (var color in colors)
+                            {
+
+                                <div class="col-md mb-md-0 mb-2">
+                                    <div class="form-check custom-option custom-option-icon checked">
+                                        <label class="form-check-label custom-option-content" for="customCheckboxSvg1">
+                                            <span class="custom-option-body">
+                                                <div class="color-show-Div" style="background-color: @color.Code; border: 1px solid #ccc;"></div>
+                                                <span class="custom-option-title"> @color.Name </span>
+
+                                            </span>
+                                            <input type="checkbox" class="form-check-input" name="SelectedColors.ColorId" value="@color.Id" />
+                                            <input class="form-check-input" type="checkbox" name="SelectedColors.Amount" placeholder="مقدار مابه التفاوت" min="1" id="customCheckboxSvg1" checked="">
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>*@
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="btn btn-primary me-sm-3 me-1">ایجاد محصول</button>
+                    <button type="reset" class="btn btn-label-secondary">لغو</button>
+                </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('Review');
+            CKEDITOR.replace('ExpertReview');
+        });
+    </script>
+}

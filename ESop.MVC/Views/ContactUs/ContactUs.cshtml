@@ -1,0 +1,100 @@
+﻿@model EShop.Domain.ViewModels.ContactUsViewModel.CreateContactUsViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="ui-box bg-white">
+    <div class="ui-box-title fs-5 fw-bold">تماس با ما</div>
+    <div class="ui-box-subtitle flex-wrap">
+        لطفاً پیش از ارسال ایمیل یا تماس تلفنی، ابتدا <a href="#" class="link mx-2">پرسش های متداول</a> را مشاهده کنید.
+    </div>
+    <div class="ui-box-content" data-select2-id="select2-data-8-4551">
+        <div class="fs-7 text-secondary mb-5">
+            برای پیگیری یا سوال درباره سفارش و ارسال پیام بهتر است از فرم زیر استفاده کنید.
+        </div>
+        <!-- start of contact-us-form -->
+        <form asp-action="ContactUs" asp-controller="ContactUs" method="post" enctype="multipart/form-data" class="contact-us-form" data-select2-id="select2-data-7-gzmv">
+            @Html.AntiForgeryToken()
+            <div class="row" data-select2-id="select2-data-6-bmmw">
+                <div class="col-md-6">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <label asp-for="Title" class="label"></label>
+                        <input asp-for="Title" class="form-control" placeholder="عنوان پیام" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-md-6">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <label asp-for="FirstName" class="label"></label>
+                        <input asp-for="FirstName" class="form-control" placeholder="نام" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-md-6">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <label asp-for="LastName" class="label"></label>
+                        <input asp-for="LastName" class="form-control" placeholder="نام خانوادگی" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-md-6">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <label asp-for="Email" class="label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="example@example.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-md-6">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <label asp-for="Mobile" class="label"></label>
+                        <input asp-for="Mobile" class="form-control" placeholder="09xxxxxxxxx" />
+                        <span asp-validation-for="Mobile" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-12">
+                    <!-- start of form-element -->
+                    <div class="form-element-row mb-5">
+                        <label asp-for="Description" class="label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="5" placeholder="متن پیام"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-12">
+                    <!-- start of form-element -->
+                    <div class="form-element-row form-element-row-file mb-5">
+                        <div class="text-center">
+                            <div class="fs-6 fw-bold text-dark">عکس یا ویدیو خود را بارگذاری کنید.</div>
+                            <div class="fs-7 fw-bold text-muted mb-4">
+                                ( حداکثر ۵ تصویر jpeg یا PNG
+                                حداکثر یک
+                                مگابایت، یک ویدیو MP4 حداکثر ۵۰ مگابایت )
+                            </div>
+                        </div>
+                        <div class="custom-input-file">
+                            <input asp-for="Attachment" type="file" class="custom-input-file-input" id="attachment" />
+                            <label for="attachment" class="custom-input-file-label">
+                                <span class="label">
+                                    <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- end of form-element -->
+                </div>
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary px-4">ثبت و ارسال</button>
+                </div>
+            </div>
+        </form>
+        <!-- end of contact-us-form -->
+    </div>
+</div>

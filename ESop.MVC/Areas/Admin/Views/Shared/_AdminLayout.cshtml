@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en"
+      lang="fa"
+      dir="rtl"
+      class="light-style layout-navbar-fixed layout-menu-fixed"
+      dir="ltr"
+      data-theme="theme-default"
+      data-assets-path="../../assets/"
+      data-template="vertical-menu-template">
+<head>
+
+    @await Html.PartialAsync("_AdminHeadRefrences")
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            <!-- Menu -->
+            @await Html.PartialAsync("_AdminLeftSideMenu")
+            <!-- / Menu -->
+            <!-- Layout container -->
+            <div class="layout-page">
+                <!-- Navbar -->
+                @await Html.PartialAsync("_AdminNavbar")
+                <!-- / Navbar -->
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <div id="messageContainer"></div>
+                        @await Html.PartialAsync("_TempDataMessages")
+                        @RenderBody()
+                    </div>
+                </div>
+                <!-- / Content -->
+                <!-- Footer -->
+                @await Html.PartialAsync("_AdminFooter")
+                <!-- / Footer -->
+                <!-- Content wrapper -->
+                <!-- / Layout page -->
+            </div>
+            <!-- Overlay -->
+            <div class="layout-overlay layout-menu-toggle"></div>
+
+            <!-- Drag Target Area To SlideIn Menu On Small Screens -->
+            <div class="drag-target"></div>
+        </div>
+    <!-- / Layout wrapper -->
+    </div>
+        @await Html.PartialAsync("_AdminScripts")
+        @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

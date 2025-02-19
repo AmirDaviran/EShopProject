@@ -1,0 +1,39 @@
+﻿@model EShop.Domain.ViewModels.ContactUsViewModel.FilterContactUsViewModel
+
+<form method="get" asp-controller="ContactUs" asp-action="List" id="filter-search">
+    <div class="row mx-2 mb-3">
+        <!-- فیلتر تعداد نمایش داده‌ها -->
+        <div class="col-md-2">
+            <div class="dataTables_length" id="DataTables_Table_0_length">
+                <label>
+                    <select name="TakeEntity" asp-for="TakeEntity" class="form-select" onchange="this.form.submit()">
+                        @foreach (var option in new[] { 10, 25, 50, 100 })
+                        {
+                            if (Model.TakeEntity == option)
+                            {
+                                <option value="@option" selected>@option</option>
+                            }
+                            else
+                            {
+                                <option value="@option">@option</option>
+                            }
+                        }
+                    </select>
+                </label>
+            </div>
+        </div>
+
+        <!-- بخش جستجو و دکمه‌ها -->
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- فیلتر جستجو -->
+                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                    <label>
+                        <input type="search" name="SearchTerm" class="form-control" placeholder="Search.." value="@(Model?.SearchTerm ?? "")" onkeypress="if(event.keyCode == 13) { this.form.submit(); }">
+                    </label>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>

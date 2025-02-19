@@ -1,0 +1,109 @@
+﻿@model EShop.Domain.ViewModels.Tickets.TicketDetailsViewModel
+@using EShop.Application.Utilities.Convertors
+@using EShop.Application.Utilities.Extensions
+
+@{
+    ViewData["Title"] = "محتوای تیکت ";
+    Layout = "_MainLayout";
+    var userId = User.GetUserID();
+}
+
+<main class="page-content">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-xl-3 col-lg-4 col-md-5 mb-md-0 mb-4">
+                <aside>
+                    @await Component.InvokeAsync("UserSideBar")
+                </aside>
+            </div>
+            <div class="col-xl-9 col-lg-8 col-md-7">
+                <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+                    <div>
+                        سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
+                        <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div class="ui-box bg-white mb-5">
+                    <div class="ui-box-title">
+                        @Model.Ticket.Title
+                    </div>
+                    <div class="ui-box-content">
+                        <div class="tickets">
+                            <!-- User Messages -->
+                            @foreach (var conversation in Model.Conversations)
+                            {
+                                foreach (var response in conversation.TicketMessages)
+                                {
+                                    if (response.SenderId == Model.Ticket.OwnerId)
+                                    {
+                                        <div class="ticket fa-num">
+                                            <div class="avatar"></div>
+                                            <div class="text">
+                                                @response.Message
+                                            </div>
+                                            <div class="date">@Model.UpdatedDate.ToStringShamsiDate()</div>
+                                        </div>
+                                    }
+                                    else if (response.SenderId != Model.Ticket.OwnerId)
+                                    {
+                                        <div class="ticket reply fa-num">
+                                            <div class="avatar staff"></div>
+                                            <div class="text">
+                                                @response.Message
+                                            </div>
+                                            <div class="date">@Model.UpdatedDate.ToStringShamsiDate()</div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        <div class="border-bottom my-4"></div>
+
+                        <div class="ui-box-title p-0 mb-4">
+                            ارسال پاسخ
+                        </div>
+                        <form asp-controller="Ticket" asp-action="UpdateTicketConversation" asp-area="users"  method="post" class="add-ticket-form" enctype="multipart/form-data">
+                            <input type="hidden" name="TicketId" value="@Model.Ticket.Id" />
+                            <input type="hidden" name="SenderId" value="@userId" />
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-element-row mb-5">
+                                        <label class="label">پیام</label>
+                                        <textarea rows="5" name="Message" class="form-control" placeholder="متن پیام"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-element-row form-element-row-file mb-5">
+                                        <div class="text-center">
+                                            <div class="fs-6 fw-bold text-dark">
+                                                عکس یا ویدیو خود را بارگذاری کنید.
+                                            </div>
+                                            <div class="fs-7 fw-bold text-muted mb-4">
+                                                ( حداکثر ۵ تصویر jpeg یا PNG
+                                                حداکثر یک
+                                                مگابایت، یک ویدیو MP4 حداکثر ۵۰ مگابایت )
+                                            </div>
+                                        </div>
+                                        <div class="custom-input-file">
+                                            <input type="file" class="custom-input-file-input" name="AttachmentFile" id="attachment">
+                                            <label for="attachment" class="custom-input-file-label">
+                                                <span class="label">
+                                                    <i class="ri-arrow-up-fill me-1"></i> انتخاب عکس یا ویدئو
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-primary">ارسال پاسخ <i class="ri-ball-pen-line ms-2"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,154 @@
+﻿
+@model EShop.Domain.ViewModels.Tickets.TicketDetailsViewModel
+@using EShop.Application.Utilities.Convertors
+@using EShop.Domain.Enums.TicketEnums
+
+@using EShop.Application.Utilities.Extensions
+
+@{
+    ViewData["Title"] = " محتوای تیکت در پنل ادمین";
+    Layout = "_AdminLayout";
+    var userId = User.GetUserID();
+}
+
+
+<div class="content-wrapper">
+    <!-- Content -->
+
+    <div>
+        <div class="app-chat overflow-hidden card">
+            <div class="row g-0">
+
+                <!-- Chats -->
+                <ul class="list-unstyled chat-contact-list pt-1" id="chat-list">
+                    <li class="chat-contact-list-item chat-contact-list-item-title">
+                        <h5 class="text-primary mb-0">@Model.Ticket.Title</h5>
+                    </li>
+                </ul>
+                <!-- Contacts -->
+                <!-- Chat History -->
+                <div class="col app-chat-history">
+                    <div class="chat-history-wrapper">
+                        <div class="chat-history-header border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex overflow-hidden align-items-center">
+                                    <i class="bx bx-menu bx-sm cursor-pointer d-lg-none d-block me-2" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-contacts"></i>
+                                    <div class="flex-shrink-0 avatar">
+                                        <img src="../../assets/img/avatars/2.png" alt="Avatar" class="rounded-circle" data-bs-toggle="sidebar" data-overlay="" data-target="#app-chat-sidebar-right">
+                                    </div>
+                                    <div class="chat-contact-info flex-grow-1 ms-3">
+                                        <h6 class="m-0">@Model.Ticket.Owner.FirstName @Model.Ticket.Owner.LastName</h6>
+
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+
+
+                                    <i class="bx bx-search cursor-pointer d-sm-block d-none me-3 fs-4"></i>
+                                    <div class="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded cursor-pointer fs-4" id="chat-header-actions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        </i>
+                                        <!-- Select Option For Changing The TicketStatus -->
+                                        <form asp-area="Admin" asp-controller="Ticket" asp-action="UpdateTicketStatus" asp-route-ticketId="@Model.Ticket.Id" method="post">
+                                            <input type="hidden" name="TicketId" value="@Model.Ticket.Id" />
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="chat-header-actions">
+                                             
+                                                <label for="Status" class="form-label dropdown-item">تغییر وضعیت تیکت</label>
+                                                <select class="form-control" asp-for="Status" asp-items="@Html.GetEnumSelectList<TicketStatus>()" onchange="this.form.submit()">
+                                                    <option value="" disabled selected>انتخاب کنید...</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-history-body ps ps--active-y overflow-auto">
+                            <ul class="list-unstyled chat-history mb-0">
+                                @foreach (var conversation in Model.Conversations)
+                                {
+                                    foreach (var response in conversation.TicketMessages)
+                                    {
+                                        if (response.SenderId == Model.Ticket.OwnerId)
+                                        {
+                                            <!-- Render Admin's Messages -->
+                                            <li class="chat-message chat-message-right">
+                                                <div class="d-flex overflow-hidden">
+                                                    <div class="chat-message-wrapper flex-grow-1">
+                                                        <div class="chat-message-text">
+                                                            <p class="mb-0">@response.Message</p>
+                                                        </div>
+                                                        <div class="text-end text-muted mt-1">
+                                                            <i class="bx bx-check-double text-success"></i>
+                                                            <small>@Model.UpdatedDate.ToStringShamsiDate()</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="user-avatar flex-shrink-0 ms-3">
+                                                        <div class="avatar avatar-sm">
+                                                            <img src="../../assets/img/avatars/1.png" alt="Avatar" class="rounded-circle">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                        else if (response.SenderId!= Model.Ticket.OwnerId)
+                                        {
+                                            <!-- Render User's Messages -->
+                                            <li class="chat-message">
+                                                <div class="d-flex overflow-hidden">
+                                                    <div class="user-avatar flex-shrink-0 me-3">
+                                                        <div class="avatar avatar-sm">
+                                                            <img src="../../assets/img/avatars/2.png" alt="Avatar" class="rounded-circle">
+                                                        </div>
+                                                    </div>
+                                                    <div class="chat-message-wrapper flex-grow-1">
+                                                        <div class="chat-message-text">
+                                                            <p class="mb-0">@response.Message</p>
+
+                                                        </div>
+
+                                                        <div class="text-muted mt-1">
+                                                            <small>@Model.UpdatedDate.ToStringShamsiDate()</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
+
+                            </ul>
+                            <div class="ps__rail-x" style="left: 0px; bottom: -902px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 902px; height: 40px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 33px; height: 1px;"></div></div>
+                        </div>
+                        <!-- Chat message form -->
+
+                        <div class="chat-history-footer">
+
+                            <form asp-area="Admin" asp-controller="Ticket" asp-action="UpdateTicketConversationInAdmin" method="post" class="form-send-message d-flex justify-content-between align-items-center">
+                                <input type="hidden" name="TicketId" value="@Model.Ticket.Id" />
+                                <input type="hidden" name="SenderId" value="@userId" />
+
+                                <input name="Message" class="form-control message-input border-0 me-3 shadow-none" placeholder="Type your message here...">
+                                <div class="message-actions d-flex align-items-center">
+                                    <label for="attach-doc" class="form-label mb-0">
+                                        <i class="bx bx-paperclip bx-sm cursor-pointer mx-3"></i>
+                                        <input type="file" id="attach-doc" name="AttachmentFile" hidden="">
+                                    </label>
+                                    <button type="submit" class="btn btn-primary d-flex send-msg-btn">
+                                        <i class="bx bx-paper-plane me-md-1 me-0"></i>
+                                        <span class="align-middle d-md-inline-block d-none">ارسال</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="app-overlay"></div>
+            </div>
+        </div>
+    </div>
+    <!-- / Content -->
+
+    <div class="content-backdrop fade"></div>
+</div>

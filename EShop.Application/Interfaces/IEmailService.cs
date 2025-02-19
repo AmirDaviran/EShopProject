@@ -1,0 +1,15 @@
+﻿using EShop.Application.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EShop.Application.Interfaces
+{
+   public interface IEmailService
+    {
+        void SendVerificationEmail(Email email);
+        void SendAdminResponseEmail(Email email); // متد جدید برای ارسال پاسخ ادمین
+    }
+}

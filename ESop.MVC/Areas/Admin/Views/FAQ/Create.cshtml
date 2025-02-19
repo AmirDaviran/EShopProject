@@ -1,0 +1,31 @@
+﻿@using EShop.Domain.ViewModels.FAQ
+@model CreateFAQViewModel
+
+
+
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Basic with Icons</h5>
+        <small class="text-muted float-end">Merged input group</small>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" asp-controller="FAQ" method="post">
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-question"> سوال  </label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
+                    <input asp-for="Question" type="text" class="form-control" id="basic-icon-default-question" placeholder="چگونه رمز کاربری را بازیابی کنم؟" aria-label="سوال" aria-describedby="basic-icon-default-question">
+                </div>
+            </div>
+        
+            <div class="mb-3">
+                <label class="form-label" for="basic-icon-default-message">جواب</label>
+                <div class="input-group input-group-merge">
+                    <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
+                    <textarea asp-for="Answer" id="basic-icon-default-message" class="form-control" placeholder="وارد پروفایل خود شوید و در قسمت  (فراموشی رمز عبور) رمز خود را بازیابی کنید" aria-label="جواب" aria-describedby="basic-icon-default-message2"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">ثبت</button>
+        </form>
+    </div>
+</div>

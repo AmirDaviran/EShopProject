@@ -1,0 +1,51 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<EShop.Domain.ViewModels.Products.CategoryViewModel>
+
+<div class="page-header--bottom">
+    <div class="container">
+        <div class="d-flex align-items-center">
+            <div class="vertical-menu">
+                <a href="#" class="vertical-menu-btn">دسته بندی کالاها <i class="ri-apps-fill icon"></i></a>
+                <div class="vertical-menu-items">
+                    <ul>
+                        @foreach (var category in Model)
+                        {
+                            var hasSubCategories = category.SubCategories != null && category.SubCategories.Any();
+                
+                            <li class="mega-menu-category @(hasSubCategories ? "parent" : "")">
+                                <a href="#">@category.Title</a>
+                    
+                                @if (hasSubCategories)
+                                {
+                                    <ul class="mega-menu">
+                                        @foreach (var subCategory in category.SubCategories)
+                                        {
+                                            <li><a href="#">@subCategory.Title</a></li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index-1.html">خانه</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">وبلاگ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="FAQ" asp-action="Index">پرسش های متداول</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="ContactUs" asp-action="ContactUs">تماس با ما</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">درباره ما</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

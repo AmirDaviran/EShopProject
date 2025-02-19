@@ -1,0 +1,84 @@
+﻿
+@model EShop.Domain.ViewModels.Tickets.CreateTicketViewModel
+@using EShop.Domain.Enums.TicketEnums;
+@{
+    ViewData["Title"] = "افزودن تیکت جدید در ادمین";
+    Layout = "_AdminLayout";
+}
+
+
+
+<div class="overflow-hidden card">
+    <div class="row g-0">
+        <div class="col app-chat-history">
+            <div class="chat-history-wrapper container">
+                <form asp-area="Admin" asp-controller="Ticket" asp-action="CreateTicket" method="post" class="add-ticket-form" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="OwnerId" value="@Model.OwnerId"/>
+                    <!-- Title Row -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-element-row mt-2 mb-3">
+                                <label for="Title" class="form-label">عنوان تیکت</label>
+                                <input asp-for="Title" id="largeInput" class="form-control form-control-lg" type="text" placeholder="عنوان تیکت">
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enum Row -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-element-row  mt-2 mb-3">
+                                <label for="Section" class="form-label">بخش</label>
+                                <select class="form-control" asp-for="Section" asp-items="@Html.GetEnumSelectList<TicketSection>()"></select>
+                                <span asp-validation-for="Section" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-element-row  mt-2 mb-3">
+                                <label for="Priority" class="form-label">اولویت</label>
+                                <select class="form-control" asp-for="Priority" asp-items="@Html.GetEnumSelectList<TicketPriority>()">
+                                    <span asp-validation-for="Priority" class="text-danger"></span>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Message Section -->
+
+                        <div class="col-md-12">
+                            <div class="form-element-row  mt-2 mb-3">
+                                <label for="Description" class="form-label">پیام</label>
+                                <textarea asp-for="Description" rows="5" class="form-control" placeholder="پیام ..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+
+
+                        <!-- File Upload Section -->
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="formFile" class="form-label">فایل خود را بارگذاری کنید.</label>
+                                <input class="form-control" name="AttachmentFile" type="file" id="formFile">
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-md-6 text-end m-auto">
+                                <button type="submit" class="btn btn-primary">
+                                    ثبت و ارسال
+                                    <i class="ri-ball-pen-line ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

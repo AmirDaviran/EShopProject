@@ -1,0 +1,108 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+
+.login-partial-link-li{
+    list-style: none !important;
+    padding-left: 20px;
+}
+.login-partial-link {
+    color: #444444 !important;
+    text-decoration: none !important;
+}
+
+.remember-forget-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: -5px;
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+    .remember-forget-list a {
+        color: #444444 !important;
+        text-decoration: none !important;
+    }
+
+
+
+
+
+
+
+
+
+
+/* Custom SweetAlert Styles */
+.my-popup-class {
+    width: 400px; /* Set the width of the alert */
+    padding: 10px; /* Adjust padding if needed */
+}
+
+.swal2-success {
+    background-color: #dff0d8; /* Green Background for Success */
+    border: 1px solid #d6e9c6; /* Green border */
+}
+
+.swal2-error {
+    background-color: #f2dede; /* Red Background for Error */
+    border-color: #ebccd1; /* Red border */
+}
+
+.swal2-warning {
+    background-color: #fcf8e3; /* Yellow Background for Warning */
+    border-color: #faebcc; /* Yellow border */
+}
+
+.swal2-info {
+    background-color: #d9edf7; /* Blue Background for Info */
+    border-color: #bce8f1; /* Blue border */
+}
+
+/* Adjust text color if needed */
+.swal2-title {
+    color: #333; /* Title color */
+}
+
+.swal2-content {
+    color: #555; /* Content color */
+}
+
+
+.chat-contact-list-item-title {
+    padding: 10px 10px 0 0 !important;
+}
+
+.Image-EditProduct {
+    width: 50% !important;
+}

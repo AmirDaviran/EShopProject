@@ -1,0 +1,88 @@
+﻿@using EShop.Domain.ViewModels.ContactUsViewModel
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using EShop.Application.Utilities.Convertors
+@model EShop.Domain.ViewModels.ContactUsViewModel.FilterContactUsViewModel
+
+
+@{
+    ViewData["Title"] = "لیست پیام‌های تماس با ما";
+}
+
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <div class="card">
+            <div class="card-datatable table-responsive">
+                @await Html.PartialAsync("_ContactUsTableActions")
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                    <table class="datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                        <!-- هدر جدول -->
+                        <thead>
+                            <tr>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 148.25px;">آیدی</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 145.859px;">نام و نام خانوادگی</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 148.625px;">ایمیل</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 190.312px;">موبایل</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 184.359px;">عنوان</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 184.359px;">وضعیت</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 184.359px;">پاسخ</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 184.359px;">تاریخ</th>
+                                <th class="sorting_disabled" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 191.656px;">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Entities.Any())
+                            {
+                                @foreach (var contact in Model.Entities)
+                                {
+                                    <tr>
+                                        <td>@contact.Id</td>
+                                        <td>@contact.FirstName @contact.LastName</td>
+                                        <td>@contact.Email</td>
+                                        <td>@contact.Mobile</td>
+                                        <td>@contact.Title</td>
+                                        <td>
+                                            <span class="badge @(contact.IsRead ? "bg-label-success" : "bg-label-danger")">
+                                                @(contact.IsRead ? "خوانده شده" : "خوانده نشده")
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge @(contact.IsReplied ? "bg-label-success" : "bg-label-danger")">
+                                                @(contact.IsReplied ? "پاسخ داده شده" : "پاسخ داده نشده")
+                                            </span>
+                                        </td>
+                                        <td>@contact.CreatedDate.ToShamsi()</td>
+                                        <td style="display: flex; gap: 10px;">
+                                            <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@contact.Id">
+                                                <i class="bx bx-eye me-1"></i> مشاهده
+                                            </a>
+                                            <!-- دکمه حذف (در صورت نیاز) -->
+                                            <!--
+                                            <form asp-action="" method="post" id="delete-form-contact.Id" style="display:inline;">
+                                                <input type="hidden" name="id" value="contact.Id" />
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟')) { document.getElementById('delete-form-@contact.Id').submit(); }">
+                                                    <i class="bx bx-trash me-1"></i> حذف
+                                                </button>
+                                            </form>
+                                            -->
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" class="text-center">هیچ پیامی یافت نشد</td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                    <partial name="_AdminPagination" model="@Model.GetCurrentPaging()" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

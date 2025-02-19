@@ -1,0 +1,284 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\Image\**" />
+    <Content Remove="wwwroot\Image\**" />
+    <EmbeddedResource Remove="wwwroot\Image\**" />
+    <None Remove="wwwroot\Image\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\theme-assets\css\custom.css" />
+    <None Include="wwwroot\theme-assets\css\custom.css.map" />
+    <None Include="wwwroot\theme-assets\css\dependencies.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\bootstrap-slider.min.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\bootstrap.rtl.min.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\fancybox.min.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\iziToast.min.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\nouislider.min.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\remixicon.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\remodal-default-theme.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\remodal.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\select2.min.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\simplebar.css" />
+    <None Include="wwwroot\theme-assets\css\dependencies\swiper-bundle.min.css" />
+    <None Include="wwwroot\theme-assets\css\theme.css" />
+    <None Include="wwwroot\theme-assets\css\theme.css.map" />
+    <None Include="wwwroot\theme-assets\fonts\AdobeClean\AdobeClean-black.otf" />
+    <None Include="wwwroot\theme-assets\fonts\AdobeClean\AdobeClean-bold.otf" />
+    <None Include="wwwroot\theme-assets\fonts\AdobeClean\AdobeClean-extrabold.otf" />
+    <None Include="wwwroot\theme-assets\fonts\AdobeClean\AdobeClean-light.otf" />
+    <None Include="wwwroot\theme-assets\fonts\AdobeClean\AdobeClean-medium.otf" />
+    <None Include="wwwroot\theme-assets\fonts\AdobeClean\AdobeClean-regular.otf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebBlack.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebBold.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebExtraBlack.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebExtraBold.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebLight.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebMedium.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebRegular.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\eot\IRANYekanWebThin.eot" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanwebblack.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanwebbold.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanwebextrablack.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanwebextrabold.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanweblight.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanwebmedium.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\IRANYekanWebRegular.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\svg\iranyekanwebthin.svg" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebBlack.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebBold.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebExtraBlack.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebExtraBold.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebLight.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebMedium.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebRegular.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\ttf\IRANYekanWebThin.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebBlack.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebBold.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebExtraBlack.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebExtraBold.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebLight.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebMedium.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebRegular.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff2\IRANYekanWebThin.woff2" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebBlack.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebBold.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebExtraBlack.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebExtraBold.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebLight.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebMedium.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebRegular.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\iranyekanwebregularfanum.woff" />
+    <None Include="wwwroot\theme-assets\fonts\iranyekan\woff\IRANYekanWebThin.woff" />
+    <None Include="wwwroot\theme-assets\fonts\remixicons\remixicon.eot" />
+    <None Include="wwwroot\theme-assets\fonts\remixicons\remixicon.svg" />
+    <None Include="wwwroot\theme-assets\fonts\remixicons\remixicon.ttf" />
+    <None Include="wwwroot\theme-assets\fonts\remixicons\remixicon.woff" />
+    <None Include="wwwroot\theme-assets\fonts\remixicons\remixicon.woff2" />
+    <None Include="wwwroot\theme-assets\images\avatar\default.png" />
+    <None Include="wwwroot\theme-assets\images\avatar\female.png" />
+    <None Include="wwwroot\theme-assets\images\banner\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\010.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\011.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\012.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\013.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\014.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\015.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\016.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\017.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\018.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\019.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\020.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\021.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\022.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\023.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\024.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\025.gif" />
+    <None Include="wwwroot\theme-assets\images\banner\026.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\027.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\028.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\03.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\04.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\05.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\06.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\07.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\08.jpg" />
+    <None Include="wwwroot\theme-assets\images\banner\09.jpg" />
+    <None Include="wwwroot\theme-assets\images\carts\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\carts\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\carts\03.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\03.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\04.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\05.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\06.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\07.jpg" />
+    <None Include="wwwroot\theme-assets\images\categories\08.jpg" />
+    <None Include="wwwroot\theme-assets\images\faq\01.png" />
+    <None Include="wwwroot\theme-assets\images\faq\02.png" />
+    <None Include="wwwroot\theme-assets\images\faq\03.png" />
+    <None Include="wwwroot\theme-assets\images\faq\04.png" />
+    <None Include="wwwroot\theme-assets\images\faq\05.png" />
+    <None Include="wwwroot\theme-assets\images\faq\06.png" />
+    <None Include="wwwroot\theme-assets\images\faq\07.png" />
+    <None Include="wwwroot\theme-assets\images\faq\question.svg" />
+    <None Include="wwwroot\theme-assets\images\gallery\01.png" />
+    <None Include="wwwroot\theme-assets\images\gallery\02.png" />
+    <None Include="wwwroot\theme-assets\images\gallery\03.png" />
+    <None Include="wwwroot\theme-assets\images\gallery\04.png" />
+    <None Include="wwwroot\theme-assets\images\gallery\main.jpg" />
+    <None Include="wwwroot\theme-assets\images\gallery\thumb01.jpg" />
+    <None Include="wwwroot\theme-assets\images\gallery\thumb02.jpg" />
+    <None Include="wwwroot\theme-assets\images\gallery\thumb03.jpg" />
+    <None Include="wwwroot\theme-assets\images\gallery\thumb04.jpg" />
+    <None Include="wwwroot\theme-assets\images\gallery\thumb05.jpg" />
+    <None Include="wwwroot\theme-assets\images\gallery\thumb06.jpg" />
+    <None Include="wwwroot\theme-assets\images\logo-dark.svg" />
+    <None Include="wwwroot\theme-assets\images\logo.svg" />
+    <None Include="wwwroot\theme-assets\images\products\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\01.png" />
+    <None Include="wwwroot\theme-assets\images\products\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\02.png" />
+    <None Include="wwwroot\theme-assets\images\products\03.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\03.png" />
+    <None Include="wwwroot\theme-assets\images\products\04.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\04.png" />
+    <None Include="wwwroot\theme-assets\images\products\05.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\06.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\07.jpg" />
+    <None Include="wwwroot\theme-assets\images\products\08.jpg" />
+    <None Include="wwwroot\theme-assets\images\product\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\product\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\seller-logo-small.svg" />
+    <None Include="wwwroot\theme-assets\images\services\01.svg" />
+    <None Include="wwwroot\theme-assets\images\services\02.svg" />
+    <None Include="wwwroot\theme-assets\images\services\03.svg" />
+    <None Include="wwwroot\theme-assets\images\services\04.svg" />
+    <None Include="wwwroot\theme-assets\images\services\05.svg" />
+    <None Include="wwwroot\theme-assets\images\slider\main\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\main\01.png" />
+    <None Include="wwwroot\theme-assets\images\slider\main\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\main\03.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\main\04.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\main\05.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\mini\01.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\mini\02.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\mini\03.jpg" />
+    <None Include="wwwroot\theme-assets\images\slider\mini\04.jpg" />
+    <None Include="wwwroot\theme-assets\images\symbol\01.png" />
+    <None Include="wwwroot\theme-assets\images\symbol\02.png" />
+    <None Include="wwwroot\theme-assets\images\symbol\03.png" />
+    <None Include="wwwroot\theme-assets\images\theme\404.png" />
+    <None Include="wwwroot\theme-assets\images\theme\cart-empty-sfl.png" />
+    <None Include="wwwroot\theme-assets\images\theme\cart-empty.png" />
+    <None Include="wwwroot\theme-assets\images\theme\checkout-successful.png" />
+    <None Include="wwwroot\theme-assets\images\theme\checkout-unsuccessful.png" />
+    <None Include="wwwroot\theme-assets\images\theme\club.svg" />
+    <None Include="wwwroot\theme-assets\images\theme\cover-thumbnail.svg" />
+    <None Include="wwwroot\theme-assets\images\theme\free-shipping--banner.png" />
+    <None Include="wwwroot\theme-assets\images\theme\giftcards.svg" />
+    <None Include="wwwroot\theme-assets\images\theme\notification.svg" />
+    <None Include="wwwroot\theme-assets\images\theme\orders.svg" />
+    <None Include="wwwroot\theme-assets\images\theme\profile-header-default-banner.png" />
+    <None Include="wwwroot\theme-assets\images\theme\specials.png" />
+    <None Include="wwwroot\theme-assets\js\custom.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\bootstrap-slider.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\fancybox.umd.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\iziToast.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\jquery-3.6.0.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\jquery.countdown.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\jquery.simple.timer.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\nouislider.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\remodal.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\select2.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\simplebar.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\swiper-bundle.min.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\wNumb.js" />
+    <None Include="wwwroot\theme-assets\js\dependencies\zoomsl.min.js" />
+    <None Include="wwwroot\theme-assets\js\theme.js" />
+    <None Include="wwwroot\theme-assets\scss\custom.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_accordion.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_alert.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_breadcrumb.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_btn.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_card.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_dropdown.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_expandable.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_fancybox.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_modal.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_nav.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_pagination.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_slider.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_table.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_toast.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\components\_tooltip.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\forms\_check.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\forms\_file.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\forms\_input.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\forms\_quantity.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\forms\_radio.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\forms\_select.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\helpers\_form.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\helpers\_global.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\helpers\_spacing.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\helpers\_typography.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_auth.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_banner.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_cart.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_checkout.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_compare.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_faq.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_footer.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_global.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_header-responsive.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_header.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_product.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_profile.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_services.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_shop.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\modules\_widget.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_components.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_fonts.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_forms.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_global.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_helpers.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_modules.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_reset.scss" />
+    <None Include="wwwroot\theme-assets\scss\theme\_variables.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EShop.IOC\EShop.IOC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\img\Product-Images\Thumb\" />
+    <Folder Include="wwwroot\img\Product-Images\Origin\" />
+    <Folder Include="wwwroot\img\User-Avatar\" />
+    <Folder Include="wwwroot\img\Ticket-Attachments\" />
+  </ItemGroup>
+
+</Project>

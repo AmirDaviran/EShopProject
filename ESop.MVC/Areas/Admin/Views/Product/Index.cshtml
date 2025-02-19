@@ -1,0 +1,101 @@
+﻿@model IEnumerable<EShop.Domain.ViewModels.Colors.Product_Color.ProductWithColorsViewModel>
+@using EShop.Application.Utilities.Extensions
+@using EShop.Application.Utilities.Convertors
+@{
+    ViewData["Title"] = "لیست محصولات";
+    Layout = "_AdminLayout";
+}
+
+<div class="card">
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="card-header">لیست محصولات</h5>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex align-items-center justify-content-end p-2">
+                <a class="btn btn-info" asp-area="Admin" asp-controller="Product" asp-action="CreateProduct">افزودن محصول</a>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive text-nowrap min-h-50-vh">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>تصویر محصول</th>
+                    <th>رنگ محصول</th>
+                    <th>قیمت محصول</th>
+                    <th>تاریخ ثبت</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    // Show the base product entry first even if there are no colors
+                    <tr>
+                        <td class="fa-num"><strong>@item.ProductId</strong></td>
+                        <td>
+                            <img src="@(PathExtensions.ProductThumb + item.ImageName)" class="img-thumbnail" style="width:40px;" alt="Alternate Text" />
+                        </td>
+                        <td class="fa-num">
+                            @if (item.ColorMappings.Any())
+                            {
+                                <span>رنگ اصلی</span>
+                            }
+                            else
+                            {
+                                <span>بدون تنوع رنگی</span>
+                            }
+                        </td>
+                        <td class="fa-num">@item.Price تومان</td>
+                        <td class="fa-num">@item.CreatedDate.ToStringShamsiDate()</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/Admin/Product/Details/@item.ProductId"><i class="bx bx-edit-alt me-1"></i> نمایش</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="EditProduct" asp-route-productId="@item.ProductId"><i class="bx bx-edit-alt me-1"></i> ویرایش</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="AddProductColorMapping" asp-route-productId="@item.ProductId"><i class="bx bx-edit-alt me-1"></i> افزودن رنگ</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="AddProductColorMapping" asp-route-productId="@item.ProductId"><i class="bx bx-edit-alt me-1"></i> افزودن مشخصات محصول</a>
+                                    <a class="dropdown-item" onclick="confirmDelete('@Url.Action("DeleteProduct", new { productId = item.ProductId })')"><i class="bx bx-trash me-1"></i> حذف</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+                    // If color mappings exist, show them
+                    if (item.ColorMappings.Any())
+                    {
+                        foreach (var colorMapping in item.ColorMappings)
+                        {
+                            <tr>
+                                <td class="fa-num"></td> <!-- Empty cell for alignment -->
+                                <td></td>
+                                <td>@colorMapping.ColorName</td>
+                                <td>@(item.Price + colorMapping.Price) تومان</td> <!-- Combined price, if appropriate -->
+                                <td class="fa-num">@colorMapping.CreatedDate.ToStringShamsiDate()</td> <!-- Empty cell for alignment -->
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="EditProductColorMapping" asp-route-Id="@colorMapping.Id"><i class="bx bx-edit-alt me-1"></i> ویرایش رنگ</a>
+                                            <a class="dropdown-item" onclick="confirmDelete('@Url.Action("DeleteMappingColor", new { Id = colorMapping.Id })')"><i class="bx bx-trash me-1"></i> حذف رنگ</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

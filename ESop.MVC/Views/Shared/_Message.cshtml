@@ -1,0 +1,74 @@
+﻿@if (TempData["SuccessMessage"] != null ||
+TempData["WarningMessage"] != null ||
+TempData["ErrorMessage"] != null ||
+TempData["InfoMessage"] != null)
+{
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                showAlert('success', '@TempData["SuccessMessage"]', 'پیغام موفقیت')
+            });
+        </script>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                showAlert('warning', '@TempData["WarningMessage"]', 'پیغام اخطار')
+            });
+        </script>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                showAlert('error', '@TempData["ErrorMessage"]', 'پیغام خطا')
+            });
+        </script>
+    }
+
+    @if (TempData["InfoMessage"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                showAlert('info', '@TempData["InfoMessage"]', 'پیغام اطالاعیه')
+            });
+        </script>
+    }
+}
+
+
+@*<script>
+    // Function to display SweetAlert messages
+    function showAlert(type, title, text) {
+        Swal.fire({
+            icon: type,
+            title: title,
+            text: text,
+            confirmButtonText: 'OK'
+        });
+    }
+    </script>*@
+
+<script>
+    function showAlert(type, title, text) {
+        Swal.fire({
+            icon: type,
+            title: title,
+            text: text,
+            confirmButtonText: 'OK',
+            customClass: {
+                popup: 'my-popup-class', // custom class to apply to the popup
+            },
+            showClass: {
+                popup: 'swal2-show', // show transition
+            },
+            hideClass: {
+                popup: 'swal2-hide', // hide transition
+            }
+        });
+    }
+</script>

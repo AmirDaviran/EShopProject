@@ -1,0 +1,96 @@
+﻿@model EShop.Domain.ViewModels.UserViewModel.EditUserViewModel
+
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+}
+
+<form asp-action="Update" method="post" class="add-new-user pt-0" id="addNewUserForm">
+    <div class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label class="form-label" for="edit-user-id">آیدی</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-id-card"></i></span>
+                <input type="text" class="form-control" id="edit-user-id" value="@Model.Id" disabled>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="edit-user-firstname">نام</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                <input type="text" asp-for="FirstName" class="form-control" id="edit-user-firstname" placeholder="نام">
+                <span asp-validation-for="FirstName"></span>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="edit-user-lastname">نام خانوادگی</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-user"></i></span>
+                <input type="text" asp-for="LastName" class="form-control" id="edit-user-lastname" placeholder="نام خانوادگی">
+                <span asp-validation-for="LastName"></span>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="edit-user-mobile">موبایل</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-phone"></i></span>
+                <input type="text" asp-for="Mobile" class="form-control" id="edit-user-mobile" placeholder="موبایل">
+                <span asp-validation-for="Mobile"></span>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="edit-user-email">ایمیل</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                <input type="text" asp-for="Email" class="form-control" id="edit-user-email" placeholder="ایمیل">
+                <span asp-validation-for="Email"></span>
+            </div>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label d-block" for="IsActive">وضعیت</label>
+            <div class="form-check">
+                <input class="form-check-input me-2" type="checkbox" asp-for="IsActive" id="IsActive">
+                <label class="form-check-label" for="IsActive">فعال است؟</label>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px">
+            <div class="mb-3 w-50 text-center">
+                <button type="submit" class="btn btn-primary me-2">ویرایش</button>
+            </div>
+            <div class="mb-3 w-50 text-center">
+                <a class="btn btn-primary" asp-action="List">بازگشت</a>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+    <table class="datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+        <thead>
+            <tr>
+                <th class="sorting">آیدی</th>
+                <th class="sorting">نام</th>
+                <th class="sorting">نام خانوادگی</th>
+                <th class="sorting">موبایل</th>
+                <th class="sorting">ایمیل</th>
+                <th class="sorting">وضعیت</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Id</td>
+                <td>@Model.FirstName</td>
+                <td>@Model.LastName</td>
+                <td>@Model.Mobile</td>
+                <td>@Model.Email</td>
+                <td>
+                    <span class="badge @(Model.IsActive ? "bg-label-success" : "bg-label-danger")">
+                        @(Model.IsActive ? "فعال" : "غیرفعال")
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

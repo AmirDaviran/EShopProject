@@ -1,0 +1,26 @@
+﻿@model EShop.Domain.ViewModels.ContactUsViewModel.ContactUsAdminResponseViewModel
+
+<h3>ارسال پاسخ</h3>
+<form method="post" asp-action="Reply" asp-controller="ContactUs" enctype="multipart/form-data">
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group">
+        @Html.LabelFor(m => m.AdminAnswer, "متن پاسخ")
+        @Html.TextAreaFor(m => m.AdminAnswer, new { @class = "form-control", rows = 5, required = "required" })
+        @Html.ValidationMessageFor(m => m.AdminAnswer)
+    </div>
+    <div class="form-group mt-3">
+        <label for="Attachment">آپلود فایل توسط ادمین</label>
+        <input type="file" name="Attachment" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success mt-3">ارسال پاسخ</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.AttachmentPath))
+{
+    <div class="mb-3 w-50">
+        <label class="form-label">فایل پیوست</label>
+        <div class="input-group input-group-merge text-center">
+            <a href="~/Image/ContactUs/@Model.AttachmentPath" download="@System.IO.Path.GetFileName(Model.AttachmentPath)" class="btn btn-secondary">دانلود</a>
+        </div>
+    </div>
+}

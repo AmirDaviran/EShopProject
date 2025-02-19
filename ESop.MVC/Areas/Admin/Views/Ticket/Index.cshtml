@@ -1,0 +1,72 @@
+﻿@model IEnumerable<EShop.Domain.ViewModels.Tickets.Admin.AdminTicketListsViewModel>
+
+@using EShop.Application.Utilities.Convertors
+@using EShop.Application.Utilities.Extensions
+
+@{
+    ViewData["Title"] = "لیست تیکت ها";
+    Layout = "_AdminLayout";
+
+}
+
+
+
+<div class="card">
+    <h5 class="card-header">Table Basic</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>زمان ایجاد</th>
+                    <th>کاربر</th>
+                    <th>بخش</th>
+                    <th>موضوع</th>
+                    <th>وضعیت</th>
+                    <th>آخرین بروزرسانی</th>
+                    <th>عملیات</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="class=" fa-num"><strong>@item.TicketId</strong></td>
+                        <td>@item.CreatedDate?.ToStringShamsiDate()</td>
+                        @if (item.Owner.IsAdmin)
+                        {
+                            <td>ادمین</td>
+                        }
+                        else
+                        {
+                            <td>@item.Owner.FirstName @item.Owner.LastName</td>
+                        }
+
+                        <td>@item.Section.GetEnumName()</td>
+
+                        <td>@item.TicketTitle</td>
+                        <td class="fa-num">
+                            <span class="badge bg-success rounded-pill">
+                                @item.Status.GetEnumName()
+                            </span>
+                        </td>
+                        <td>@item.UpdatedDate?.ToStringShamsiDate()</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    <a class="dropdown-item" href="/Admin/Ticket/Details/@item.TicketId" ><i class="bx bx-edit-alt me-1"></i> نمایش</a>
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Ticket" asp-action="DeleteTicket" asp-route-ticketId="@item.TicketId"><i class="bx bx-trash me-1"></i> حذف</a>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

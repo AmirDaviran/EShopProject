@@ -1,0 +1,134 @@
+﻿
+@model EShop.Domain.ViewModels.Products.EditProductViewModel
+@using EShop.Domain.Entities.ProductEntity
+@using EShop.Application.Utilities.Extensions
+@{
+    TempData["Title"] = "ویرایش محصول در ادمین";
+    Layout = "_AdminLayout";
+    var categories = ViewData["Categories"] as List<Category>;
+}
+
+
+
+
+<div class="col-xxl">
+    <div class="card mb-4">
+        <h5 class="card-header">افزودن محصول</h5>
+        <form asp-area="Admin" asp-controller="Product" asp-action="EditProduct" method="post" class="card-body" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ProductId" />
+            <h6>1. جزئیات محصول</h6>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-username">عنوان فارسی</label>
+                    <input asp-for="PersianTitle" type="text" id="multicol-username" class="form-control" placeholder="">
+                    <span asp-validation-for="PersianTitle" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="multicol-email">عنوان انگلیسی</label>
+                    <input asp-for="EnglishTitle" type="text" id="multicol-email" class="form-control" placeholder="" aria-label="john.doe" aria-describedby="multicol-email2">
+                    <span asp-validation-for="EnglishTitle" class="text-danger"></span>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-password-toggle">
+                        <label class="form-label" for="multicol-password">نقد و بررسی</label>
+                        <textarea asp-for="Review" class="form-control" name="Review"></textarea>
+                        <span asp-validation-for="Review" class="text-danger"></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-password-toggle">
+                        <label class="form-label" for="multicol-confirm-password">نقد و بررسی تخصصی</label>
+                        <textarea asp-for="ExpertReview" class="form-control" name="ExpertReview"></textarea>
+                        <span asp-validation-for="ExpertReview" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-lable">
+                            قیمت محصول
+                        </label>
+                        <input class="form-label" type="number" min="1" asp-for="Price">
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-lable">
+                            تصویر محصول
+                        </label>
+                        <input class="form-control" type="file" id="ImageFile" name="ImageFile">
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                    <img name="ImageName" class="Image-EditProduct" src="@(PathExtensions.ProductThumb +Model.ImageName)" id="ImageFilePreview" alt="Alternate Text" />
+                </div>
+                <hr class="my-4 mx-n4">
+                <h6>2. دسته بندی ها</h6>
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                @if (categories != null && categories.Any())
+                                {
+                                    <ul>
+                                        @foreach (var category in categories.Where(c => c.ParentCategoryId == null))
+                                        {
+                                            <li>
+                                                <div class="bx-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" @((categories.Any(c => c.Id == category.Id)) ? "checked" : "") name="SelectedCategories" value="@category.Id" />
+                                                        <span class="text">@category.Title</span>
+                                                    </label>
+                                                </div>
+
+                                                @if (categories.Any(c => c.ParentCategoryId == category.ParentCategoryId))
+                                                {
+                                                    <ul>
+                                                        @foreach (var subCategory in categories.Where(c => c.ParentCategoryId == category.Id))
+                                                        {
+                                                            <li>
+                                                                <input type="checkbox" @((categories.Any(c => c.Id == subCategory.Id)) ? "checked" : "") name="SelectedCategories" value="@subCategory.Id" />
+                                                                <span class="text">@subCategory.Title</span>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="btn btn-primary me-sm-3 me-1">ویرایش محصول</button>
+                    <button type="reset" class="btn btn-label-secondary">لغو</button>
+                </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    <script>
+        ImageFile.onchange = evt => {
+            const [file] = ImageFile.files
+            if (file) {
+                ImageFilePreview.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('Review');
+            CKEDITOR.replace('ExpertReview');
+        });
+    </script>
+}

@@ -1,0 +1,19 @@
+﻿.min-h-100-vh{
+    min-height: 100vh !important;
+}
+
+.min-h-50-vh {
+    min-height: 50vh !important;
+}
+
+.input-color {
+    width: 32px !important;
+    padding: 3px !important;
+}
+
+.color-show-Div {
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    margin-left: 5px;
+}

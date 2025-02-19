@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EShop.Domain.ViewModels.Products
+{
+    public class CreateCategoryViewModel
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "لطفا عنوان را وارد کنید")]
+        [MaxLength(100, ErrorMessage = "عنوان نمی‌تواند بیشتر از 100 کاراکتر باشد.")]
+        public string Title { get; set; }
+
+        public int? ParentCategoryId { get; set; }
+
+        [Required(ErrorMessage = "لطفا ترتیب نمایش را وارد کنید")]
+        public int DisplayOrder { get; set; }
+    }
+
+}

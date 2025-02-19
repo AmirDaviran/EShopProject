@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model EShop.Domain.ViewModels.Products.CategoryViewModel
+
+@{
+    ViewData["Title"] = "حذف دسته‌بندی";
+}
+
+<h2>حذف دسته‌بندی</h2>
+
+<h3>آیا مطمئن هستید که می‌خواهید این دسته‌بندی را حذف کنید؟</h3>
+<div>
+    <h4>@Model.Title</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            ترتیب نمایش
+        </dt>
+        <dd class="col-sm-10">
+            @Model.DisplayOrder
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">حذف</button>
+    <a asp-action="List" class="btn btn-secondary">بازگشت</a>
+</form>

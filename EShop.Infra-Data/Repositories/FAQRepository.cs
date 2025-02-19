@@ -13,13 +13,13 @@ namespace EShop.Infra_Data.Repositories
 {
     public class FAQRepository : IFAQRepository
     {
-        #region Private Field to Access Ctor for Context
+        #region  Fields
 
         private readonly EShopDbContext _context;
 
         #endregion
 
-        #region Ctor
+        #region Constructor
 
         public FAQRepository(EShopDbContext context)
         {
@@ -29,32 +29,30 @@ namespace EShop.Infra_Data.Repositories
         #endregion
 
         #region Methods Implementation
-        //Showing List
+
         public async Task<List<FAQs>> GetAllAsync()
         {
             return await _context.FAQs
-                .Where(c=>!c.IsDeleted)
+                .Where(c => !c.IsDeleted)
                 .ToListAsync();
         }
 
 
-        //create
+
         public async Task InsertAsync(FAQs faqs)
         {
-           await _context.FAQs.AddAsync(faqs);
-        }    
+            await _context.FAQs.AddAsync(faqs);
+        }
 
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }
 
-        //Update
-
         public async Task<FAQs> GetByIdAsync(int id)
         {
-             return await _context.FAQs
-                 .FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.FAQs
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public void Update(FAQs faqs)

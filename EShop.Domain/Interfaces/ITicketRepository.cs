@@ -1,10 +1,5 @@
 ﻿using EShop.Domain.Entities.TicketSystem;
 using EShop.Domain.Enums.TicketEnums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EShop.Domain.Interfaces
 {

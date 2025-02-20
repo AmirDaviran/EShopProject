@@ -1,5 +1,5 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Application.Utilities.Extensions;
+using EShop.Application.Utilities.Extensions.Identity;
 using EShop.Domain.Entities.Account;
 using Microsoft.AspNetCore.Mvc;
 

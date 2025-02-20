@@ -1,5 +1,6 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Application.Utilities.Extensions;
+using EShop.Application.Utilities.Extensions.Identity;
+using EShop.Application.Utilities.Extensions.Upload;
 using EShop.Domain.Entities.TicketSystem;
 using EShop.Domain.Enums.TicketEnums;
 using EShop.Domain.Interfaces;
@@ -47,40 +48,7 @@ namespace EShop.Application.Services
 
         #endregion
 
-        #region Upload Attachment File To Ticket
-        public async Task<CreateTicketResult> UploadAttachmentFile(IFormFile attachmentFile, int ticketId, int ticketMessageId)
-        {
-            // Validate the uploaded file   
-            if (!attachmentFile.IsImage() && !attachmentFile.IsPdf())
-            {
-                return CreateTicketResult.IsNotImageOrPDF;
-            }
-
-            var fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(attachmentFile.FileName);
-            var filePath = PathExtensions.AttachedFileOriginServer;
-
-            // Call the method to add the file to the server  
-            bool uploadSuccess = attachmentFile.AddFileToServer(fileName, filePath);
-
-            if (uploadSuccess)
-            {
-                // Save the filename in the database   
-                var attachedFile = new Attachment()
-                {
-                    FileName = fileName,
-                    TicketId = ticketId,
-                    TicketMessageId = ticketMessageId,
-                    CreatedDate = DateTime.Now
-                };
-                await _ticketRepository.AddAttachment(attachedFile);
-                return CreateTicketResult.FileUploaded;
-            }
-            else
-                return CreateTicketResult.Failure; // Return failure if upload fails 
-        }
-
-        #endregion
-
+     
         #region Create Ticket
 
         public async Task<CreateTicketResult> CreateTicket(CreateTicketViewModel createTicket)
@@ -91,7 +59,7 @@ namespace EShop.Application.Services
                 Title = createTicket.Title,
                 Section = createTicket.Section,
                 Priority = createTicket.Priority,
-                Status = TicketStatus.Open,
+                Status = TicketStatus.Pending,
                 OwnerId = createTicket.OwnerId,
                 UpdatedDate = DateTime.Now,
                 CreatedDate = DateTime.Now,
@@ -118,11 +86,8 @@ namespace EShop.Application.Services
             // Step 5: If you have attachments, handle them similarly  
             if (createTicket.AttachmentFile != null && createTicket.AttachmentFile.Length > 0)
             {
-                var uploadResult = await UploadAttachmentFile(createTicket.AttachmentFile, ticket.Id, message.Id);
-                if (uploadResult != CreateTicketResult.FileUploaded)
-                {
-                    return uploadResult;
-                }
+                        var attachmentPath = await createTicket.AttachmentFile.SaveAttachmentAsync(SiteTools.TicketAttachmentsPath);
+
 
             }
 
@@ -162,15 +127,10 @@ namespace EShop.Application.Services
                 await _ticketRepository.UpdateTicket(ticket);
                 await _ticketRepository.SaveChanges();
 
-                // If there is an attachment, handle the upload  
+                
                 if (updateTicketMessages.AttachmentFile != null && updateTicketMessages.AttachmentFile.Length > 0)
                 {
-                    var uploadResult = await UploadAttachmentFile(updateTicketMessages.AttachmentFile,
-                                             updateTicketMessages.TicketId, message.Id);
-                    if(uploadResult != CreateTicketResult.FileUploaded) 
-                    {
-                        throw new Exception("Attachment upload failed.");
-                    }
+                    var attachmentPath = await updateTicketMessages.AttachmentFile.SaveAttachmentAsync(SiteTools.TicketAttachmentsPath);
                 }
             }
 
@@ -193,7 +153,8 @@ namespace EShop.Application.Services
             var ticketLists = tickets.Select(t => new AdminTicketListsViewModel
             {
                 TicketId = t.Id,
-                TicketTitle = t.Title,
+                Subject = t.Title,
+                Priority = t.Priority,
                 Section = t.Section,
                 Status = t.Status,
                 CreatedDate = t.CreatedDate,

@@ -1,9 +1,8 @@
 using System.Text.RegularExpressions;
 using EShop.Application.Utilities.Convertors;
-using EShop.Application.Utilities.Tools;
 using Microsoft.AspNetCore.Http;
 
-namespace EShop.Application.Utilities.Extensions;
+namespace EShop.Application.Utilities.Extensions.Upload;
 
 public static class FileExtensions
 {
@@ -20,7 +19,7 @@ public static class FileExtensions
         if (!Directory.Exists(originalPath))
             Directory.CreateDirectory(originalPath);
 
-        if ((!string.IsNullOrEmpty(deletefileName)) && deletefileName != SiteTools.DefaultImageName)
+        if (!string.IsNullOrEmpty(deletefileName) && deletefileName != SiteTools.DefaultImageName)
         {
             if (File.Exists(originalPath + deletefileName))
                 File.Delete(originalPath + deletefileName);
@@ -59,7 +58,7 @@ public static class FileExtensions
         if (!Directory.Exists(originalPath))
             Directory.CreateDirectory(originalPath);
 
-        if ((!string.IsNullOrEmpty(deletefileName)) && deletefileName != SiteTools.DefaultImageName)
+        if (!string.IsNullOrEmpty(deletefileName) && deletefileName != SiteTools.DefaultImageName)
         {
             if (File.Exists(originalPath + deletefileName))
                 File.Delete(originalPath + deletefileName);
@@ -73,7 +72,7 @@ public static class FileExtensions
 
     public static void DeleteImage(this string imageName, string originalPath, string? thumbPath)
     {
-        if ((string.IsNullOrEmpty(imageName)) || imageName == SiteTools.DefaultImageName) return;
+        if (string.IsNullOrEmpty(imageName) || imageName == SiteTools.DefaultImageName) return;
         originalPath = Directory.GetCurrentDirectory() + "/wwwroot" + originalPath;
         thumbPath = Directory.GetCurrentDirectory() + "/wwwroot" + thumbPath;
 
@@ -87,7 +86,7 @@ public static class FileExtensions
 
     public static void DeleteImage(this string imageName, string originalPath)
     {
-        if ((string.IsNullOrEmpty(imageName)) || imageName == SiteTools.DefaultImageName) return;
+        if (string.IsNullOrEmpty(imageName) || imageName == SiteTools.DefaultImageName) return;
         originalPath = Directory.GetCurrentDirectory() + "/wwwroot" + originalPath;
 
         if (File.Exists(originalPath + imageName))
@@ -116,7 +115,7 @@ public static class FileExtensions
     public static async Task AddFilesToServer(this IFormFile file, string fileName, string originalPath,
         string deleteFileName = null, bool checkFileExtension = true)
     {
-        if ((file != null && file.IsFile(checkFileExtension)))
+        if (file != null && file.IsFile(checkFileExtension))
         {
             originalPath = Directory.GetCurrentDirectory() + "/wwwroot" + originalPath;
 

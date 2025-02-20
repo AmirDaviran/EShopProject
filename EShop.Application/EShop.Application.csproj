@@ -20,8 +20,4 @@
     <ProjectReference Include="..\EShop.Infra-Data\EShop.Infra-Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Utilities\Tools\" />
-  </ItemGroup>
-
 </Project>

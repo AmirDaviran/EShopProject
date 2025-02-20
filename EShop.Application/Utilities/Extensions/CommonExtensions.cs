@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EShop.Domain.Enums.TicketEnums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,5 +23,15 @@ namespace EShop.Application.Utilities.Extensions
             return "";
         }
 
+        public static string GetBadgeClass(this TicketStatus status)
+        {
+            return status switch
+            {
+                TicketStatus.Pending => "bg-warning",
+                TicketStatus.Answered => "bg-success",
+                TicketStatus.Closed => "bg-danger",
+                _ => "bg-secondary"
+            };
+        }
     }
 }

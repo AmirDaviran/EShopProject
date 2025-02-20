@@ -2,12 +2,11 @@
 using EShop.Application.Models;
 using EShop.Domain.Entities;
 using EShop.Domain.Interfaces;
-using EShop.Application.Utilities.Extensions;
 using EShop.Application.Utilities.Generators;
-using EShop.Application.Utilities.Tools;
 using EShop.Domain.Enums.ContactUsEnums;
 using EShop.Domain.ViewModels.ContactUsViewModel;
 using EShop.Domain.Entities.ContactUs;
+using EShop.Application.Utilities.Extensions.Upload;
 
 namespace EShop.Application.Services;
 

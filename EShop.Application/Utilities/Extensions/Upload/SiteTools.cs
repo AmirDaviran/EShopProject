@@ -1,4 +1,4 @@
-﻿namespace EShop.Application.Utilities.Tools;
+﻿namespace EShop.Application.Utilities.Extensions.Upload;
 
 public class SiteTools
 {
@@ -12,6 +12,7 @@ public class SiteTools
 
     public static string ContactUsAttachmentPath { get; set; } = "/Image/ContactUs/";
     public static string AdminResponseAttachmentPath { get; set; } = "/Image/AdminResponse/";
+    public static string TicketAttachmentsPath { get; set; } = "/Image/TicketAttachments/";
 
     #endregion
 }

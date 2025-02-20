@@ -1,7 +1,5 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Application.Utilities.Convertors;
-using EShop.Application.Utilities.Extensions;
-using EShop.Domain.Enums;
+using EShop.Application.Utilities.Extensions.Identity;
 using EShop.Domain.Enums.TicketEnums;
 using EShop.Domain.ViewModels.Tickets;
 using Microsoft.AspNetCore.Mvc;

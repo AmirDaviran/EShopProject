@@ -2,7 +2,6 @@
 using EShop.Domain.Enums.TicketEnums;
 using EShop.Domain.ViewModels.Tickets;
 using EShop.Domain.ViewModels.Tickets.Admin;
-using Microsoft.AspNetCore.Http;
 
 namespace EShop.Application.Interfaces
 {
@@ -11,7 +10,6 @@ namespace EShop.Application.Interfaces
        
         Task<List<TicketListsViewModel>> GetAllTicketsForUser(int userId);
 
-        Task<CreateTicketResult> UploadAttachmentFile(IFormFile attachmentFile, int ticketId, int ticketMessageId);
         Task<CreateTicketResult> CreateTicket(CreateTicketViewModel createTicket);
         Task UpdateTicket (Ticket ticket);
         Task UpdateTicketConversation(UpdateTicketMessagesViewModel updateTicketMessages);

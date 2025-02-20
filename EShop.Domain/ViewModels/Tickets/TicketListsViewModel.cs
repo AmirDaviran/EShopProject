@@ -1,5 +1,4 @@
-﻿using EShop.Domain.Enums;
-using EShop.Domain.Enums.TicketEnums;
+﻿using EShop.Domain.Enums.TicketEnums;
 using System.ComponentModel.DataAnnotations;
 
 

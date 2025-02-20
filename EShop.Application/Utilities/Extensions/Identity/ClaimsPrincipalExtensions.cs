@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 
-namespace EShop.Application.Utilities.Extensions
+namespace EShop.Application.Utilities.Extensions.Identity
 {
     public static class ClaimsPrincipalExtensions
     {

@@ -5,36 +5,28 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class TicketController : AdminBaseController
+    public class TicketController(ITicketService _ticketService) : AdminBaseController
     {
-        #region Constructor
-
-        private readonly ITicketService _ticketService;
-        public TicketController(ITicketService ticketService)
-        {
-            _ticketService = ticketService;
-        }
-        #endregion
-
-        #region Get Ticket Lists Action
+        
+        #region GetTicketListsAction
         public async Task<IActionResult> Index()
         {
-            var tickets = await _ticketService.GetAllTicketsInAdmin();
+            var tickets = await _ticketService.GetAllTicketsInAdminAsync();
             return View(tickets);
         }
 
         #endregion
 
-        #region Ticket Details Action
+        #region TicketDetailsAction
         [HttpGet]
         [Route("/Admin/Ticket/Details/{ticketId}")]
         public async Task<IActionResult> Details(int ticketId)
         {
-            var ticket = await _ticketService.GetTicketByTicketID(ticketId);
+            var ticket = await _ticketService.GetTicketByTicketIDAsync(ticketId);
             var showTicket = new TicketDetailsViewModel()
             {
                 Ticket = ticket,
-                Conversations = await _ticketService.GetTicketConversationsByTicketId(ticketId),
+                Conversations = await _ticketService.GetTicketConversationsByTicketIdAsync(ticketId),
                 UpdatedDate = ticket.UpdatedDate,
             };
 
@@ -43,19 +35,18 @@ namespace EShop.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Update Ticket Conversation Action
-
+        #region UpdateTicketConversation Action
 
         [HttpPost]
         public async Task<IActionResult> UpdateTicketConversationInAdmin(UpdateTicketMessagesViewModel model, int ticketId)
         {
-            await _ticketService.UpdateTicketConversation(model);
+            await _ticketService.UpdateTicketConversationAsync(model);
             return RedirectToAction("Details", new { ticketId = model.TicketId });
         }
 
         #endregion
 
-        #region Create Ticket Action
+        #region CreateTicket 
         [HttpGet]
         public IActionResult CreateTicket(int id)
         {
@@ -69,35 +60,24 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTicket(CreateTicketViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) 
+                return View(model);
+
+            var result = await _ticketService.CreateTicketAsync(model);
+            if (result == CreateTicketResult.Success)
             {
-
-                var result = await _ticketService.CreateTicket(model);
-                switch (result)
-                {
-                    case CreateTicketResult.IsNotImageOrPDF:
-                        TempData[WarningMessage] = "نوع فایل انتخابی نادرست است!";
-                        break;
-
-                    case CreateTicketResult.Failure:
-                        TempData[ErrorMessage] = "فایل ذخیره نشد!";
-                        break;
-                    case CreateTicketResult.Success:
-                        TempData[SuccessMessage] = "تیکت با موفقیت ارسال شد.";
-
-                        return RedirectToAction("Index");
-
-
-                }
+                TempData[SuccessMessage] = "تیکت با موفقیت ارسال شد.";
+                return RedirectToAction("Index");
             }
-            return View();
+
+            TempData[ErrorMessage] = "خطایی در ثبت تیکت رخ داد.";
+            return View(model);
         }
 
         #endregion
 
-        #region Delete a Ticket Action
+        #region DeleteTicketAction
 
-      
         public async Task<IActionResult> DeleteTicket(int ticketId)
         {
             var result = await _ticketService.DeleteTicket(ticketId);
@@ -115,18 +95,18 @@ namespace EShop.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Update Ticket Status Action
+        #region UpdateTicketStatusAction
         [HttpPost]
         public async Task<IActionResult> UpdateTicketStatus(int ticketId, TicketStatus status)
         {
-           var result = await _ticketService.UpdateTicketStatus(ticketId, status);
+           var result = await _ticketService.UpdateTicketStatusAsync(ticketId, status);
             if (result)
             {
                 TempData[SuccessMessage] = "وضعیت تغییر یافت";
                 return RedirectToAction("Index");
             }
             TempData[ErrorMessage] = "تغییر انجام نشد!";
-            return View("Details", ticketId);
+            return View("Details");
 
         }
         #endregion

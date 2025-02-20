@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Utilities.Convertors;
 using EShop.Application.Utilities.Extensions.Upload;
 using Microsoft.AspNetCore.Http;
+using ImageOptimizer = EShop.Application.Utilities.Convertors.ImageOptimizer;
 
 namespace EShop.Application.Utilities.Extensions
 {

@@ -1,5 +1,4 @@
-﻿using EShop.Application.Utilities.Tools;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace EShop.Application.Utilities.Extensions.Upload;
 

@@ -27,8 +27,7 @@ namespace EShop.Infra_Data.Context
         #region Ticket System
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
-        public DbSet<Attachment> Attachments { get; set; }
-        #endregion
+       #endregion
 
         #region Product
 

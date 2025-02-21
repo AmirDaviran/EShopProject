@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using EShop.Domain.Entities.FAQ;
+using System.ComponentModel.DataAnnotations;
 namespace EShop.Domain.ViewModels.FAQ;
-
 public class FAQUpdateViewModel
 {
     public int Id { get; set; }
@@ -19,4 +18,10 @@ public class FAQUpdateViewModel
     [Display(Name = "توضیحات")]
     [MaxLength(1000, ErrorMessage = "{0} نمی‌تواند بیش از {1} کاراکتر باشد")]
     public string? Explanation { get; set; }
+
+    [Display(Name = "دسته بندی")]
+    [Required(ErrorMessage = "لطفا دسته بندی را انتخاب کنید")]
+    public int CategoryId { get; set; }
+
+    public List<FAQCategory>? Categories { get; set; }
 }

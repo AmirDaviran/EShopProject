@@ -1,6 +1,5 @@
-﻿@using EShop.Application.Utilities.Convertors
-@model List<EShop.Domain.ViewModels.FAQ.FAQViewModel>
-
+﻿@model List<EShop.Domain.ViewModels.FAQ.FAQViewModel>
+@using EShop.Application.Utilities.Convertors
 @{
     ViewData["Title"] = "لیست سوالات متداول";
 }
@@ -9,20 +8,17 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-datatable table-responsive">
-                <!-- فراخوانی پارشال ویو برای بخش فیلتر و دکمه‌ها -->
                 <partial name="_FAQTableActions" />
-
-                <!-- جدول اصلی -->
                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
-                    <table class="datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                    <table class="card-datatable table-responsive datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+
                         <thead>
                             <tr>
-                                <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" aria-sort="descending">آیدی</th>
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0">تاریخ ایجاد</th>
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0">سوال</th>
-                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0">جواب</th>
-                                <th class="sorting_disabled">توضیحات</th>
-                                <th class="sorting_disabled">عملیات</th>
+                                <th>آیدی</th>
+                                <th>تاریخ ایجاد</th>
+                                <th>سوال</th>
+                                <th>دسته بندی</th>
+                                <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,15 +30,17 @@
                                         <td>@faq.Id</td>
                                         <td>@faq.CreatedDate.ToStringShamsiDate()</td>
                                         <td>@faq.Question</td>
-                                        <td>@faq.Answer</td>
-                                        <td>@(faq.Explanation ?? "ندارد")</td>
+                                        <td>@faq.CategoryName</td>
                                         <td style="display: flex; gap: 10px;">
-                                            <a class="btn btn-primary btn-sm" asp-action="" asp-route-id="@faq.Id">
+                                            <a class="btn btn-primary btn-sm" asp-action="Update" asp-route-id="@faq.Id">
                                                 <i class="bx bx-edit-alt me-1"></i> ویرایش
                                             </a>
-                                            <form asp-action="" method="post" id="delete-form-@faq.Id" style="display:inline;">
+                                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@faq.Id">
+                                                <i class="bx bx-info-circle me-1"></i> جزئیات
+                                            </a>
+                                            <form asp-action="Delete" method="post" id="delete-form-@faq.Id" style="display: inline;">
                                                 <input type="hidden" name="id" value="@faq.Id" />
-                                                <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این سوال را حذف کنید؟')) { document.getElementById('delete-form-@faq.Id').submit(); }">
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="if (confirm('آیا مطمئن هستید؟')) { document.getElementById('delete-form-@faq.Id').submit(); }">
                                                     <i class="bx bx-trash me-1"></i> حذف
                                                 </button>
                                             </form>
@@ -52,14 +50,13 @@
                             }
                             else
                             {
-                                <tr class="odd">
-                                    <td valign="top" colspan="6" class="text-center">هیچ سوالی یافت نشد</td>
+                                <tr>
+                                    <td colspan="5" class="text-center">هیچ سوالی یافت نشد</td>
                                 </tr>
                             }
                         </tbody>
+
                     </table>
-                    <!-- پاورقی جدول (صفحه‌بندی نمایشی) -->
-                    @* <partial name="_AdminPagination" /> *@
                 </div>
             </div>
         </div>

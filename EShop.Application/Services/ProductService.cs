@@ -1,5 +1,6 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Application.Utilities.Extensions;
+using EShop.Application.Utilities.Extensions.Upload;
 using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Enums.ColorEnums;
 using EShop.Domain.Enums.ProductEnums;

@@ -1,0 +1,30 @@
+﻿@model EShop.Domain.Entities.FAQ.FAQ
+
+<div class="container">
+    <div class="ui-box bg-white">
+        <div class="ui-box-content">
+            <h2 class="text-center mb-4">@Model.Question</h2>
+
+            <div class="faq-answer mb-4">
+                @Html.Raw(Model.Answer)
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.Explanation))
+            {
+                <div class="faq-explanation alert alert-info">
+                    <h5>توضیحات تکمیلی:</h5>
+                    @Html.Raw(Model.Explanation)
+                </div>
+            }
+
+            <div class="feedback-section mt-4">
+               
+                    <input type="hidden" name="faqId" >
+                    <label>آیا این پاسخ مفید بود؟</label>
+                    <button type="submit" name="isHelpful" value="true" class="btn btn-success">بلی</button>
+                    <button type="submit" name="isHelpful" value="false" class="btn btn-danger">خیر</button>
+              
+            </div>
+        </div>
+    </div>
+</div>

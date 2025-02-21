@@ -1,5 +1,6 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using EShop.Application.Utilities.Convertors
+﻿@using EShop.Application.Utilities.Convertors
+@using EShop.Application.Utilities.Convertors.Date
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model EShop.Domain.ViewModels.UserViewModel.FilterUserViewModel
 
 @{
@@ -12,7 +13,7 @@
         <div class="card">
             <div class="card-datatable table-responsive">
 
-                @await Html.PartialAsync("_UserTableActions")
+                <partial name="_UserTableActions" />
 
                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                     <table class="datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">

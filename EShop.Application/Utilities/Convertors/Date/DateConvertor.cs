@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EShop.Application.Utilities.Convertors
+namespace EShop.Application.Utilities.Convertors.Date
 {
     public static class DateConvertor
     {

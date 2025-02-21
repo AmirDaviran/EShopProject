@@ -4,6 +4,7 @@ using EShop.Infra_Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EShop.Infra_Data.Migrations
 {
     [DbContext(typeof(EShopDbContext))]
-    partial class EShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250221153920_FixFAQ")]
+    partial class FixFAQ
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,7 +160,7 @@ namespace EShop.Infra_Data.Migrations
                     b.ToTable("ContactUs");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Entities.FAQ.FAQ", b =>
+            modelBuilder.Entity("EShop.Domain.Entities.FAQ.FAQs", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,11 +172,11 @@ namespace EShop.Infra_Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Explanation")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -184,36 +187,7 @@ namespace EShop.Infra_Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("FAQs");
-                });
-
-            modelBuilder.Entity("EShop.Domain.Entities.FAQ.FAQCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Icon")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FAQCategories");
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.ProductEntity.Category", b =>
@@ -519,17 +493,6 @@ namespace EShop.Infra_Data.Migrations
                     b.ToTable("TicketMessages");
                 });
 
-            modelBuilder.Entity("EShop.Domain.Entities.FAQ.FAQ", b =>
-                {
-                    b.HasOne("EShop.Domain.Entities.FAQ.FAQCategory", "Category")
-                        .WithMany("FAQs")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("EShop.Domain.Entities.ProductEntity.Category", b =>
                 {
                     b.HasOne("EShop.Domain.Entities.ProductEntity.Category", "ParentCategory")
@@ -649,11 +612,6 @@ namespace EShop.Infra_Data.Migrations
             modelBuilder.Entity("EShop.Domain.Entities.Colors.Color", b =>
                 {
                     b.Navigation("ProductColorMappings");
-                });
-
-            modelBuilder.Entity("EShop.Domain.Entities.FAQ.FAQCategory", b =>
-                {
-                    b.Navigation("FAQs");
                 });
 
             modelBuilder.Entity("EShop.Domain.Entities.ProductEntity.Category", b =>

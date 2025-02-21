@@ -26,7 +26,7 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
 
         faq.Question = model.Question;
         faq.Answer=model.Answer;
-        faq.Explanation = model.Explanation;
+        faq.CategoryId = model.CategoryId;
 
         _faqRepository.Update(faq);
         await _faqRepository.SaveAsync();
@@ -47,6 +47,7 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
         {
             return new FAQUpdateViewModel()
             {
+                CategoryId = faqs.CategoryId,
                 Id = faqs.Id,
                 Question = faqs.Question,
                 Answer = faqs.Answer
@@ -64,10 +65,11 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
             .OrderBy(f => f.CreatedDate)
             .Select(f => new FAQViewModel()
             {
+                CategoryId = f.CategoryId,
+                CategoryName = f.Category?.Name ?? "بدون دسته",
                 Id = f.Id,
                 Question = f.Question,
                 Answer = f.Answer,
-                Explanation = f.Explanation,
                 CreatedDate = DateTime.Now
             }).ToList();
 
@@ -106,12 +108,12 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
             return OperationResult.Failure;
         }
 
-        FAQs faQs = new FAQs()
+        FAQ faQs = new FAQ()
         {
+            CategoryId = model.CategoryId,
             Question = model.Question,
             Answer = model.Answer,
             CreatedDate = model.CreatedDate,
-            Explanation = model.Explanation
         };
 
         await _faqRepository.InsertAsync(faQs);
@@ -119,7 +121,24 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
 
         return OperationResult.Success;
     }
-#endregion
+    #endregion
+
+    #region GetExplanation
+
+    public async Task<ExplanationDetailViewModel> GetExplanationAsync(int id)
+    {
+        var faq = await _faqRepository.GetFAQByIdAsync(id);
+        if (faq == null) return null;
+
+        return new ExplanationDetailViewModel
+        {
+
+            Id = faq.Id,
+            Explanation = faq.Explanation
+        };
+    }
+
+    #endregion
 
     #endregion
 
@@ -129,19 +148,32 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
     {
         var faq=await _faqRepository.GetAllFAQAsync();
 
-        var faqs = faq.Where(f => !f.IsDeleted)
-            .OrderBy(f => f.Id)
+        var faqs = faq.OrderBy(f => f.Id)
             .Select(f => new FAQViewModel()
             {
                 Id = f.Id,
                 Question = f.Question,
-                Answer = f.Answer,
-                Explanation = f.Explanation
-            }).ToList();
+                Answer = f.Answer
+                }).ToList();
 
         return faqs;
     }
 
+  
+    public async Task<List<FAQ>> GetFAQsAsync()
+    {
+        return await _faqRepository.GetAllFAQAsync();
+    }
+
+    public async Task<FAQ> GetFAQByIdAsync(int id)
+    {
+        return await _faqRepository.GetFAQByIdAsync(id);
+    }
+
+    public async Task<List<FAQ>> GetFAQsByCategoryIdAsync(int categoryId)
+    {
+        return await _faqRepository.GetFAQsByCategoryIdAsync(categoryId);
+    }
     #endregion
 
 }

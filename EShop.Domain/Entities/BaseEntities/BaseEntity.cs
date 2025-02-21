@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
-
 namespace EShop.Domain.Entities.BaseEntities
 {
     public class BaseEntity
@@ -11,4 +9,3 @@ namespace EShop.Domain.Entities.BaseEntities
         public DateTime CreatedDate { get; set; }
     }
 }
-

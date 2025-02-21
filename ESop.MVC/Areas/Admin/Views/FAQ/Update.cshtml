@@ -1,44 +1,51 @@
-﻿@model EShop.Domain.ViewModels.FAQ.FAQCreateViewModel
+﻿@model EShop.Domain.ViewModels.FAQ.FAQUpdateViewModel
 @{
-    ViewData["Title"] = "افزودن سوال متداول";
+    ViewData["Title"] = "ویرایش سوال متداول";
 }
 
-<form method="post" asp-area="Admin" asp-controller="FAQ" asp-action="Create" class="add-new-user pt-0" id="addNewFAQForm">
+<form method="post" asp-area="Admin" asp-controller="FAQ" asp-action="Update" class="add-new-user pt-0" id="editFAQForm">
     <div class="d-flex flex-column align-items-center">
+        <input type="hidden" asp-for="Id" />
+
         <div class="mb-3 w-50">
-            <label class="form-label" for="add-faq-question">سوال</label>
+            <label class="form-label" for="edit-faq-question">سوال</label>
             <div class="input-group input-group-merge">
                 <span class="input-group-text"><i class="bx bx-question-mark"></i></span>
-                <input type="text" asp-for="Question" class="form-control" id="add-faq-question" placeholder="سوال">
+                <input type="text" asp-for="Question" class="form-control" id="edit-faq-question" placeholder="سوال">
             </div>
             <span asp-validation-for="Question" class="text-danger"></span>
         </div>
+
         <div class="mb-3 w-50">
-            <label class="form-label" for="add-faq-category">دسته بندی</label>
-            <select asp-for="CategoryId" class="form-select" 
+            <label class="form-label" for="edit-faq-category">دسته بندی</label>
+            <select asp-for="CategoryId" class="form-select"
                     asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
                 <option value="">انتخاب کنید</option>
             </select>
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
+
         <div class="mb-3 w-50">
-            <label class="form-label" for="add-faq-answer">جواب</label>
+            <label class="form-label" for="edit-faq-answer">جواب</label>
             <div class="input-group input-group-merge">
                 <span class="input-group-text"><i class="bx bx-comment"></i></span>
-                <input type="text" asp-for="Answer" class="form-control" id="add-faq-answer" placeholder="جواب">
+                <input type="text" asp-for="Answer" class="form-control" id="edit-faq-answer" placeholder="جواب">
             </div>
             <span asp-validation-for="Answer" class="text-danger"></span>
         </div>
+
         <div class="mb-3 w-50">
-            <label class="form-label" for="add-faq-Explanation">توضیحات</label>
+            <label class="form-label" for="edit-faq-explanation">توضیحات</label>
             <div class="input-group">
                 <span class="input-group-text"><i class="bx bx-info-circle"></i></span>
-                <textarea asp-for="Explanation" class="form-control" id="add-faq-Explanation" placeholder="توضیحات (اختیاری)" rows="5" style="resize: vertical;"></textarea>
+                <textarea asp-for="Explanation" class="form-control" id="edit-faq-explanation"
+                          placeholder="توضیحات (اختیاری)" rows="5" style="resize: vertical;"></textarea>
             </div>
             <span asp-validation-for="Explanation" class="text-danger"></span>
         </div>
+
         <div class="mb-3 w-50 text-center">
-            <button type="submit" class="btn btn-primary me-2">افزودن سوال</button>
+            <button type="submit" class="btn btn-primary me-2">ذخیره تغییرات</button>
             <a asp-action="List" asp-controller="FAQ" class="btn btn-secondary">بازگشت</a>
         </div>
     </div>

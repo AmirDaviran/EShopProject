@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<EShop.Domain.Entities.FAQ.FAQCategory>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">لیست دسته‌بندی‌های FAQ</h4>
+    </div>
+    <div class="card-body">
+        <partial name="_FAQCategoryTableActions"/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>نام</th>
+                <th>آیکون</th>
+                <th>عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.Name</td>
+                    <td><img src="@category.Icon" width="30"/></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                        <form asp-action="Delete" method="post" style="display: inline;">
+                            <input type="hidden" name="id" value="@category.Id"/>
+                            <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿@model List<EShop.Domain.Entities.FAQ.FAQCategory>
+
+<div class="container">
+    <div class="ui-box bg-white">
+        <div class="ui-box-content">
+            <!-- بخش جستجو -->
+            <form asp-action="Index" method="get" class="search-in-questions">
+                <div class="form-element-row with-btn">
+                    <input type="text" name="search" class="form-control" 
+                           placeholder="جستجوی سوال..." value="@ViewBag.Search">
+                    <button type="submit" class="btn btn-primary">جستجو</button>
+                </div>
+            </form>
+
+            <!-- نمایش دسته‌بندی‌ها -->
+            <div class="row mb-5">
+                @foreach (var cat in Model)
+                {
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div class="faq-category">
+                                <a asp-action="Category" asp-route-id="@cat.Id">
+                                    <span class="icon">
+                                        <img src="@cat.Icon" alt="@cat.Name">
+                                    </span>
+                                    <span class="label">@cat.Name</span>
+                                </a>
+                            </div>
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

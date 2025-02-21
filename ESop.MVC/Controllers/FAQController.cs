@@ -1,22 +1,12 @@
-﻿using EShop.Application.Interfaces;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Controllers
 {
     public class FAQController : BaseController
     {
-        private readonly IFAQService _faqService;
-
-        public FAQController(IFAQService faqService)
+        public async Task<IActionResult> List()
         {
-            _faqService = faqService;
-        }
-
-      
-        public async Task<IActionResult> Index()
-        {
-            var faqs = await _faqService.GetAllAsync();
-            return View(faqs);
+            return View();
         }
     }
 }

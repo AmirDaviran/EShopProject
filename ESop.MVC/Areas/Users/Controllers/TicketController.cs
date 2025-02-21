@@ -20,7 +20,7 @@ namespace EShop.Web.Areas.Users.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.GetUserID();
-            var ticketLists = await _ticketService.GetAllTicketsForUser(userId);
+            var ticketLists = await _ticketService.GetAllTicketsForUserAsync(userId);
             return View(ticketLists);
         }
 
@@ -40,7 +40,7 @@ namespace EShop.Web.Areas.Users.Controllers
             if (ModelState.IsValid)
             {
 
-                var result = await _ticketService.CreateTicket(model);
+                var result = await _ticketService.CreateTicketAsync(model);
                 switch (result)
                 {
                     case CreateTicketResult.IsNotImageOrPDF:
@@ -66,11 +66,11 @@ namespace EShop.Web.Areas.Users.Controllers
         [Route("Users/Ticket/Details/{ticketId}")]
         public async Task<IActionResult> Details(int ticketId)
         {
-            var ticket = await _ticketService.GetTicketByTicketID(ticketId);
+            var ticket = await _ticketService.GetTicketByTicketIDAsync(ticketId);
             var showTicket = new TicketDetailsViewModel()
             {
                 Ticket = ticket,
-                Conversations = await _ticketService.GetTicketConversationsByTicketId(ticketId),
+                Conversations = await _ticketService.GetTicketConversationsByTicketIdAsync(ticketId),
                 UpdatedDate = ticket.UpdatedDate,
             };
 
@@ -82,7 +82,7 @@ namespace EShop.Web.Areas.Users.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Details");
-            await _ticketService.UpdateTicketConversation(updateTicketMessages);
+            await _ticketService.UpdateTicketConversationAsync(updateTicketMessages);
             return RedirectToAction("Details", new { ticketId = updateTicketMessages.TicketId });
         }
 

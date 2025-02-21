@@ -80,7 +80,7 @@ namespace EShop.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> DeleteTicket(int ticketId)
         {
-            var result = await _ticketService.DeleteTicket(ticketId);
+            var result = await _ticketService.DeleteTicketAsync(ticketId);
 
             if (result)
             {

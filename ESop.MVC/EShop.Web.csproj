@@ -275,7 +275,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\faq-icons\" />
     <Folder Include="wwwroot\img\Product-Images\Thumb\" />
     <Folder Include="wwwroot\img\Product-Images\Origin\" />
     <Folder Include="wwwroot\img\User-Avatar\" />

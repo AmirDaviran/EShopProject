@@ -1,94 +1,115 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Domain.Entities.FAQ;
+using EShop.Domain.Enums.FAQEnum;
+using EShop.Domain.ViewModels.FAQCategory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class FAQCategoryController : AdminBaseController
+    public class FAQCategoryController(IFAQCategoryService _faqCategoryService) : AdminBaseController
     {
-        private readonly IFAQCategoryService _faqCategoryService;
 
-        public FAQCategoryController(IFAQCategoryService faqCategoryService)
-        {
-            _faqCategoryService = faqCategoryService;
-        }
+        #region List
 
         public async Task<IActionResult> List()
         {
-            var categories = await _faqCategoryService.GetFAQCategoriesAsync();
+            var categories = await _faqCategoryService.GetCategoriesOrderedAsync();
             return View(categories);
         }
+
+        #endregion
+
+        #region Create
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View("CreateOrEdit", new FAQCategory());
+            return View(new FAQCategoryCreateViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(FAQCategory model, IFormFile iconFile)
+        public async Task<IActionResult> Create(FAQCategoryCreateViewModel viewModel)
         {
-            // آپلود آیکون
-            if (iconFile != null)
+            if (!ModelState.IsValid)
             {
-                var uploadPath = Path.Combine("wwwroot", "uploads", "faq-icons");
-                var fileName = Guid.NewGuid() + Path.GetExtension(iconFile.FileName);
-                var filePath = Path.Combine(uploadPath, fileName);
-
-                Directory.CreateDirectory(uploadPath);
-                using (var stream = new FileStream(filePath, FileMode.Create))
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                foreach (var error in errors)
                 {
-                    await iconFile.CopyToAsync(stream);
+                    Console.WriteLine(error); // یا از ILogger استفاده کنید
                 }
-
-                model.Icon = $"/uploads/faq-icons/{fileName}";
+                return View(viewModel);
             }
 
-            await _faqCategoryService.AddCategoryAsync(model);
-            return RedirectToAction("List");
+            // فراخوانی متد سرویس جهت ایجاد دسته‌بندی؛ 
+            // منطق آپلود فایل و اعتبارسنجی آن داخل سرویس (با استفاده از متدهای توسعه‌ای) انجام می‌شود.
+            var result = await _faqCategoryService.CreateFAQCategoryAsync(viewModel);
+
+            switch (result)
+            {
+                case CreateFAQCategoryResult.Success:
+                    TempData[SuccessMessage] = "دسته‌بندی با موفقیت ایجاد شد.";
+                    return RedirectToAction("List");
+
+                case CreateFAQCategoryResult.Failure:
+                    TempData["ErrorMessage"] = "خطایی در ایجاد دسته‌بندی رخ داده است.";
+                    break;
+            }
+
+            return View(viewModel);
         }
+
+        #endregion
+
+        #region Update
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Update(int id)
         {
             var category = await _faqCategoryService.GetFAQCategoryByIdAsync(id);
-            return View("CreateOrEdit", category);
+            if (category == null)
+                return NotFound();
+
+            // نگاشت داده‌های Domain به ViewModel مخصوص ویرایش
+            var viewModel = new FAQCategoryUpdateViewModel
+            {
+                Id = category.Id,
+                Name = category.Name,
+                DisplayOrder = category.DisplayOrder,
+                ExistingIconPath = category.Icon
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(FAQCategory model, IFormFile iconFile)
+        public async Task<IActionResult> Update(FAQCategoryUpdateViewModel viewModel)
         {
-            // آپلود آیکون جدید (اگر وجود داشت)
-            if (iconFile != null)
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+
+            var result = await _faqCategoryService.UpdateFAQCategoryAsync(viewModel);
+            switch (result)
             {
-                // حذف آیکون قدیمی (اختیاری)
-                if (!string.IsNullOrEmpty(model.Icon))
-                {
-                    var oldPath = Path.Combine("wwwroot", model.Icon.TrimStart('/'));
-                    if (System.IO.File.Exists(oldPath))
-                    {
-                        System.IO.File.Delete(oldPath);
-                    }
-                }
-
-                // آپلود جدید
-                var uploadPath = Path.Combine("wwwroot", "img", "faq-icons");
-                var fileName = Guid.NewGuid() + Path.GetExtension(iconFile.FileName);
-                var filePath = Path.Combine(uploadPath, fileName);
-
-                Directory.CreateDirectory(uploadPath);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await iconFile.CopyToAsync(stream);
-                }
-
-                model.Icon = $"/uploads/faq-icons/{fileName}";
+                case UpdateFAQCategoryResult.Success:
+                    TempData["SuccessMessage"] = "دسته‌بندی با موفقیت به‌روزرسانی شد.";
+                    return RedirectToAction("List");
+                case UpdateFAQCategoryResult.NotFound:
+                    TempData["ErrorMessage"] = "دسته‌بندی مورد نظر یافت نشد.";
+                    return NotFound();
+                    break;
+                case UpdateFAQCategoryResult.Failure:
+                    TempData["ErrorMessage"] = "خطایی در به‌روزرسانی دسته‌بندی رخ داده است.";
+                    break;
             }
 
-            await _faqCategoryService.UpdateCategoryAsync(model);
-            return RedirectToAction("List");
+            return View(viewModel);
+
         }
+
+        #endregion
+
+        #region Delete
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
@@ -96,5 +117,7 @@ namespace EShop.Web.Areas.Admin.Controllers
             await _faqCategoryService.DeleteCategoryAsync(id);
             return RedirectToAction("List");
         }
+
+        #endregion
     }
 }

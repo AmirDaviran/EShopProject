@@ -22,6 +22,7 @@ public class FAQCategoryRepository(EShopDbContext _context): IFAQCategoryReposit
             .FirstOrDefaultAsync();
     }
 
+   
     public async Task AddAsync(FAQCategory category)
     {
         await _context.FAQCategories.AddAsync(category);

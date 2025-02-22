@@ -24,5 +24,5 @@ public class FAQCreateViewModel
     [Required(ErrorMessage = "لطفا دسته بندی را انتخاب کنید")]
     public int CategoryId { get; set; }
 
-    public List<FAQCategory>? Categories { get; set; }
+    public List<Entities.FAQ.FAQCategory>? Categories { get; set; }
 }

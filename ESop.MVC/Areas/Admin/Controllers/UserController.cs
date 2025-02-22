@@ -62,7 +62,9 @@ namespace EShop.Web.Areas.Admin.Controllers
 
                 case CreateUserResult.Error:
                     TempData[ErrorMessage] = "خطایی در ایجاد کاربر رخ داده است.";
-                    return View(dto);
+                    break;
+                    
+
             }
 
             return View(dto);

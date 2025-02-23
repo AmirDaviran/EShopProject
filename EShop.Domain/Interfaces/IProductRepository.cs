@@ -14,13 +14,12 @@ namespace EShop.Domain.Interfaces
         Task AddProduct(Product product);
         Task<bool> DeleteProductById(int productId);
         Task UpdateProduct(Product product);
-
-
+        Task SaveChanges();
 
         #region Site Part
         Task<Product> ShowProductDetails(int productId);
         #endregion
-        Task SaveChanges();
+
     }
 }
 

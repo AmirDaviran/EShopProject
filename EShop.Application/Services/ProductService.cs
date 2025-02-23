@@ -12,28 +12,13 @@ using EShop.Domain.ViewModels.Products.Site_Side;
 
 namespace EShop.Application.Services
 {
-    public class ProductService : IProductService
+    public class ProductService
+            (IProductRepository _productRepository,
+            ICategoryService _categoryService,
+            ICategoryRepository _categoryRepository,
+            IColorRepository _colorRepository)
+        : IProductService
     {
-
-        #region Constructor
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryService _categoryService;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IColorRepository _colorRepository;
-       
-        public ProductService(IProductRepository productRepository,
-            ICategoryService categoryService, ICategoryRepository categoryRepository,
-            IColorRepository colorRepository
-          )
-        {
-            _productRepository = productRepository;
-            _categoryService = categoryService;
-            _categoryRepository = categoryRepository;
-            _colorRepository = colorRepository; 
-          
-        }
-        #endregion
-
 
         #region Get Product By Id
         public async Task<Product> GetProductByProductId(int productId)
@@ -47,22 +32,16 @@ namespace EShop.Application.Services
         {
             var products = await _productRepository.GetAllProducts();
             List<ProductListViewModel> productLists = new List<ProductListViewModel>();
-            //var colorProducts = await _colorService.
 
             foreach (var product in products)
             {
                 productLists.Add(new ProductListViewModel
                 {
                     productId = product.Id,
-                    //PersianTitle = product.PersianTitle,
-                    //ColorListsView = new ColorListsViewModel
-                    //{
-                    //    Code =
-                    //}
                     Price = product.Price,
                     CreatedDate = product.CreatedDate,
                     ImageName = product.ImageName
-                    
+
                 });
             }
             return productLists;
@@ -86,7 +65,7 @@ namespace EShop.Application.Services
             {
                 var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(createProduct.ImageFile.FileName);
                 createProduct.ImageFile.AddImageToTheServer(imageName, PathExtensions.ProductOriginServer, 215, 215, PathExtensions.ProductThumbServer);
-            product.ImageName = imageName;
+                product.ImageName = imageName;
             }
             else
             {
@@ -104,7 +83,6 @@ namespace EShop.Application.Services
 
         #endregion
 
-
         #region Update Product
         public async Task UpdateProduct(Product product)
         {
@@ -115,7 +93,7 @@ namespace EShop.Application.Services
         #region Delete Product
         public async Task<bool> DeleteProduct(int productId)
         {
-          return await _productRepository.DeleteProductById(productId);
+            return await _productRepository.DeleteProductById(productId);
         }
 
 
@@ -238,8 +216,8 @@ namespace EShop.Application.Services
                     ColorId = mapping.ColorId,
                     ColorName = mapping.Color.Name,
                     CreatedDate = mapping.CreatedDate,
-             //Price = product.Price + mapping.Amount
-             Price = mapping.Amount
+                    //Price = product.Price + mapping.Amount
+                    Price = mapping.Amount
                 }).ToList()
 
             }).ToList();
@@ -268,7 +246,7 @@ namespace EShop.Application.Services
             return null;
         }
 
-      
+
 
 
 

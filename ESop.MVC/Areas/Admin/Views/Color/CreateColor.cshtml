@@ -1,4 +1,4 @@
-﻿@model EShop.Domain.ViewModels.Colors.CreateColorViewModel
+﻿@model CreateColorViewModel
 
 
 
@@ -20,8 +20,9 @@
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-company">کد رنگ</label>
-                        <div class="col-sm-4">
-                            <input asp-for="Code" type="color" class="form-control input-color" id="basic-default-company" placeholder="">
+                        <div class="col-sm-4 d-flex">
+                            <label class="mx-2 my-1" for="basic-default-company">لطفا رنگ مورد نظر خود را وارد کنید</label>
+                            <input asp-for="Code" type="color" class="form-control input-color mx-2" id="basic-default-company" placeholder="">
                         </div>
                     </div>
 
@@ -33,5 +34,6 @@
                 </form>
             </div>
         </div>
+    </div>
     </div>
    

@@ -9,8 +9,6 @@ namespace EShop.Application.Services
     public class CategoryService (ICategoryRepository _categoryRepository) : ICategoryService
     {
 
-        #region Methods
-
         #region CreateCategoryAsync
         public async Task<CreateCategoryResult> CreateCategoryAsync(CreateCategoryViewModel model)
         {
@@ -36,7 +34,6 @@ namespace EShop.Application.Services
                 return CreateCategoryResult.Success;
             else
                 return CreateCategoryResult.Error;
-
         }
 
         #endregion
@@ -47,7 +44,7 @@ namespace EShop.Application.Services
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(id);
 
-            if (category == null || category.IsDeleted)
+            if (category is null || category.IsDeleted)
                 return DeleteCategoryResult.NotFound;
 
             if (category.SubCategories != null && category.SubCategories.Any(sc => !sc.IsDeleted))
@@ -67,7 +64,7 @@ namespace EShop.Application.Services
         {
             var category=await _categoryRepository.GetCategoryByIdAsync(model.Id);
 
-            if(category==null || category.IsDeleted)
+            if(category is null || category.IsDeleted)
                 return EditCategoryResult.NotFound;
 
             var categories=await _categoryRepository.GetAllCategoriesAsync();
@@ -90,32 +87,33 @@ namespace EShop.Application.Services
 
         #endregion
 
-
-
+        #region GetSubCategoryViewModels
         private List<CategoryViewModel> GetSubCategoryViewModels(IEnumerable<Category> subCategories)
-        {
-            return subCategories
-                .Where(sc => !sc.IsDeleted)
-                .OrderBy(sc => sc.DisplayOrder)
-                .Select(sc => new CategoryViewModel
-                {
-                    Id = sc.Id,
-                    Title = sc.Title,
-                    ParentCategoryId = sc.ParentCategoryId,
-                    ParentCategoryTitle = sc.ParentCategory != null ? sc.ParentCategory.Title : string.Empty,
-                    DisplayOrder = sc.DisplayOrder,
-                    SubCategories = GetSubCategoryViewModels(sc.SubCategories)
-                })
-                .ToList();
-        }
+               {
+                   return subCategories
+                       .Where(sc => !sc.IsDeleted)
+                       .OrderBy(sc => sc.DisplayOrder)
+                       .Select(sc => new CategoryViewModel
+                       {
+                           Id = sc.Id,
+                           Title = sc.Title,
+                           ParentCategoryId = sc.ParentCategoryId,
+                           ParentCategoryTitle = sc.ParentCategory != null ? sc.ParentCategory.Title : string.Empty,
+                           DisplayOrder = sc.DisplayOrder,
+                           SubCategories = GetSubCategoryViewModels(sc.SubCategories)
+                       })
+                       .ToList();
+               }
+        #endregion
 
+        #region GetAllCategoriesAsync
         public async Task<List<CategoryViewModel>> GetAllCategoriesAsync()
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
 
             // انتخاب دسته‌بندی‌های سطح بالا (بدون والد)
             var topLevelCategories = categories
-                .Where(c => c.ParentCategoryId == null)
+                .Where(c => c.ParentCategoryId is null)
                 .OrderBy(c => c.DisplayOrder)
                 .ToList();
 
@@ -138,12 +136,14 @@ namespace EShop.Application.Services
 
             return viewModelList;
         }
+        #endregion
 
+        #region GetCategoryByIdAsync
         public async Task<CategoryViewModel?> GetCategoryByIdAsync(int id)
         {
             var category = await _categoryRepository.GetCategoryByIdAsync(id);
 
-            if (category == null || category.IsDeleted)
+            if (category is null || category.IsDeleted)
                 return null;
 
             // تبدیل موجودیت به ویومدل به‌صورت درون‌خطی
@@ -159,7 +159,9 @@ namespace EShop.Application.Services
 
             return viewModel;
         }
+        #endregion
 
+        #region GetMainCategoriesAsync
         public async Task<List<CategoryViewModel>> GetMainCategoriesAsync()
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
@@ -181,11 +183,15 @@ namespace EShop.Application.Services
             return mainCategories;
         }
 
+        #endregion
+
+        #region GetAllCategoriesInForm
         public async Task<List<Category>> GetAllCategoriesInForm()
         {
             return await _categoryRepository.GetAllCategoriesAsync();
         }
 
         #endregion
+
     }
 }

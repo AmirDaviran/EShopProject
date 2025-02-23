@@ -7,14 +7,18 @@ namespace EShop.Infra_Data.Repositories
 {
     public class CategoryRepository(EShopDbContext _context) : ICategoryRepository
     {
-        #region Methods
-
         #region Category
+
+
+
+        #region AddCategoryAsync
         public async Task AddCategoryAsync(Category category)
         {
             await _context.AddAsync(category);
         }
+        #endregion
 
+        #region GetAllCategoriesAsync
         public async Task<List<Category>> GetAllCategoriesAsync()
         {
             return await _context.Categories
@@ -23,7 +27,9 @@ namespace EShop.Infra_Data.Repositories
                 .Include(c => c.SubCategories)
                 .ToListAsync();
         }
+        #endregion
 
+        #region GetCategoryByIdAsync
         public async Task<Category> GetCategoryByIdAsync(int id)
         {
             return await _context.Categories
@@ -31,12 +37,16 @@ namespace EShop.Infra_Data.Repositories
                 .Include(c => c.SubCategories)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+        #endregion
 
+        #region IsCategoryExistAsync
         public async Task<bool> IsCategoryExistAsync(int id)
         {
             return await _context.Categories.AnyAsync(c => c.Id == id);
         }
+        #endregion
 
+        #region SoftDeleteCategoryAsync
         public async Task SoftDeleteCategoryAsync(int id)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && !c.IsDeleted);
@@ -44,19 +54,30 @@ namespace EShop.Infra_Data.Repositories
             if (category != null)
             {
                 category.IsDeleted = true;
-
                 _context.Categories.Update(category);
             }
         }
+        #endregion
 
+        #region UpdateCategoryAsync
         public async Task UpdateCategoryAsync(Category category)
         {
             _context.Categories.Update(category);
         }
         #endregion
 
+
+
+
+
+        #endregion
+
         #region Product Categories
 
+
+
+
+        #region AddProductSelectedCategories
         public async Task AddProductSelectedCategories(List<int> productSelectedCategories, int productId)
         {
             if (productSelectedCategories != null && productSelectedCategories.Any())
@@ -77,6 +98,9 @@ namespace EShop.Infra_Data.Repositories
            
         }
 
+        #endregion
+
+        #region RemoveProductSelectedCategories
         public async Task RemoveProductSelectedCategories(int productId)
         {
             var allProductCategories = await _context.ProductSelectedCategories
@@ -87,6 +111,9 @@ namespace EShop.Infra_Data.Repositories
             }
         }
 
+        #endregion
+
+        #region GetAllProductCategoriesId
         public async Task<List<int>> GetAllProductCategoriesId(int productId)
         {
             return await _context.ProductSelectedCategories
@@ -97,19 +124,28 @@ namespace EShop.Infra_Data.Repositories
 
         #endregion
 
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
-        }
 
+
+
+
+        #endregion
+
+        #region GetAllProductCategoriesAsync
         public async Task<List<ProductSelectedCategory>> GetAllProductCategoriesAsync()
         {
             return await _context.ProductSelectedCategories
                 .Where(c => !c.IsDeleted)
                 .ToListAsync();
         }
+        #endregion
 
+        #region SaveChangesAsync
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
 
         #endregion
+
     }
 }

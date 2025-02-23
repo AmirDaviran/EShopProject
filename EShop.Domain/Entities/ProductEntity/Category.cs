@@ -9,6 +9,7 @@ public class Category : BaseEntity
     [MaxLength(100)]
     public string Title { get; set; }
 
+    //شناسه دسته والدین
     public int? ParentCategoryId { get; set; }
 
     [ForeignKey(nameof(ParentCategoryId))]
@@ -18,6 +19,8 @@ public class Category : BaseEntity
 
     public int DisplayOrder { get; set; }
 
-    public ICollection<CategorySpecificationMapping> CategorySpecificationMappings { get; set; }
+   // public ICollection<CategorySpecificationMapping> CategorySpecificationMappings { get; set; }
+
+    
 
 }

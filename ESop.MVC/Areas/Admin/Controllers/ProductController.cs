@@ -1,30 +1,18 @@
 ﻿using EShop.Application.Interfaces;
+using EShop.Domain.Enums.ColorEnums;
+using EShop.Domain.Enums.ProductEnums;
+using EShop.Domain.ViewModels.Colors.Product_Color;
 using EShop.Domain.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
-using EShop.Domain.Enums.ProductEnums;
-using EShop.Domain.Interfaces;
-using EShop.Domain.ViewModels.Colors.Product_Color;
-using EShop.Domain.Enums.ColorEnums;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class ProductController : AdminBaseController
+    public class ProductController
+        (IProductService _productService,
+        ICategoryService _categoryService,
+        IColorService _colorService)
+        : AdminBaseController
     {
-
-        #region Constructor 
-        private readonly IProductService _productService;
-        private readonly ICategoryService _categoryService;
-        private readonly IColorService _colorService;
-        public ProductController(IProductService productService,
-                                 ICategoryService categoryService,
-                                 IColorService colorService)
-
-        {
-            _productService = productService;
-            _categoryService = categoryService;
-            _colorService = colorService;
-        }
-        #endregion
 
         #region Product
         #region Get List Of Products Action
@@ -123,7 +111,6 @@ namespace EShop.Web.Areas.Admin.Controllers
         }
         #endregion
 
-
         #region Add Product Color Mapping Action
 
         [HttpGet]
@@ -138,7 +125,7 @@ namespace EShop.Web.Areas.Admin.Controllers
             {
                 ProductId = productId,
                 Price = product.Price
-                
+
             };
 
             return View(viewModel);

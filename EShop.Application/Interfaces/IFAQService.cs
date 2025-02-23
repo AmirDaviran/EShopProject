@@ -1,29 +1,28 @@
-﻿using EShop.Domain.Enums.FAQEnum;
+﻿using EShop.Domain.Entities.FAQ;
+using EShop.Domain.Enums.FAQEnum;
 using EShop.Domain.ViewModels.FAQ;
-
-namespace EShop.Application.Interfaces
+namespace EShop.Application.Interfaces;
+public interface IFAQService
 {
-    public interface IFAQService
-    {
-        #region Admin Side
+    #region AdminSide
 
-        Task<List<FAQViewModel>> GetAllAsync();
+    Task<List<FAQViewModel>> GetAllFAQForAdminAsync();
+    Task<FAQUpdateViewModel> GetForUpdateAsync(int id);
+    Task<OperationResult> CreateAsync(FAQCreateViewModel model);
+    Task<OperationResult> UpdateAsync(FAQUpdateViewModel model);
+    Task<OperationResult> DeleteAsync(int id);
+    Task<ExplanationDetailViewModel> GetExplanationAsync(int id);
+    #endregion
 
-        Task<OperationResult> CreateAsync(CreateFAQViewModel model);
+    #region ClientSide
 
-        Task<UpdateFAQViewModel> GetForUpdateAsync(int id);
+    Task<List<FAQViewModel>> GetAllFAQsAsync();
 
-        Task<OperationResult> UpdateAsync(UpdateFAQViewModel model);
+    Task<List<FAQ>> GetFAQsByCategoryIdAsync(int categoryId);
 
-        Task<OperationResult> DeleteAsync(int id);
+    Task<FAQ> GetFAQByIdAsync(int id);
 
+    Task<List<FAQ>> GetFAQsAsync();
 
-
-        #endregion
-
-        #region Client Side
-        Task<List<FAQViewModel>> GetFAQAsync();
-        #endregion
-
-    }
+    #endregion
 }

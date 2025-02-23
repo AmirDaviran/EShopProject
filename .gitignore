@@ -367,3 +367,17 @@ FodyWeavers.xsd
 /.idea/.idea.EShop/.idea/.name
 /.idea/.idea.EShop/.idea/indexLayout.xml
 /.idea/.idea.EShop/.idea/vcs.xml
+/EShop.Infra-Data/Migrations/20250219200338_ColorTable.cs
+/EShop.Infra-Data/Migrations/20250219200338_ColorTable.Designer.cs
+/EShop.Infra-Data/Migrations/20250220155826_FixTicket.cs
+/EShop.Infra-Data/Migrations/20250220155826_FixTicket.Designer.cs
+/EShop.Infra-Data/Migrations/20250221090109_FAQTable.cs
+/EShop.Infra-Data/Migrations/20250221090109_FAQTable.Designer.cs
+/EShop.Infra-Data/Migrations/20250221153920_FixFAQ.cs
+/EShop.Infra-Data/Migrations/20250221153920_FixFAQ.Designer.cs
+/EShop.Infra-Data/Migrations/20250221203232_FAQCategoryService.cs
+/EShop.Infra-Data/Migrations/20250221203232_FAQCategoryService.Designer.cs
+/EShop.Infra-Data/Migrations/20250221203738_FAQCategoryServiceFix.cs
+/EShop.Infra-Data/Migrations/20250221203738_FAQCategoryServiceFix.Designer.cs
+/EShop.Infra-Data/Migrations/20250222150127_FAQCategoryServiceFix2.cs
+/EShop.Infra-Data/Migrations/20250222150127_FAQCategoryServiceFix2.Designer.cs

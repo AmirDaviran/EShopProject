@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<EShop.Domain.Entities.FAQ.FAQCategory>
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title">لیست دسته‌بندی‌های FAQ</h4>
+    </div>
+    <div class="card-body">
+        <partial name="_FAQCategoryTableActions"/>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>نام</th>
+                <th>آیکون</th>
+                <th>ترتیب نمایش</th>
+                <th>عملیات</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.Name</td>
+                    <td><img src="@category.Icon" width="30"/></td>ُ
+                        <td>@category.DisplayOrder</td>
+                    <td style="display: flex; gap: 10px;">
+                        <a asp-action="Update" asp-route-id="@category.Id" class="btn btn-sm btn-warning">ویرایش</a>
+                        <form asp-action="Delete" method="post" id="delete-form-@category.Id">
+                            <input type="hidden" name="id" value="@category.Id" />
+                            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟')) { document.getElementById('delete-form-@category.Id').submit(); }">
+                                <i class="bx bx-trash me-1"></i> حذف
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

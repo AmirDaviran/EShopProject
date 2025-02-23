@@ -1,50 +1,39 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using EShop.Application.Interfaces;
-using EShop.Domain.ViewModels.FAQ;
+﻿using EShop.Application.Interfaces;
+using EShop.Domain.Entities.FAQ;
 using EShop.Domain.Enums.FAQEnum;
-
+using EShop.Domain.ViewModels.FAQ;
+using Microsoft.AspNetCore.Mvc;
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class FAQController : AdminBaseController
+    public class FAQController(IFAQService _faqService, IFAQCategoryService _faqCategoryService) : AdminBaseController
     {
-        #region Fields
-
-        private readonly IFAQService _faqService;
-
-        #endregion
-
-        #region Constructor
-
-        public FAQController(IFAQService faqService)
-        {
-            _faqService = faqService;
-        }
-
-        #endregion
-
         #region List
 
-        [HttpGet]
         public async Task<IActionResult> List()
         {
-            var model = await _faqService.GetAllAsync();
-            return View(model);
+            var faqs = await _faqService.GetAllFAQForAdminAsync();
+            return View(faqs);
         }
         #endregion
 
         #region Create
-
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var model = new FAQCreateViewModel
+            {
+                Categories = await _faqCategoryService.GetFAQCategoriesAsync()
+            };
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateFAQViewModel model)
+        public async Task<IActionResult> Create(FAQCreateViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = await _faqCategoryService.GetFAQCategoriesAsync();
+                TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
                 return View(model);
             }
 
@@ -52,77 +41,81 @@ namespace EShop.Web.Areas.Admin.Controllers
             switch (result)
             {
                 case OperationResult.Success:
-                    TempData[SuccessMessage] = "ایجاد با موفقیت انجام شد.";
-                    return RedirectToAction(nameof(List));
-
+                    TempData[SuccessMessage] = "سوال با موفقیت ایجاد شد.";
+                    return RedirectToAction("List");
                 case OperationResult.Failure:
-                    TempData[ErrorMessage] = "خطا در ایجاد سوال متداول.";
+                    TempData[ErrorMessage] = "خطایی در ایجاد سوال رخ داد.";
                     break;
-
-                default:
-                    TempData[WarningMessage] = "خطایی رخ داده است.";
+                case OperationResult.NotFound:
+                    TempData[ErrorMessage] = "دسته‌بندی انتخاب‌شده یافت نشد.";
                     break;
             }
+
             return View(model);
         }
+
         #endregion
 
         #region Update
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            var faq = await _faqService.GetForUpdateAsync(id);
-            if (faq == null)
+            var model = await _faqService.GetForUpdateAsync(id);
+            if (model == null)
             {
+                TempData[ErrorMessage] = "سوال موردنظر یافت نشد.";
                 return NotFound();
             }
-            return View(faq);
+            model.Categories = await _faqCategoryService.GetFAQCategoriesAsync() ?? new List<FAQCategory>();
+            return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UpdateFAQViewModel model)
+        public async Task<IActionResult> Update(FAQUpdateViewModel model)
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = await _faqCategoryService.GetFAQCategoriesAsync() ?? new List<FAQCategory>();
+                TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
                 return View(model);
             }
 
             var result = await _faqService.UpdateAsync(model);
-            if (result == OperationResult.Success)
+            switch (result)
             {
-                TempData[SuccessMessage] = "بروزرسانی با موفقیت انجام شد.";
-                return RedirectToAction(nameof(List));
+                case OperationResult.Success:
+                    TempData[SuccessMessage] = "سوال با موفقیت به‌روزرسانی شد.";
+                    return RedirectToAction("List");
+                case OperationResult.Failure:
+                    TempData[ErrorMessage] = "خطایی در به‌روزرسانی سوال رخ داد.";
+                   break;
+                case OperationResult.NotFound:
+                    TempData[ErrorMessage] = "سوال موردنظر یافت نشد.";
+                    break;
+               
             }
-            else if (result == OperationResult.NotFound)
-            {
-                TempData[WarningMessage] = "آیتم موردنظر یافت نشد.";
-                return NotFound();
-            }
-            else
-            {
-                TempData[ErrorMessage] = "خطا در بروزرسانی سوال متداول.";
-                return View(model);
-            }
+
+            return View(model);
+        }
+        #endregion
+
+        #region Details (Explanation)
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await _faqService.GetExplanationAsync(id);
+            if (model == null) return NotFound();
+            return View(model);
         }
         #endregion
 
         #region Delete
+        [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _faqService.DeleteAsync(id);
-            if (result == OperationResult.Success)
-            {
-                TempData[SuccessMessage] = "حذف با موفقیت انجام شد.";
-            }
-            else if (result == OperationResult.NotFound)
-            {
-                TempData[WarningMessage] = "آیتم موردنظر یافت نشد.";
-            }
-            else
-            {
-                TempData[ErrorMessage] = "خطا در حذف سوال متداول.";
-            }
-            return RedirectToAction(nameof(List));
+            if (result == OperationResult.Success) return RedirectToAction("List");
+            return NotFound();
         }
         #endregion
     }

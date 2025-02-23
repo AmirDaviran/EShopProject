@@ -1,69 +1,64 @@
-﻿@using EShop.Domain.ViewModels.FAQ
-@model List<FAQViewModel>
-
+﻿@model List<EShop.Domain.ViewModels.FAQ.FAQViewModel>
+@using EShop.Application.Utilities.Convertors
 @{
-    ViewData["Title"] = "سوالات متداول";
+    ViewData["Title"] = "لیست سوالات متداول";
 }
 
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card">
+            <div class="card-datatable table-responsive">
+                <partial name="_FAQTableActions" />
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                    <table class="card-datatable table-responsive datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
 
-<div class="card mb-4">
+                        <thead>
+                            <tr>
+                                <th>آیدی</th>
+                                <th>تاریخ ایجاد</th>
+                                <th>سوال</th>
+                                <th>دسته بندی</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var faq in Model)
+                                {
+                                    <tr>
+                                        <td>@faq.Id</td>
+                                        <td>@faq.CreatedDate.ToStringShamsiDate()</td>
+                                        <td>@faq.Question</td>
+                                        <td>@faq.CategoryName</td>
+                                        <td style="display: flex; gap: 10px;">
+                                            <a class="btn btn-primary btn-sm" asp-action="Update" asp-route-id="@faq.Id">
+                                                <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                            </a>
+                                            <a class="btn btn-info btn-sm" asp-action="Details" asp-route-id="@faq.Id">
+                                                <i class="bx bx-info-circle me-1"></i> جزئیات
+                                            </a>
+                                            <form asp-action="Delete" method="post" id="delete-form-@faq.Id" style="display: inline;">
+                                                <input type="hidden" name="id" value="@faq.Id" />
+                                                <button type="button" class="btn btn-danger btn-sm" onclick="if (confirm('آیا مطمئن هستید؟')) { document.getElementById('delete-form-@faq.Id').submit(); }">
+                                                    <i class="bx bx-trash me-1"></i> حذف
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">هیچ سوالی یافت نشد</td>
+                                </tr>
+                            }
+                        </tbody>
 
-    <div class="card-body">
-    </div>
-</div>
-<div class="row">
-    <div class="col-12 mb-3">
-        <a class="btn btn-primary" asp-action="Create">
-            افزودن
-        </a>
-    </div>
-
-</div>
-<hr />
-<div class="col-12">
-    @if (Model != null && Model.Any())
-    {
-
-        <table class="table table-hover table-striped">
-
-            <thead>
-                <tr>
-                    <th>سوالات</th>
-                    <th>جواب ها</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var mod in Model)
-                {
-                    <tr>
-                        <td>@mod.Question</td>
-                        <td>@mod.Answer</td>
-                        <td>
-                            <a class="btn btn-sm btn-warning" asp-action="Update" asp-route-id="@mod.Id">
-                                ویرایش
-                            </a>
-                            <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@mod.Id">
-                                حذف
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-
-
-        </table>
-
-
-    }
-    else
-    {
-        <div class="alert-info">
-            هیچ سوالی نیست!
-
+                    </table>
+                </div>
+            </div>
         </div>
-
-    }
-
-
+    </div>
 </div>

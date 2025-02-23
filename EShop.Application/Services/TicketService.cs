@@ -1,285 +1,187 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Application.Utilities.Extensions;
+using EShop.Application.Utilities.Extensions.Identity;
+using EShop.Application.Utilities.Extensions.Upload;
 using EShop.Domain.Entities.TicketSystem;
 using EShop.Domain.Enums.TicketEnums;
 using EShop.Domain.Interfaces;
 using EShop.Domain.ViewModels.Tickets;
 using EShop.Domain.ViewModels.Tickets.Admin;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace EShop.Application.Services
 {
-    public class TicketService : ITicketService
+    public class TicketService(ITicketRepository _ticketRepository, IHttpContextAccessor _httpContextAccessor) : ITicketService
     {
 
-        #region Constructor   
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly ITicketRepository _ticketRepository;
-        public TicketService(ITicketRepository ticketRepository, IHttpContextAccessor httpContextAccessor)
+        #region User Methods
+
+        #region GetAllTicketsForUser
+
+        public async Task<List<TicketListsViewModel>> GetAllTicketsForUserAsync(int userId)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _ticketRepository = ticketRepository;
-        }
-        #endregion
-
-
-
-        #region Get All Tickets By UserID
-        public async Task<List<TicketListsViewModel>> GetAllTicketsForUser(int userId)
-        {
-            var tickets = await _ticketRepository.GetTicketsByUserId(userId);
-            List<TicketListsViewModel> ticketLists = new List<TicketListsViewModel>();
-
-            foreach (var ticket in tickets)
+            var tickets = await _ticketRepository.GetTicketsByUserIdAsync(userId);
+            return tickets.Select(ticket => new TicketListsViewModel
             {
-                ticketLists.Add(new TicketListsViewModel()
-                {
-                    TicketId = ticket.Id,
-                    TicketTitle = ticket.Title,
-                    Section = ticket.Section,
-                    Status = ticket.Status,
-                    UpdatedDate = ticket.UpdatedDate
-                });
-            }
-            return ticketLists;
+                TicketId = ticket.Id,
+                TicketTitle = ticket.Title,
+                Section = ticket.Section,
+                Status = ticket.Status,
+                UpdatedDate = ticket.UpdatedDate,
+                CreatedDate = ticket.CreatedDate
+            }).ToList();
         }
 
         #endregion
 
-        #region Upload Attachment File To Ticket
-        public async Task<CreateTicketResult> UploadAttachmentFile(IFormFile attachmentFile, int ticketId, int ticketMessageId)
+        #region CreateTicket
+
+        public async Task<CreateTicketResult> CreateTicketAsync(CreateTicketViewModel createTicket)
         {
-            // Validate the uploaded file   
-            if (!attachmentFile.IsImage() && !attachmentFile.IsPdf())
-            {
-                return CreateTicketResult.IsNotImageOrPDF;
-            }
-
-            var fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(attachmentFile.FileName);
-            var filePath = PathExtensions.AttachedFileOriginServer;
-
-            // Call the method to add the file to the server  
-            bool uploadSuccess = attachmentFile.AddFileToServer(fileName, filePath);
-
-            if (uploadSuccess)
-            {
-                // Save the filename in the database   
-                var attachedFile = new Attachment()
-                {
-                    FileName = fileName,
-                    TicketId = ticketId,
-                    TicketMessageId = ticketMessageId,
-                    CreatedDate = DateTime.Now
-                };
-                await _ticketRepository.AddAttachment(attachedFile);
-                return CreateTicketResult.FileUploaded;
-            }
-            else
-                return CreateTicketResult.Failure; // Return failure if upload fails 
-        }
-
-        #endregion
-
-        #region Create Ticket
-
-        public async Task<CreateTicketResult> CreateTicket(CreateTicketViewModel createTicket)
-        {
-            // Step 1: Create a new Ticket and populate its properties from the ViewModel
-            var ticket = new Ticket()
+            var ticket = new Ticket
             {
                 Title = createTicket.Title,
                 Section = createTicket.Section,
                 Priority = createTicket.Priority,
-                Status = TicketStatus.Open,
+                Status = TicketStatus.Pending,
                 OwnerId = createTicket.OwnerId,
-                UpdatedDate = DateTime.Now,
-                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.UtcNow,
+                CreatedDate = DateTime.UtcNow,
                 IsClosed = false
             };
 
-            // Step 2: Add the Ticket to the database context  
-            await _ticketRepository.AddTicket(ticket);
+            await _ticketRepository.AddTicketAsync(ticket);
             await _ticketRepository.SaveChanges();
 
-            // Step 3: Create the TicketMessage
-            var message = new TicketMessage()
+            var message = new TicketMessage
             {
                 Message = createTicket.Description,
                 TicketId = ticket.Id,
-                CreatedDate = DateTime.Now,
-                SenderId = _httpContextAccessor.HttpContext.User.GetUserID()
+                SenderId = _httpContextAccessor.HttpContext.User.GetUserID(),
+                CreatedDate = DateTime.UtcNow
             };
 
-            // Step 4: Add the TicketMessage to the context  
-            await _ticketRepository.AddMessageToTicket(message);
-            await _ticketRepository.SaveChanges();
-
-            // Step 5: If you have attachments, handle them similarly  
             if (createTicket.AttachmentFile != null && createTicket.AttachmentFile.Length > 0)
             {
-                var uploadResult = await UploadAttachmentFile(createTicket.AttachmentFile, ticket.Id, message.Id);
-                if (uploadResult != CreateTicketResult.FileUploaded)
+                var fileName = await createTicket.AttachmentFile.SaveAttachmentAsync(SiteTools.TicketAttachmentsPath);
+                if (fileName != null)
                 {
-                    return uploadResult;
+                    message.FileName = fileName;
+                    message.FilePath = SiteTools.TicketAttachmentsPath + fileName;
                 }
-
             }
 
-            // Step 5: Save changes for messages and attachments  
-
-            await _ticketRepository.SaveChanges();
-
+            await _ticketRepository.AddMessageToTicketAsync(message);
             return CreateTicketResult.Success;
         }
+
         #endregion
 
-
-        #region Update Ticket
-        public async Task UpdateTicket(Ticket ticket)
+        #region UpdateTicketConversation
+        public async Task UpdateTicketConversationAsync(UpdateTicketMessagesViewModel updateTicketMessages)
         {
-            await _ticketRepository.UpdateTicket(ticket);
-        }
-        #endregion
+            if (string.IsNullOrEmpty(updateTicketMessages.Message)) return;
 
-        #region Update Ticket Conversations
-        public async Task UpdateTicketConversation(UpdateTicketMessagesViewModel updateTicketMessages)
-        {
-        
-            if (!string.IsNullOrEmpty(updateTicketMessages.Message))
+            var message = new TicketMessage
             {
-                var message = new TicketMessage()
-                {
-                    Message = updateTicketMessages.Message,
-                    TicketId = updateTicketMessages.TicketId,
-                    CreatedDate = DateTime.Now,
-                    SenderId = updateTicketMessages.SenderId
-                    
-                };
-                var ticket = await GetTicketByTicketID(updateTicketMessages.TicketId);
-                ticket.UpdatedDate = DateTime.Now;
-                await _ticketRepository.AddMessageToTicket(message);
-                await _ticketRepository.UpdateTicket(ticket);
-                await _ticketRepository.SaveChanges();
+                Message = updateTicketMessages.Message,
+                TicketId = updateTicketMessages.TicketId,
+                SenderId = updateTicketMessages.SenderId,
+                CreatedDate = DateTime.UtcNow
+            };
 
-                // If there is an attachment, handle the upload  
-                if (updateTicketMessages.AttachmentFile != null && updateTicketMessages.AttachmentFile.Length > 0)
+            if (updateTicketMessages.AttachmentFile != null && updateTicketMessages.AttachmentFile.Length > 0)
+            {
+                var fileName = await updateTicketMessages.AttachmentFile.SaveAttachmentAsync(SiteTools.TicketAttachmentsPath);
+                if (fileName != null)
                 {
-                    var uploadResult = await UploadAttachmentFile(updateTicketMessages.AttachmentFile,
-                                             updateTicketMessages.TicketId, message.Id);
-                    if(uploadResult != CreateTicketResult.FileUploaded) 
-                    {
-                        throw new Exception("Attachment upload failed.");
-                    }
+                    message.FileName = fileName;
+                    message.FilePath = SiteTools.TicketAttachmentsPath + fileName;
                 }
             }
 
-            await _ticketRepository.SaveChanges();
+            var ticket = await _ticketRepository.GetTicketByIdAsync(updateTicketMessages.TicketId);
+            ticket.UpdatedDate = DateTime.UtcNow;
 
+            await _ticketRepository.AddMessageToTicketAsync(message);
+            await _ticketRepository.UpdateTicketAsync(ticket);
         }
-
 
         #endregion
 
+        #endregion
 
+        #region Admin Methods
 
-        #region Admin
+        #region GetAllTicketsInAdmin
 
-        #region Get All Tickets By Owner
-        public async Task<List<AdminTicketListsViewModel>> GetAllTicketsInAdmin()
+        public async Task<List<AdminTicketListsViewModel>> GetAllTicketsInAdminAsync()
         {
-            var tickets = await _ticketRepository.GetAllTickets();
-
-            var ticketLists = tickets.Select(t => new AdminTicketListsViewModel
+            var tickets = await _ticketRepository.GetAllTicketsAsync();
+            return tickets.Select(t => new AdminTicketListsViewModel
             {
                 TicketId = t.Id,
-                TicketTitle = t.Title,
+                Subject = t.Title,
+                Priority = t.Priority,
                 Section = t.Section,
                 Status = t.Status,
                 CreatedDate = t.CreatedDate,
                 UpdatedDate = t.UpdatedDate,
                 Owner = t.Owner
             }).ToList();
-
-            return ticketLists;
         }
 
         #endregion
 
-        #region Get All Tickets
-        public async Task<List<TicketListsViewModel>> GetAllTickets()
+        #region GetAllTickets
+
+        public async Task<List<TicketListsViewModel>> GetAllTicketsAsync()
         {
-            var tickets = await _ticketRepository.GetAllTickets();
-            List<TicketListsViewModel> ticketLists = new List<TicketListsViewModel>();
-            foreach (var ticket in tickets)
+            return await GetAllTicketsForUserAsync(0); // 0 برای گرفتن همه تیکت‌ها بدون فیلتر کاربر
+        }
+
+        #endregion
+
+        #region GetTicketByTicketID
+
+        public async Task<Ticket> GetTicketByTicketIDAsync(int ticketId)
+        {
+            return await _ticketRepository.GetTicketByIdAsync(ticketId);
+        }
+
+        #endregion
+
+        #region DeleteTicket
+
+        public async Task<bool> DeleteTicketAsync(int ticketId)
+        {
+            return await _ticketRepository.SoftDeleteTicketAsync(ticketId);
+        }
+
+        #endregion
+
+        #region GetTicketConversationsByTicketId
+
+        public async Task<List<TicketConversationsViewModel>> GetTicketConversationsByTicketIdAsync(int ticketId)
+        {
+            var ticket = await GetTicketByTicketIDAsync(ticketId);
+            if (ticket == null) return new List<TicketConversationsViewModel>();
+
+            var messages = await _ticketRepository.GetMessagesByTicketIdAsync(ticketId);
+            return messages.Select(m => new TicketConversationsViewModel
             {
-                ticketLists.Add(new TicketListsViewModel()
-                {
-                    TicketId = ticket.Id,
-                    TicketTitle = ticket.Title,
-                    Section = ticket.Section,
-                    Status = ticket.Status,
-                    UpdatedDate = ticket.UpdatedDate
-                });
-            }
-            return ticketLists;
-        }
-
-
-        #endregion
-
-        #region Get Ticket By ID
-        public async Task<Ticket> GetTicketByTicketID(int ticketId)
-        {
-            return await _ticketRepository.GetTicketById(ticketId);
+                TicketId = ticketId,
+                User = m.Sender,
+                TicketMessages = new List<TicketMessage> { m }
+            }).ToList();
         }
 
         #endregion
 
+        #region UpdateTicketStatus
 
-        #region Delete Ticket
-        public async Task<bool> DeleteTicket(int ticketId)
+        public async Task<bool> UpdateTicketStatusAsync(int ticketId, TicketStatus status)
         {
-            return await _ticketRepository.SoftDeleteTicket(ticketId);
-        }
-
-        #endregion
-
-        #region Get Ticket Conversations By Ticket ID
-        public async Task<List<TicketConversationsViewModel>>
-                                    GetTicketConversationsByTicketId(int ticketId)
-        {
-            var ticket = await GetTicketByTicketID(ticketId);
-            if (ticket == null)
-                return null;
-            var responses = await _ticketRepository.GetMessagesByTicketId(ticketId);
-            var conversations = new List<TicketConversationsViewModel>();
-            //var userGroup = responses.GroupBy(r => new { r.SenderId, r.CreatedDate.Date })
-            //    .OrderBy(g => g.Key.Date);
-            var userGroup = responses.OrderBy(r => r.CreatedDate);
-
-
-            foreach (var conversation in userGroup)
-            {
-                var message = new TicketConversationsViewModel()
-                {
-                    User = conversation.Sender,
-                    TicketMessages = new List<TicketMessage> { conversation }
-                };
-                conversations.Add(message);
-            }
-            return conversations;
-
-
-        }
-
-        #endregion
-
-
-        #region Update Ticket Status
-        public async Task<bool> UpdateTicketStatus(int ticketId, TicketStatus status)
-        {
-            return await _ticketRepository.UpdateTicketStatus(ticketId, status);
+            return await _ticketRepository.UpdateTicketStatusAsync(ticketId, status);
         }
 
         #endregion

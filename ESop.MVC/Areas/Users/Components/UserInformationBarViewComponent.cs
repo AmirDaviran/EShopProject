@@ -1,5 +1,5 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Application.Utilities.Extensions;
+using EShop.Application.Utilities.Extensions.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Areas.Users.Components

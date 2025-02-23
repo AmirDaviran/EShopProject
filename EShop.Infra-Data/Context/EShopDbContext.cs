@@ -27,8 +27,7 @@ namespace EShop.Infra_Data.Context
         #region Ticket System
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
-        public DbSet<Attachment> Attachments { get; set; }
-        #endregion
+       #endregion
 
         #region Product
 
@@ -46,15 +45,19 @@ namespace EShop.Infra_Data.Context
         #endregion
 
         #region FAQ
-        public DbSet<FAQs> FAQs { get; set; }
+        public DbSet<FAQ> FAQs { get; set; }
+        public DbSet<FAQCategory> FAQCategories { get; set; }
         #endregion
 
         #region Color
         public DbSet<Color> Colors { get; set; }
         #endregion
 
+        #region override
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // تنظیم رفتار پیش‌فرض برای تمام ForeignKeyها به NoAction
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
                 foreach (var item in entity.GetForeignKeys())
@@ -62,8 +65,22 @@ namespace EShop.Infra_Data.Context
                     item.DeleteBehavior = DeleteBehavior.NoAction;
                 }
             }
+
+            // برای رابطه خاص بین FAQ و FAQCategory از Cascade استفاده کنیم
+            modelBuilder.Entity<FAQ>()
+                .HasOne(f => f.Category)
+                .WithMany(c => c.FAQs)
+                .HasForeignKey(f => f.CategoryId)
+                .OnDelete(DeleteBehavior.NoAction);  // این تغییر فقط روی رابطه FAQ-FAQCategory اعمال می‌شود
+
             base.OnModelCreating(modelBuilder);
         }
+
+
+        #endregion
+
+
+
 
     }
 }

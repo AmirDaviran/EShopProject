@@ -1,31 +1,45 @@
-﻿@using EShop.Domain.ViewModels.FAQ
-@model CreateFAQViewModel
+﻿@model EShop.Domain.ViewModels.FAQ.FAQCreateViewModel
+@{
+    ViewData["Title"] = "افزودن سوال متداول";
+}
 
-
-
-<div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Basic with Icons</h5>
-        <small class="text-muted float-end">Merged input group</small>
-    </div>
-    <div class="card-body">
-        <form asp-action="Create" asp-controller="FAQ" method="post">
-            <div class="mb-3">
-                <label class="form-label" for="basic-icon-default-question"> سوال  </label>
-                <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bx-user"></i></span>
-                    <input asp-for="Question" type="text" class="form-control" id="basic-icon-default-question" placeholder="چگونه رمز کاربری را بازیابی کنم؟" aria-label="سوال" aria-describedby="basic-icon-default-question">
-                </div>
+<form method="post" asp-area="Admin" asp-controller="FAQ" asp-action="Create" class="add-new-user pt-0" id="addNewFAQForm">
+    <div class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-faq-question">سوال</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-question-mark"></i></span>
+                <input type="text" asp-for="Question" class="form-control" id="add-faq-question" placeholder="سوال">
             </div>
-        
-            <div class="mb-3">
-                <label class="form-label" for="basic-icon-default-message">جواب</label>
-                <div class="input-group input-group-merge">
-                    <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                    <textarea asp-for="Answer" id="basic-icon-default-message" class="form-control" placeholder="وارد پروفایل خود شوید و در قسمت  (فراموشی رمز عبور) رمز خود را بازیابی کنید" aria-label="جواب" aria-describedby="basic-icon-default-message2"></textarea>
-                </div>
+            <span asp-validation-for="Question" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-faq-category">دسته بندی</label>
+            <select asp-for="CategoryId" class="form-select" 
+                    asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+                <option value="">انتخاب کنید</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-faq-answer">جواب</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                <input type="text" asp-for="Answer" class="form-control" id="add-faq-answer" placeholder="جواب">
             </div>
-            <button type="submit" class="btn btn-primary">ثبت</button>
-        </form>
+            <span asp-validation-for="Answer" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label" for="add-faq-Explanation">توضیحات</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bx bx-info-circle"></i></span>
+                <textarea asp-for="Explanation" class="form-control" id="add-faq-Explanation" placeholder="توضیحات (اختیاری)" rows="5" style="resize: vertical;"></textarea>
+            </div>
+            <span asp-validation-for="Explanation" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary me-2">افزودن سوال</button>
+            <a asp-action="List" asp-controller="FAQ" class="btn btn-secondary">بازگشت</a>
+        </div>
     </div>
-</div>
+</form>

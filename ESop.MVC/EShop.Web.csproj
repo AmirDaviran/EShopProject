@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\Image\**" />
-    <Content Remove="wwwroot\Image\**" />
-    <EmbeddedResource Remove="wwwroot\Image\**" />
-    <None Remove="wwwroot\Image\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\theme-assets\css\custom.css" />
     <None Include="wwwroot\theme-assets\css\custom.css.map" />
     <None Include="wwwroot\theme-assets\css\dependencies.css" />
@@ -275,10 +268,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\Product-Images\Thumb\" />
-    <Folder Include="wwwroot\img\Product-Images\Origin\" />
-    <Folder Include="wwwroot\img\User-Avatar\" />
-    <Folder Include="wwwroot\img\Ticket-Attachments\" />
+    <Folder Include="wwwroot\Image\FAQCategory\" />
+    <Folder Include="wwwroot\Image\ContactUs\" />
+    <Folder Include="wwwroot\Image\AdminResponse\" />
+    <Folder Include="wwwroot\Image\User-Avatar\" />
   </ItemGroup>
 
 </Project>

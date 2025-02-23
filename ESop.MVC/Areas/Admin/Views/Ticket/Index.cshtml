@@ -1,72 +1,75 @@
-﻿@model IEnumerable<AdminTicketListsViewModel>
+﻿@model IEnumerable<EShop.Domain.ViewModels.Tickets.Admin.AdminTicketListsViewModel>
 
 @using EShop.Application.Utilities.Convertors
 @using EShop.Application.Utilities.Extensions
+@using EShop.Domain.Enums.TicketEnums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     ViewData["Title"] = "لیست تیکت ها";
     Layout = "_AdminLayout";
-
 }
 
-
-
-<div class="card">
-    <h5 class="card-header">Table Basic</h5>
-    <div class="table-responsive text-nowrap">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>زمان ایجاد</th>
-                    <th>کاربر</th>
-                    <th>بخش</th>
-                    <th>موضوع</th>
-                    <th>وضعیت</th>
-                    <th>آخرین بروزرسانی</th>
-                    <th>عملیات</th>
-                </tr>
-            </thead>
-            <tbody class="table-border-bottom-0">
-                @foreach (var item in Model)
-                {
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div class="card">
+        <h5 class="card-header">لیست تیکت‌های پشتیبانی</h5>
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover">
+                <thead class="table-light">
                     <tr>
-                        <td class="fa-num"><strong>@item.TicketId</strong></td>
-                        <td>@item.CreatedDate?.ToStringShamsiDate()</td>
-                        @if (item.Owner.IsAdmin)
-                        {
-                            <td>ادمین</td>
-                        }
-                        else
-                        {
-                            <td>@item.Owner.FirstName @item.Owner.LastName</td>
-                        }
-
-                        <td>@item.Section.GetEnumName()</td>
-
-                        <td>@item.TicketTitle</td>
-                        <td class="fa-num">
-                            <span class="badge bg-success rounded-pill">
-                                @item.Status.GetEnumName()
-                            </span>
-                        </td>
-                        <td>@item.UpdatedDate?.ToStringShamsiDate()</td>
-                        <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item" href="/Admin/Ticket/Details/@item.TicketId" ><i class="bx bx-edit-alt me-1"></i> نمایش</a>
-                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Ticket" asp-action="DeleteTicket" asp-route-ticketId="@item.TicketId"><i class="bx bx-trash me-1"></i> حذف</a>
-                                </div>
-                            </div>
-                        </td>
-
+                        <th>شناسه</th>
+                        <th>کاربر</th>
+                        <th>موضوع</th>
+                        <th>وضعیت</th>
+                        <th>اولویت</th>
+                        <th>بخش</th>
+                        <th>تاریخ ایجاد</th>
+                        <th>آخرین بروزرسانی</th>
+                        <th>عملیات</th>
                     </tr>
-                }
-
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="cursor-pointer chat-item" data-ticket-id="@item.TicketId">
+                            <td><strong>@item.TicketId</strong></td>
+                            <td>
+                                @if (item.Owner.IsAdmin)
+                                {
+                                    <span class="badge bg-label-primary">ادمین</span>
+                                }
+                                else
+                                {
+                                    @($"{item.Owner.FirstName} {item.Owner.LastName}")
+                                }
+                            </td>
+                            <td>@item.Subject</td>
+                            <td>
+                                <span class="badge @item.Status.GetBadgeClass() rounded-pill">
+                                    @item.Status.GetEnumName()
+                                </span>
+                            </td> 
+                            <td>@item.Priority.GetEnumName()</td>
+                            <td>@item.Section.GetEnumName()</td>
+                            <td>@item.CreatedDate?.ToStringShamsiDate()</td>
+                            <td>@item.UpdatedDate?.ToStringShamsiDate()</td>
+                            <td style="display: flex; gap: 10px;">
+                                <a asp-action="Details" asp-route-id="@item.TicketId" class="btn btn-info btn-sm">
+                                    <i class="bx bx-eye"></i> مشاهده
+                                </a>
+                                <form asp-action="DeleteTicket" method="post" id="delete-form-@item.TicketId">
+                                    <input type="hidden" name="id" value="@item.TicketId" />
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این تیکت را حذف کنید؟')) { document.getElementById('delete-form-@item.TicketId').submit(); }">
+                                        <i class="bx bx-trash"></i> حذف
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+

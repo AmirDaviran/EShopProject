@@ -1,0 +1,46 @@
+﻿@using EShop.Domain.Entities.FAQ
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<EShop.Domain.Entities.FAQ.FAQ>
+@{
+    var category = ViewBag.Category as FAQCategory;
+}
+
+<div class="container">
+    <div class="ui-box bg-white">
+        <div class="ui-box-content">
+            <h4 class="mb-4">
+                <img src="@category.Icon" alt="@category.Name" class="me-2" width="40">
+                @category.Name
+            </h4>
+
+            <div class="accordion" id="faqAccordion">
+                @foreach (var item in Model)
+                {
+                        <div class="accordion-item">
+                            <h3 class="accordion-header">
+                                <button class="accordion-button collapsed" 
+                                        data-bs-toggle="collapse" 
+                                        data-bs-target="#faq_@item.Id">
+                                @item.Question
+                                </button>
+                            </h3>
+                            <div id="faq_@item.Id" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                @Html.Raw(item.Answer)
+                                @if (!string.IsNullOrEmpty(item.Explanation))
+                                {
+                                            <div class="mt-3">
+                                                <a asp-action="Question" asp-route-id="@item.Id" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    توضیحات تکمیلی
+                                                </a>
+                                            </div>
+                                }
+                                </div>
+                            </div>
+                        </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

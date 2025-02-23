@@ -1,25 +1,16 @@
 ﻿using EShop.Domain.Entities.FAQ;
-using EShop.Domain.ViewModels.FAQ;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EShop.Domain.Interfaces
+namespace EShop.Domain.Interfaces;
+public interface IFAQRepository
 {
-    public interface IFAQRepository
-    {
-        
-        Task<List<FAQs>> GetAllAsync();
+    Task<List<FAQ>> GetAllFAQAsync();
+    Task<FAQ> GetFAQByIdAsync(int id);
+    Task InsertAsync(FAQ faqs);
+    void Update(FAQ faqs);
+    Task SaveAsync();
 
-        Task InsertAsync(FAQs faqs);
+    #region Client Side
+    
+    Task<List<FAQ>> GetFAQsByCategoryIdAsync(int categoryId);
 
-        Task SaveAsync();
-                
-        Task<FAQs> GetByIdAsync(int id);
-
-        void Update(FAQs faqs); 
-
-    }
+    #endregion
 }

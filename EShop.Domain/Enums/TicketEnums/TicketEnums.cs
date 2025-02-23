@@ -5,33 +5,40 @@ namespace EShop.Domain.Enums.TicketEnums
     #region Ticket Entity Enums
     public enum TicketPriority
     {
-        [Display(Name = "کم")]
-        Low,
-        [Display(Name = "متوسط")]
-        Medium,
-        [Display(Name = "بالا")]
-        High
+        [Display(Name = "عادی")]
+        Normal,
+        [Display(Name = "مهم")]
+        Important,
+        [Display(Name = "خیلی مهم")]
+        Critical
     }
     public enum TicketStatus
     {
-        [Display(Name = "باز")]
-        Open,
-        [Display(Name = "در حال رسیدگی")]
-        InProgress,
-        [Display(Name = "بسته شده")]
+        [Display(Name = "در حال بررسی")]
+        Pending,
+        [Display(Name = "پاسخ داده شد")]
+        Answered,
+        [Display(Name = "بسته")]
         Closed
     }
     public enum TicketSection
     {
-        [Display(Name = "پشتیبانی")]
-        TechnicalSupport,
-
-        [Display(Name = "حسابداری")]
-        Billing,
-        [Display(Name = "فروش")]
-        Sales,
-        //[Display(Name = "")]
-        //GeneralInquiry
+        [Display(Name = "پشنهاد")]
+        Suggestion,
+        [Display(Name = "انتقاد یا شکایت")]
+        Complaint,
+        [Display(Name = "پیگیری سفارش")]
+        OrderFollowUp,
+        [Display(Name = "خدمات پس از فروش")]
+        AfterSales,
+        [Display(Name = "استعلام گارانتی")]
+        Warranty,
+        [Display(Name = "مدیریت")]
+        Management,
+        [Display(Name = "حسابداری و امور مالی")]
+        Finance,
+        [Display(Name = "سایر موضوعات")]
+        Other
     }
     #endregion
 
@@ -42,7 +49,8 @@ namespace EShop.Domain.Enums.TicketEnums
         Success,
         IsNotImageOrPDF,
         FileUploaded,
-        Failure
+        Failure,
+        EmptyMessage
     }
     #endregion
 

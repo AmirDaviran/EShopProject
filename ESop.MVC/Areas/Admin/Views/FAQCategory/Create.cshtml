@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model EShop.Domain.ViewModels.FAQCategory.FAQCategoryCreateViewModel
+
+<div class="card">
+    <div class="card-header text-center">
+        <h4 class="card-title">افزودن دسته‌بندی</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create" asp-controller="FAQCategory" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+           
+
+            <div class="mb-3 w-50">
+                <label class="form-label" asp-for="Name">نام دسته‌بندی</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-folder"></i></span>
+                    <input asp-for="Name" class="form-control" placeholder="نام دسته‌بندی">
+                </div>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 w-50">
+                <label class="form-label" asp-for="DisplayOrder">ترتیب نمایش</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-sort"></i></span>
+                    <input asp-for="DisplayOrder" class="form-control" placeholder="عدد">
+                </div>
+                <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 w-50">
+                <label class="form-label" asp-for="IconFile">آیکون</label>
+                <div class="input-group input-group-merge">
+                    <span class="input-group-text"><i class="bx bx-image"></i></span>
+                    <input type="file" asp-for="IconFile" class="form-control">
+                </div>
+                @if (!string.IsNullOrEmpty(Model.ExistingIconPath))
+                {
+                    <img src="@Model.ExistingIconPath" class="img-thumbnail mt-2" width="100" />
+                }
+                <span asp-validation-for="IconFile" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 w-50 text-center">
+                <button type="submit" class="btn btn-primary me-2">ذخیره</button>
+                <button asp-action="List" asp-controller="FAQCategory" type="reset" class="btn btn-secondary">بازگشت</button>
+            </div>
+        </form>
+    </div>
+</div>

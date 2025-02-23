@@ -24,7 +24,6 @@ namespace EShop.Domain.Interfaces
         Task AddProductSelectedCategories(List<int> productSelectedCategories, int productId);
         Task RemoveProductSelectedCategories(int productId);
         Task<List<int>> GetAllProductCategoriesId(int productId);
-        Task<List<ProductSelectedCategory>> GetAllProductCategoriesAsync();
         #endregion
 
     }

@@ -9,36 +9,7 @@ namespace EShop.Application.Services;
 
 public class FAQCategoryService(IFAQCategoryRepository _faqCategoryRepository) : IFAQCategoryService
 {
-    //public async Task<CreateFAQCategoryResult> CreateFAQCategoryAsync(FAQCategoryCreateViewModel createCategory)
-    //{
-    //    var category = new FAQCategory
-    //    {
-    //        Name = createCategory.Name,
-    //        DisplayOrder = createCategory.DisplayOrder,
-    //        CreatedDate = DateTime.UtcNow,
-    //        IsDeleted = false,
-    //        Icon = createCategory.ExistingIconPath // اضافه کردن مسیر آیکون موجود، در صورتی که وجود داشته باشد
-    //    };
-
-    //    ذخیره سازی فایل آیکون جدید
-    //    if (createCategory.IconFile != null)
-    //    {
-    //        var filePath = Path.Combine("wwwroot/Image/FAQCategory", createCategory.IconFile.FileName);
-
-    //        using (var stream = new FileStream(filePath, FileMode.Create))
-    //        {
-    //            await createCategory.IconFile.CopyToAsync(stream);
-    //        }
-
-    //        category.Icon = $"/Image/FAQCategory/{createCategory.IconFile.FileName}";
-    //    }
-
-    //    await _faqCategoryRepository.AddAsync(category);
-    //    await _faqCategoryRepository.SaveAsync();
-
-    //    return CreateFAQCategoryResult.Success;
-    //}
-
+    
     public async Task<CreateFAQCategoryResult> CreateFAQCategoryAsync(FAQCategoryCreateViewModel createCategory)
     {
 

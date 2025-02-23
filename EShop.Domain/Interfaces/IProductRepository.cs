@@ -9,17 +9,10 @@ namespace EShop.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllProducts();
-        Task<Product> GetProductById(int productId);
-        Task AddProduct(Product product);
-        Task<bool> DeleteProductById(int productId);
-        Task UpdateProduct(Product product);
-        Task SaveChanges();
-
-        #region Site Part
-        Task<Product> ShowProductDetails(int productId);
-        #endregion
-
+        Task<List<Product>> GetAllAsync();
+        Task<Product> GetByIdAsync(int id);
+        Task InsertAsync(Product product);
+        void Update(Product product);
+        Task SaveAsync();
     }
 }
-

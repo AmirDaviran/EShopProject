@@ -16,8 +16,6 @@ namespace EShop.IOC
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IContactUsRepository, ContactUsRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IFAQRepository, FAQRepository>();
             services.AddScoped<IFAQCategoryRepository, FAQCategoryRepository>();
             

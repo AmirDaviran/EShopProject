@@ -1,88 +1,65 @@
-﻿
-using EShop.Domain.Entities.ProductEntity;
+﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Interfaces;
 using EShop.Infra_Data.Context;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace EShop.Infra_Data.Repositories
 {
-    public class ProductRepository (EShopDbContext _context) : IProductRepository
+    public class ProductRepository(EShopDbContext _contex) : IProductRepository
     {
-
-        #region Get All Products
-        public async Task<List<Product>> GetAllProducts()
+        #region GetAll
+        public async Task<List<Product>> GetAllAsync()
         {
-            return await _context.Products
-                .Where(p => !p.IsDeleted)
+            return await _contex.Products
+                .Where(p=>!p.IsDeleted)
                 .ToListAsync();
         }
 
         #endregion
 
-        #region Get Product By Id
-        public async Task<Product> GetProductById(int productId)
+                #region GetById
+        public async Task<Product> GetByIdAsync(int id)
         {
-            return await _context.Products
-                .SingleOrDefaultAsync(p => p.Id == productId);
-        }
-        #endregion
-
-        #region Add Product 
-        public async Task AddProduct(Product product)
-        {
-            await _context.Products.AddAsync(product);
-        }
-
-
-        #endregion
-
-        #region Update Product
-        public async Task UpdateProduct(Product product)
-        {
-             _context.Products.Update(product);
+            return await _contex.Products
+                 .Where(p => p.Id == id && !p.IsDeleted)
+                 .FirstOrDefaultAsync();
         }
 
         #endregion
 
-        #region Delete Product
-        public async Task<bool> DeleteProductById(int productId)
-        {
-            var product = await GetProductById(productId);
-            if (product != null)
-            {
-                product.IsDeleted = true;
-               await UpdateProduct(product);
-                await SaveChanges();
-                return true;
-            }
+        #region Insert
 
-            return false;
+        public async Task InsertAsync(Product product)
+        {
+            await _contex.Products.AddAsync(product);
         }
 
         #endregion
 
-        
-        #region Site Part
-        public async Task<Product> ShowProductDetails(int productId)
+        #region SaveAsync
+        public async Task SaveAsync()
         {
-            return await _context.Products
-                .Include(c => c.ProductSelectedCategories)
-                .Where(p => p.Id == productId)
-                .FirstOrDefaultAsync().ConfigureAwait(false);
-
-
-        }
-        #endregion
-
-        #region SaveChanges
-        public async Task SaveChanges()
-        {
-            await _context.SaveChangesAsync();
+            await _contex.SaveChangesAsync();
         }
 
-       
+        #endregion
+
+        #region Update
+
+        public void Update(Product product)
+        {
+            _contex.Products.Update(product);
+        }
 
         #endregion
+
+
+
+
+
+
+
 
     }
 }

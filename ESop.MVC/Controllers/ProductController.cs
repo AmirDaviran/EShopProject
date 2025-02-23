@@ -10,19 +10,5 @@ namespace EShop.Web.Controllers
             return View();
         }
 
-        #region Show Product
-
-        [HttpGet("ShowProduct/{productId}")]
-        public async Task<IActionResult> ProductDetail(int productId)
-        {
-            var product = await _productService.ShowProductDetails(productId);
-            if (product is null)
-                return NotFound();
-            
-            return View(product);
-        }
-
-
-        #endregion
-    }
+   }
 }

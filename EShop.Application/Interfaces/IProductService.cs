@@ -1,8 +1,6 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
-using EShop.Domain.Enums.ColorEnums;
-using EShop.Domain.Enums.ProductEnums;
-using EShop.Domain.ViewModels.Products;
-using EShop.Domain.ViewModels.Products.Site_Side;
+using EShop.Domain.Enums;
+using EShop.Domain.ViewModels.Products.Product;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +11,12 @@ namespace EShop.Application.Interfaces
 {
     public interface IProductService
     {
-       Task<List<ProductListViewModel>> GetAllProducts();
-        Task<Product> GetProductByProductId(int productId);
-        Task<CreateProductResult> CreateProduct(CreateProductViewModel createProduct);
-        Task<bool> DeleteProduct(int productId);
-        Task UpdateProduct(Product product);
+        Task<List<ProductViewModel>> GetAllAsync();
+        Task<UpdateProductViewModel> GetForUpdateAsync(int id);
 
-        Task<List<ProductSelectedCategory>> GetAllProductCategories();
-        Task<EditProductViewModel> GetProductForEdit(int productId);
-        Task<EditProductResult> EditProduct(EditProductViewModel editProduct);
-
-       
-
-        #region Site Side
-        Task<ProductDetailsViewModel> ShowProductDetails(int productId);
-        #endregion
+        Task<CreateProductResult> CreateAsync(CreateProductViewModel model);
+        Task<UpdateProductResult> UpdateAsync(UpdateProductViewModel model);
+        Task DeleteAsync(int id);
 
     }
 }

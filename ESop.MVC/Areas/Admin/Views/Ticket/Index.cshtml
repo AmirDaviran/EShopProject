@@ -1,4 +1,4 @@
-﻿@model IEnumerable<EShop.Domain.ViewModels.Tickets.Admin.AdminTicketListsViewModel>
+﻿@model IEnumerable<AdminTicketListsViewModel>
 
 @using EShop.Application.Utilities.Convertors
 @using EShop.Application.Utilities.Extensions
@@ -31,7 +31,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="class=" fa-num"><strong>@item.TicketId</strong></td>
+                        <td class="fa-num"><strong>@item.TicketId</strong></td>
                         <td>@item.CreatedDate?.ToStringShamsiDate()</td>
                         @if (item.Owner.IsAdmin)
                         {

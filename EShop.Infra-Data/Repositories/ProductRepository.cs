@@ -6,16 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infra_Data.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository (EShopDbContext _context) : IProductRepository
     {
-
-        #region Context
-        private readonly EShopDbContext _context;
-        public ProductRepository(EShopDbContext context)
-        {
-            _context = context;
-        }
-        #endregion
 
         #region Get All Products
         public async Task<List<Product>> GetAllProducts()
@@ -45,8 +37,6 @@ namespace EShop.Infra_Data.Repositories
 
 
         #endregion
-
-
 
         #region Update Product
         public async Task UpdateProduct(Product product)
@@ -104,9 +94,10 @@ namespace EShop.Infra_Data.Repositories
         #region Site Part
         public async Task<Product> ShowProductDetails(int productId)
         {
-            return await _context.Products.Include(c => c.ProductSelectedCategories)
+            return await _context.Products
+                .Include(c => c.ProductSelectedCategories)
                 .Where(p => p.Id == productId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync().ConfigureAwait(false);
 
 
         }

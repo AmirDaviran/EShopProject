@@ -9,15 +9,8 @@ using EShop.Domain.ViewModels.Products;
 
 namespace EShop.Application.Services
 {
-    public class ColorService : IColorService
+    public class ColorService(IColorRepository _colorRepository) : IColorService
     {
-        #region Constructor 
-        private readonly IColorRepository _colorRepository;
-        public ColorService(IColorRepository colorRepository)
-        {
-            _colorRepository = colorRepository;
-        }
-        #endregion
 
         #region Color CRUD
         public async Task<Color> GetColorByColorId(int colorId)

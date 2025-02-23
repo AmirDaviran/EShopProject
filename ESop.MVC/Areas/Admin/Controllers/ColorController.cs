@@ -6,16 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class ColorController : AdminBaseController
+    public class ColorController(IColorService _colorService) : AdminBaseController
     {
-        #region Constructor
-        private readonly IColorService _colorService;
-        public ColorController(IColorService colorService)
-        {
-            _colorService = colorService;
-        }
-        #endregion
-        #region Lists Of Colors Action
+
+        #region List Colors 
         public async Task<IActionResult> Index()
         {
             var colors = await _colorService.GetAllColorsList();
@@ -33,21 +27,26 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateColor(CreateColorViewModel model)
         {
-            if (ModelState.IsValid)
+            #region validation
+
+            if (!ModelState.IsValid)
+                return View(model);  
+            #endregion
+
+
+            var result = await _colorService.CreateColor(model);
+
+            if (result == CreateColorResult.Success)
             {
-                var result = await _colorService.CreateColor(model);
-
-                if (result == CreateColorResult.Success)
-                {
-                    TempData["SuccessMessage"] = "ثبت رنگ با موفقیت انجام شد.";
-                    return RedirectToAction("Index");
-                }
-
-                else TempData["WarningMessage"] = "ثبت رنگ انجام نشد!";
-
+                TempData["SuccessMessage"] = "ثبت رنگ با موفقیت انجام شد.";
+                return RedirectToAction("Index");
             }
 
-            return View(model);            
+            else TempData["WarningMessage"] = "ثبت رنگ انجام نشد!";
+
+
+            return View(model);
+
         }
         #endregion
 
@@ -104,9 +103,6 @@ namespace EShop.Web.Areas.Admin.Controllers
         }
 
         #endregion
-
-        
-
    
     }
 }

@@ -17,7 +17,6 @@ namespace EShop.Domain.Entities.ProductEntity
         #endregion
 
         #region Relations
-        public Product Product { get; set; }
         public Color Color { get; set; }
         #endregion
     }

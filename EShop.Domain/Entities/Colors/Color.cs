@@ -7,7 +7,6 @@ namespace EShop.Domain.Entities.Colors
     {
         #region Properties
         public string Name { get; set; }
-
         public string Code { get; set; }
         #endregion
 

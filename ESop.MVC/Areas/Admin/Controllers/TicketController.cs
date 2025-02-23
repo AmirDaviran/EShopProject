@@ -5,16 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class TicketController : AdminBaseController
+    public class TicketController (ITicketService _ticketService): AdminBaseController
     {
-        #region Constructor
-
-        private readonly ITicketService _ticketService;
-        public TicketController(ITicketService ticketService)
-        {
-            _ticketService = ticketService;
-        }
-        #endregion
 
         #region Get Ticket Lists Action
         public async Task<IActionResult> Index()
@@ -116,19 +108,19 @@ namespace EShop.Web.Areas.Admin.Controllers
         #endregion
 
         #region Update Ticket Status Action
-        [HttpPost]
-        public async Task<IActionResult> UpdateTicketStatus(int ticketId, TicketStatus status)
-        {
-           var result = await _ticketService.UpdateTicketStatus(ticketId, status);
-            if (result)
-            {
-                TempData[SuccessMessage] = "وضعیت تغییر یافت";
-                return RedirectToAction("Index");
-            }
-            TempData[ErrorMessage] = "تغییر انجام نشد!";
-            return View("Details", ticketId);
-
-        }
+        // [HttpPost]
+        // public async Task<IActionResult> UpdateTicketStatus(int ticketId, TicketStatus status)
+        // {
+        //    var result = await _ticketService.UpdateTicketStatus(ticketId, status);
+        //     if (result)
+        //     {
+        //         TempData[SuccessMessage] = "وضعیت تغییر یافت";
+        //         return RedirectToAction("Index");
+        //     }
+        //     TempData[ErrorMessage] = "تغییر انجام نشد!";
+        //     return View("Details",ticketId);
+        //
+        // }
         #endregion
 
     }

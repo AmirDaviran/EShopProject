@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/EShop.Infra-Data/Migrations/20250221082451_createDB.cs
+/EShop.Infra-Data/Migrations/20250221082451_createDB.Designer.cs
+/EShop.Infra-Data/Migrations/EShopDbContextModelSnapshot.cs
+/.idea/.idea.EShop/.idea/.name
+/.idea/.idea.EShop/.idea/indexLayout.xml
+/.idea/.idea.EShop/.idea/vcs.xml

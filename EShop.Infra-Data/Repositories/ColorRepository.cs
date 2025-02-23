@@ -6,21 +6,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infra_Data.Repositories
 {
-    public class ColorRepository : IColorRepository
+    public class ColorRepository(EShopDbContext _context) : IColorRepository
     {
-        private readonly EShopDbContext _context;
-        public ColorRepository(EShopDbContext context)
-        {
-            _context = context;
-        }
 
 
         #region Color CRUD
+        #region GetColorById
         public async Task<Color> GetColorById(int colorId)
         {
             var color = await _context.Colors.FirstOrDefaultAsync(c => c.Id == colorId);
             return color;
         }
+        #endregion
+
         public async Task<Color?> GetColorByCode(string code)
         {
             return await _context.Colors.FirstOrDefaultAsync(c => c.Code == code);

@@ -8,7 +8,7 @@ using EShop.Application.Utilities.Convertors;
 
 namespace EShop.Web.Controllers
 {
-    public class AccountController(IUserService userService) : BaseController
+    public class AccountController(IUserService _userService) : BaseController
     {
         public IActionResult Index()
         {

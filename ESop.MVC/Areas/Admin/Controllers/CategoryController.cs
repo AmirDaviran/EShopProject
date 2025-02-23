@@ -8,8 +8,6 @@ namespace EShop.Web.Areas.Admin.Controllers
 {
     public class CategoryController(ICategoryService _categoryService) : AdminBaseController
     {
-        #region Actions
-
         #region List
 
         public async Task<IActionResult> List()
@@ -34,12 +32,9 @@ namespace EShop.Web.Areas.Admin.Controllers
         {
             #region validation
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
             #endregion
-
-
+            
             var result = await _categoryService.CreateCategoryAsync(model);
             switch (result)
             {
@@ -70,7 +65,6 @@ namespace EShop.Web.Areas.Admin.Controllers
             if (category is null)
                 return NotFound();
             
-
             var model = new EditCategoryViewModel()
             {
                 Id = category.Id,
@@ -85,10 +79,10 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(EditCategoryViewModel model)
         {
-            if(!ModelState.IsValid)
-            {
+            #region validation
+            if (!ModelState.IsValid)
                 return View(model);
-            }
+            #endregion
 
             var result = await _categoryService.EditCategoryAsync(model);
 
@@ -108,9 +102,8 @@ namespace EShop.Web.Areas.Admin.Controllers
                     TempData[ErrorMessage] = "خطا در انجام عملیات.";
                     break;
                 case EditCategoryResult.InvalidParent:
-                    TempData[ErrorMessage] = "والد انتخاب‌شده معتبر نیست.";
+                    TempData[ErrorMessage] = "والد انتخاب ‌شده معتبر نیست.";
                     break;
-
             }
 
             return View(model);
@@ -122,11 +115,7 @@ namespace EShop.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var category= await _categoryService.GetCategoryByIdAsync(id);
-            if (category==null)
-                return NotFound();
-            
-
+            var category = await _categoryService.GetCategoryByIdAsync(id);
             return View(category);
         }
 
@@ -154,8 +143,6 @@ namespace EShop.Web.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(List));
         }
-        #endregion
-
         #endregion
     }
 }

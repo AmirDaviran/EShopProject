@@ -1,4 +1,5 @@
 ﻿using EShop.Application.Interfaces;
+using EShop.Domain.Entities.FAQ;
 using EShop.Domain.Enums.FAQEnum;
 using EShop.Domain.ViewModels.FAQ;
 using Microsoft.AspNetCore.Mvc;
@@ -16,16 +17,13 @@ namespace EShop.Web.Areas.Admin.Controllers
         #endregion
 
         #region Create
-
         [HttpGet]
         public async Task<IActionResult> Create()
         {
             var model = new FAQCreateViewModel
             {
-                // دریافت لیست دسته‌بندی‌ها از سرویس
                 Categories = await _faqCategoryService.GetFAQCategoriesAsync()
             };
-
             return View(model);
         }
 
@@ -34,12 +32,26 @@ namespace EShop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
+                model.Categories = await _faqCategoryService.GetFAQCategoriesAsync();
+                TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
                 return View(model);
             }
 
-            await _faqService.CreateAsync(model);
+            var result = await _faqService.CreateAsync(model);
+            switch (result)
+            {
+                case OperationResult.Success:
+                    TempData[SuccessMessage] = "سوال با موفقیت ایجاد شد.";
+                    return RedirectToAction("List");
+                case OperationResult.Failure:
+                    TempData[ErrorMessage] = "خطایی در ایجاد سوال رخ داد.";
+                    break;
+                case OperationResult.NotFound:
+                    TempData[ErrorMessage] = "دسته‌بندی انتخاب‌شده یافت نشد.";
+                    break;
+            }
 
-            return View();
+            return View(model);
         }
 
         #endregion
@@ -49,18 +61,40 @@ namespace EShop.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Update(int id)
         {
             var model = await _faqService.GetForUpdateAsync(id);
-            if (model == null) return NotFound();
-            model.Categories = await _faqCategoryService.GetFAQCategoriesAsync();
+            if (model == null)
+            {
+                TempData[ErrorMessage] = "سوال موردنظر یافت نشد.";
+                return NotFound();
+            }
+            model.Categories = await _faqCategoryService.GetFAQCategoriesAsync() ?? new List<FAQCategory>();
             return View(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(FAQUpdateViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+            {
+                model.Categories = await _faqCategoryService.GetFAQCategoriesAsync() ?? new List<FAQCategory>();
+                TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
+                return View(model);
+            }
 
             var result = await _faqService.UpdateAsync(model);
-            if (result == OperationResult.Success) return RedirectToAction("List");
+            switch (result)
+            {
+                case OperationResult.Success:
+                    TempData[SuccessMessage] = "سوال با موفقیت به‌روزرسانی شد.";
+                    return RedirectToAction("List");
+                case OperationResult.Failure:
+                    TempData[ErrorMessage] = "خطایی در به‌روزرسانی سوال رخ داد.";
+                   break;
+                case OperationResult.NotFound:
+                    TempData[ErrorMessage] = "سوال موردنظر یافت نشد.";
+                    break;
+               
+            }
+
             return View(model);
         }
         #endregion

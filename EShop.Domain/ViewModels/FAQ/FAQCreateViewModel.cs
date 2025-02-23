@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 namespace EShop.Domain.ViewModels.FAQ;
 public class FAQCreateViewModel
 {
-    public int Id { get; set; }
     public DateTime CreatedDate { get; set; }
 
     [Display(Name = "سوال")]
@@ -25,4 +24,5 @@ public class FAQCreateViewModel
     public int CategoryId { get; set; }
 
     public List<Entities.FAQ.FAQCategory>? Categories { get; set; }
+
 }

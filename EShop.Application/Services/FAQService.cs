@@ -61,7 +61,7 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
     public async Task<List<FAQViewModel>> GetAllFAQForAdminAsync()
     {
         var faq = await _faqRepository.GetAllFAQAsync();
-        var faqs = faq.Where(f => !f.IsDeleted)
+        var faqs = faq
             .OrderBy(f => f.CreatedDate)
             .Select(f => new FAQViewModel()
             {

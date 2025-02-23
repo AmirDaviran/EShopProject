@@ -10,9 +10,9 @@ public class FAQRepository(EShopDbContext _context) : IFAQRepository
     #region GetAllFAQ
     public async Task<List<FAQ>> GetAllFAQAsync()
     {
-        return await _context.FAQs
-            .Where(f => !f.IsDeleted)
-            .ToListAsync();
+        return await _context.FAQs.Include(f => f.Category)
+                        .Where(f => !f.IsDeleted)
+                       .ToListAsync();
     }
     #endregion
 
@@ -51,7 +51,7 @@ public class FAQRepository(EShopDbContext _context) : IFAQRepository
 
     #region ClientSide
 
-    
+
     public async Task<List<FAQ>> GetFAQsByCategoryIdAsync(int categoryId)
     {
         return await _context.FAQs

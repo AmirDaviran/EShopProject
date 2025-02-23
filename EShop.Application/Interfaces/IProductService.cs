@@ -1,7 +1,6 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Enums.ColorEnums;
 using EShop.Domain.Enums.ProductEnums;
-using EShop.Domain.ViewModels.Colors.Product_Color;
 using EShop.Domain.ViewModels.Products;
 using EShop.Domain.ViewModels.Products.Site_Side;
 using System;
@@ -24,11 +23,7 @@ namespace EShop.Application.Interfaces
         Task<EditProductViewModel> GetProductForEdit(int productId);
         Task<EditProductResult> EditProduct(EditProductViewModel editProduct);
 
-        #region Product Color Mapping
-        Task<AddProductColorResult> AddColorToProduct(AddProductColorViewModel model);
-        Task<List<GetProductColorMappingsViewModel>> GetProductColorMappings(int productId);
-        Task<List<ProductWithColorsViewModel>> GetAllProductsWithColorsAndPrices();
-        #endregion
+       
 
         #region Site Side
         Task<ProductDetailsViewModel> ShowProductDetails(int productId);

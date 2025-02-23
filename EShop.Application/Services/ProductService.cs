@@ -5,8 +5,7 @@ using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Enums.ColorEnums;
 using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.Interfaces;
-using EShop.Domain.ViewModels.Colors;
-using EShop.Domain.ViewModels.Colors.Product_Color;
+
 using EShop.Domain.ViewModels.Products;
 using EShop.Domain.ViewModels.Products.Site_Side;
 
@@ -15,9 +14,8 @@ namespace EShop.Application.Services
     public class ProductService
             (IProductRepository _productRepository,
             ICategoryService _categoryService,
-            ICategoryRepository _categoryRepository,
-            IColorRepository _colorRepository)
-        : IProductService
+            ICategoryRepository _categoryRepository )
+        
     {
 
         #region Get Product By Id
@@ -154,76 +152,7 @@ namespace EShop.Application.Services
             }
         }
 
-        #region ProductColorMapping
-        public async Task<AddProductColorResult> AddColorToProduct(AddProductColorViewModel model)
-        {
-            var product = await GetProductByProductId(model.ProductId);
-            if (product == null)
-            {
-                return AddProductColorResult.NotFound;
-            }
-            //product.Price += model.DisparityAmount;
-
-            var mapping = new ProductColorMapping
-            {
-                Amount = model.DisparityAmount,
-                ColorId = model.SelectedColorId,
-                ProductId = model.ProductId,
-                CreatedDate = DateTime.Now
-            };
-
-            await _colorRepository.AddProductColorMapping(mapping);
-            //await UpdateProduct(product);
-            await _colorRepository.SaveChanges();
-
-            return AddProductColorResult.Success;
-
-        }
-
-        public async Task<List<GetProductColorMappingsViewModel>> GetProductColorMappings(int productId)
-        {
-            var product = await _productRepository.GetProductById(productId);
-            if (product != null)
-            {
-                var colorMappings = await _colorRepository.GetProductColorMappingsById(productId);
-                var result = colorMappings.Select(mapping => new GetProductColorMappingsViewModel
-
-                {
-                    ProductId = mapping.ProductId,
-                    Name = mapping.Color.Name,
-                    Code = mapping.ColorId,
-                    Price = product.Price + mapping.Amount
-                }).ToList();
-                return result;
-            }
-            return new List<GetProductColorMappingsViewModel>();
-        }
-
-        public async Task<List<ProductWithColorsViewModel>> GetAllProductsWithColorsAndPrices()
-        {
-            var products = await _productRepository.GetAllProducts();
-            return products.Select(product => new ProductWithColorsViewModel
-            {
-                ProductId = product.Id,
-                ImageName = product.ImageName,
-                Price = product.Price,
-                CreatedDate = product.CreatedDate,
-                ColorMappings = product.ProductColorMappings
-                .Where(mapping => !mapping.IsDeleted)
-                .Select(mapping => new ColorMappingViewModel
-                {
-                    Id = mapping.Id,
-                    ColorId = mapping.ColorId,
-                    ColorName = mapping.Color.Name,
-                    CreatedDate = mapping.CreatedDate,
-                    //Price = product.Price + mapping.Amount
-                    Price = mapping.Amount
-                }).ToList()
-
-            }).ToList();
-        }
-
-        #endregion
+       
 
         #region Site Side
         public async Task<ProductDetailsViewModel> ShowProductDetails(int productId)

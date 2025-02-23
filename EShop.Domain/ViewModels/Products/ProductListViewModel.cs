@@ -1,5 +1,4 @@
-﻿using EShop.Domain.ViewModels.Colors;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EShop.Domain.ViewModels.Products
 {

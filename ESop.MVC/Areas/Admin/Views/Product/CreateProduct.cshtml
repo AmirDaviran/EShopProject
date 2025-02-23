@@ -1,11 +1,9 @@
 ﻿@model CreateProductViewModel
 @using EShop.Domain.Entities.ProductEntity
-@using EShop.Domain.Entities.Colors
 @{
     ViewData["Title"] = "افزودن محصول جدید در ادمین";
     Layout = "_AdminLayout";
     var categories = TempData["Categories"] as List<Category>;
-    var colors = TempData["Colors"] as List<Color>;
 }
 
 

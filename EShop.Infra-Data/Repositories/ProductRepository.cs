@@ -14,8 +14,6 @@ namespace EShop.Infra_Data.Repositories
         {
             return await _context.Products
                 .Where(p => !p.IsDeleted)
-                .Include(p => p.ProductColorMappings)
-                .ThenInclude(cm => cm.Color)
                 .ToListAsync();
         }
 
@@ -63,34 +61,7 @@ namespace EShop.Infra_Data.Repositories
 
         #endregion
 
-        #region Add Product Color Mapping
-        //public async Task AddProductColorMappings(List<int> selectedColors, int amount, int productId)
-        //{
-        //    if (selectedColors != null && selectedColors.Any())
-        //    {
-        //        var newProductColorMappings = new List<ProductColorMapping>();
-        //        foreach (var colorId in selectedColors)
-        //        {
-        //            newProductColorMappings.Add(new ProductColorMapping
-        //            {
-        //                ProductId = productId,
-        //                ColorId = colorId,
-        //                Amount = amount
-        //            });
-        //        }
-        //        await _context.ProductColorMappings.AddRangeAsync(newProductColorMappings);
-        //        await SaveChanges();
-        //    }
-        //}
-
-        public async Task AddProductColorMapping(ProductColorMapping mapping)
-        {
-           await _context.ProductColorMappings.AddAsync(mapping);
-        }
-
-
-        #endregion
-
+        
         #region Site Part
         public async Task<Product> ShowProductDetails(int productId)
         {

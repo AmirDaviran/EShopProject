@@ -10,10 +10,10 @@ public class SiteTools
 
     #region PAth
 
-    public static string ContactUsAttachmentPath { get; set; } = "/Image/ContactUs/";
-    public static string AdminResponseAttachmentPath { get; set; } = "/Image/AdminResponse/";
-    public static string TicketAttachmentsPath { get; set; } = "/Image/TicketAttachments/";
-    public static string FAQCategoryAttachmentsPath { get; set; } = "/Image/FAQCategory/";
+    public static string ContactUsAttachmentPath { get; set; } = "/wwwroot/Image/ContactUs/";
+    public static string AdminResponseAttachmentPath { get; set; } = "/wwwroot/Image/AdminResponse/";
+    public static string TicketAttachmentsPath { get; set; } = "/wwwroot/Image/TicketAttachments/";
+    public static string FAQCategoryAttachmentsPath { get; set; } = "/wwwroot/Image/FAQCategory/";
 
     #endregion
 }

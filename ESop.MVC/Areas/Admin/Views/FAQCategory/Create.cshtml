@@ -7,7 +7,7 @@
     </div>
     <div class="card-body">
         <form asp-action="Create" asp-controller="FAQCategory" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
-            <input type="hidden" asp-for="ExistingIconPath" />
+           
 
             <div class="mb-3 w-50">
                 <label class="form-label" asp-for="Name">نام دسته‌بندی</label>
@@ -36,14 +36,13 @@
                 @if (!string.IsNullOrEmpty(Model.ExistingIconPath))
                 {
                     <img src="@Model.ExistingIconPath" class="img-thumbnail mt-2" width="100" />
-                    <input type="hidden" asp-for="ExistingIconPath" />
                 }
                 <span asp-validation-for="IconFile" class="text-danger"></span>
             </div>
 
             <div class="mb-3 w-50 text-center">
                 <button type="submit" class="btn btn-primary me-2">ذخیره</button>
-                <button type="reset" class="btn btn-secondary">لغو</button>
+                <button asp-action="List" asp-controller="FAQCategory" type="reset" class="btn btn-secondary">بازگشت</button>
             </div>
         </form>
     </div>

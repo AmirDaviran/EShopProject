@@ -10,20 +10,18 @@ public static class FormFileExtensions
     {
         if (attachment == null) return null;
 
-        string fileExtension = Path.GetExtension(attachment.FileName).ToLowerInvariant();
-        if (!AllowedExtensions.Contains(fileExtension)) return null;
+        var fileName = Guid.NewGuid() + Path.GetExtension(attachment.FileName);
+        var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", uploadPath.TrimStart('/'));
 
-        var fileName = Guid.NewGuid() + fileExtension;
+        if (!Directory.Exists(fullPath))
+            Directory.CreateDirectory(fullPath);
 
-        if (attachment.IsImage())
+        var filePath = Path.Combine(fullPath, fileName);
+        using (var stream = new FileStream(filePath, FileMode.Create))
         {
-            attachment.AddImageToServer(fileName, uploadPath);
-        }
-         else
-        {
-            await attachment.AddFilesToServer(fileName, uploadPath);
+            await attachment.CopyToAsync(stream);
         }
 
-        return fileName;
+        return $"/{uploadPath.TrimStart('/')}/{fileName}";
     }
 }

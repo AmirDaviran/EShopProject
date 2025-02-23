@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+
     public class FAQCategoryController(IFAQCategoryService _faqCategoryService) : AdminBaseController
     {
 
@@ -30,13 +30,10 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(FAQCategoryCreateViewModel viewModel)
         {
+            ModelState.Remove("ExistingIconPath"); // حذف اعتبارسنجی برای این فیلد
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error); // یا از ILogger استفاده کنید
-                }
+                TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
                 return View(viewModel);
             }
 
@@ -84,8 +81,13 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(FAQCategoryUpdateViewModel viewModel)
         {
-            if (!ModelState.IsValid)
-                return View(viewModel);
+            //ModelState.Remove("ExistingIconPath"); // حذف اعتبارسنجی برای این فیلد
+            //if (!ModelState.IsValid)
+            //{
+            //    TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
+            //    return View(viewModel);
+            //}
+
 
 
             var result = await _faqCategoryService.UpdateFAQCategoryAsync(viewModel);

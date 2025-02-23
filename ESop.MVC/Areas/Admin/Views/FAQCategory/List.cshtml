@@ -23,11 +23,13 @@
                     <td>@category.Name</td>
                     <td><img src="@category.Icon" width="30"/></td>ُ
                         <td>@category.DisplayOrder</td>
-                    <td>
+                    <td style="display: flex; gap: 10px;">
                         <a asp-action="Update" asp-route-id="@category.Id" class="btn btn-sm btn-warning">ویرایش</a>
-                        <form asp-action="Delete" method="post" style="display: inline;">
-                            <input type="hidden" name="id" value="@category.Id"/>
-                            <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                        <form asp-action="Delete" method="post" id="delete-form-@category.Id">
+                            <input type="hidden" name="id" value="@category.Id" />
+                            <button type="button" class="btn btn-danger btn-sm" onclick="if(confirm('آیا مطمئن هستید که می‌خواهید این کاربر را حذف کنید؟')) { document.getElementById('delete-form-@category.Id').submit(); }">
+                                <i class="bx bx-trash me-1"></i> حذف
+                            </button>
                         </form>
                     </td>
                 </tr>

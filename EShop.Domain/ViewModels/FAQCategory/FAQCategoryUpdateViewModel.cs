@@ -19,7 +19,6 @@ public class FAQCategoryUpdateViewModel
 
     // فایل آپلودی (نوع IFormFile)
     [Display(Name = "آیکون")]
-    [Required(ErrorMessage = "لطفاً یک آیکون انتخاب کنید.")]
     public IFormFile IconFile { get; set; }
 
     // مسیر آیکون موجود (نوع string)

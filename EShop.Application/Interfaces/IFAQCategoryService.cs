@@ -12,4 +12,5 @@ public interface IFAQCategoryService
     Task<UpdateFAQCategoryResult> UpdateFAQCategoryAsync(FAQCategoryUpdateViewModel updateCategory);
     Task<List<FAQCategory>> GetCategoriesOrderedAsync();
     Task DeleteCategoryAsync(int id);
+    
 }

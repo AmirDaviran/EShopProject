@@ -9,36 +9,6 @@ namespace EShop.Application.Services;
 
 public class FAQCategoryService(IFAQCategoryRepository _faqCategoryRepository) : IFAQCategoryService
 {
-    public async Task<CreateFAQCategoryResult> CreateFAQCategoryAsync(FAQCategoryCreateViewModel createCategory)
-    {
-        var category = new FAQCategory
-        {
-            Name = createCategory.Name,
-            DisplayOrder = createCategory.DisplayOrder,
-            CreatedDate = DateTime.UtcNow,
-            IsDeleted = false,
-            Icon = createCategory.ExistingIconPath // اضافه کردن مسیر آیکون موجود، در صورتی که وجود داشته باشد
-        };
-
-        // ذخیره سازی فایل آیکون جدید
-        if (createCategory.IconFile != null)
-        {
-            var filePath = Path.Combine("wwwroot/Image/FAQCategory", createCategory.IconFile.FileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await createCategory.IconFile.CopyToAsync(stream);
-            }
-
-            category.Icon = $"/Image/FAQCategory/{createCategory.IconFile.FileName}";
-        }
-
-        await _faqCategoryRepository.AddAsync(category);
-        await _faqCategoryRepository.SaveAsync();
-
-        return CreateFAQCategoryResult.Success;
-    }
-
     //public async Task<CreateFAQCategoryResult> CreateFAQCategoryAsync(FAQCategoryCreateViewModel createCategory)
     //{
     //    var category = new FAQCategory
@@ -46,22 +16,21 @@ public class FAQCategoryService(IFAQCategoryRepository _faqCategoryRepository) :
     //        Name = createCategory.Name,
     //        DisplayOrder = createCategory.DisplayOrder,
     //        CreatedDate = DateTime.UtcNow,
-    //        IsDeleted = false
+    //        IsDeleted = false,
+    //        Icon = createCategory.ExistingIconPath // اضافه کردن مسیر آیکون موجود، در صورتی که وجود داشته باشد
     //    };
 
-    //    if (createCategory.IconFile != null && createCategory.IconFile.Length > 0)
+    //    ذخیره سازی فایل آیکون جدید
+    //    if (createCategory.IconFile != null)
     //    {
-    //        // استفاده از متد توسعه‌ای برای آپلود فایل
-    //        var fileName = await createCategory.IconFile.SaveAttachmentAsync(SiteTools.FAQCategoryAttachmentsPath);
-    //        if (fileName != null)
+    //        var filePath = Path.Combine("wwwroot/Image/FAQCategory", createCategory.IconFile.FileName);
+
+    //        using (var stream = new FileStream(filePath, FileMode.Create))
     //        {
-    //            category.Icon = SiteTools.FAQCategoryAttachmentsPath + fileName;
+    //            await createCategory.IconFile.CopyToAsync(stream);
     //        }
-    //        else
-    //        {
-    //            // در صورت ناموفق بودن آپلود می‌توان خطایی را مدیریت کرد
-    //            return CreateFAQCategoryResult.Failure;
-    //        }
+
+    //        category.Icon = $"/Image/FAQCategory/{createCategory.IconFile.FileName}";
     //    }
 
     //    await _faqCategoryRepository.AddAsync(category);
@@ -69,6 +38,39 @@ public class FAQCategoryService(IFAQCategoryRepository _faqCategoryRepository) :
 
     //    return CreateFAQCategoryResult.Success;
     //}
+
+    public async Task<CreateFAQCategoryResult> CreateFAQCategoryAsync(FAQCategoryCreateViewModel createCategory)
+    {
+
+        var category = new FAQCategory
+        {
+            Name = createCategory.Name,
+            DisplayOrder = createCategory.DisplayOrder,
+            CreatedDate = DateTime.UtcNow,
+            IsDeleted = false
+        };
+
+        if (createCategory.IconFile != null && createCategory.IconFile.Length > 0)
+        {
+            // استفاده از متد توسعه‌ای برای آپلود فایل
+            var fileName = await createCategory.IconFile.SaveAttachmentAsync(SiteTools.FAQCategoryAttachmentsPath);
+            if (fileName != null)
+            {
+                //category.Icon = SiteTools.FAQCategoryAttachmentsPath + fileName;
+                category.Icon = fileName; // تغییر اینجا: فقط fileName را استفاده بشه
+            }
+            else
+            {
+                // در صورت ناموفق بودن آپلود می‌توان خطایی را مدیریت کرد
+                return CreateFAQCategoryResult.Failure;
+            }
+        }
+
+        await _faqCategoryRepository.AddAsync(category);
+        await _faqCategoryRepository.SaveAsync();
+
+        return CreateFAQCategoryResult.Success;
+    }
 
     public async Task<UpdateFAQCategoryResult> UpdateFAQCategoryAsync(FAQCategoryUpdateViewModel updateCategory)
     {
@@ -92,7 +94,7 @@ public class FAQCategoryService(IFAQCategoryRepository _faqCategoryRepository) :
                 // در صورت ناموفق بودن آپلود فایل
                 return UpdateFAQCategoryResult.Failure;
             }
-            category.Icon = $"{SiteTools.FAQCategoryAttachmentsPath}{fileName}";
+            category.Icon = fileName;
         }
 
         // به‌روزرسانی سایر فیلدها

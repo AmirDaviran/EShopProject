@@ -114,6 +114,7 @@ public class FAQService(IFAQRepository _faqRepository) : IFAQService
             Question = model.Question,
             Answer = model.Answer,
             CreatedDate = model.CreatedDate,
+           
         };
 
         await _faqRepository.InsertAsync(faQs);

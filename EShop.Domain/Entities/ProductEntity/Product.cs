@@ -1,5 +1,4 @@
 ﻿using EShop.Domain.Entities.BaseEntities;
-using System.ComponentModel.DataAnnotations;
 
 namespace EShop.Domain.Entities.ProductEntity
 {

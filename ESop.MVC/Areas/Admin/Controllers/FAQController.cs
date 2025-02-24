@@ -8,7 +8,6 @@ namespace EShop.Web.Areas.Admin.Controllers
     public class FAQController(IFAQService _faqService, IFAQCategoryService _faqCategoryService) : AdminBaseController
     {
         #region List
-
         public async Task<IActionResult> List()
         {
             var faqs = await _faqService.GetAllFAQForAdminAsync();

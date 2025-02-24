@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace EShop.Domain.Enums.ProductEnums
 {
 
@@ -11,15 +6,25 @@ namespace EShop.Domain.Enums.ProductEnums
     public enum CreateProductResult
     {
         Success,
-        NotImage
+        InvalidInput,
+        ImageUploadFailed,
+        
     }
 
-    public enum EditProductResult
+    public enum UpdateProductResult
     {
         Success,
         NotFound,
-        NotProductSelectedCategory
+        InvalidInput,
+        ImageUploadFailed,
+        }
+    public enum DeleteProductResult
+    {
+        Success,
+        NotFound,
+        
     }
+
     #endregion
 
 }

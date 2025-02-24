@@ -20,11 +20,7 @@ namespace EShop.Domain.Interfaces
 
 
 
-        #region Selected Category
-        Task AddProductSelectedCategories(List<int> productSelectedCategories, int productId);
-        Task RemoveProductSelectedCategories(int productId);
-        Task<List<int>> GetAllProductCategoriesId(int productId);
-        #endregion
+        
 
     }
 }

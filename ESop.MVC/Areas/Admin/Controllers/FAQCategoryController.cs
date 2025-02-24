@@ -30,15 +30,16 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(FAQCategoryCreateViewModel viewModel)
         {
+            #region Vlidation
             ModelState.Remove("ExistingIconPath"); // حذف اعتبارسنجی برای این فیلد
             if (!ModelState.IsValid)
             {
                 TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
                 return View(viewModel);
             }
+            #endregion
 
-            // فراخوانی متد سرویس جهت ایجاد دسته‌بندی؛ 
-            // منطق آپلود فایل و اعتبارسنجی آن داخل سرویس (با استفاده از متدهای توسعه‌ای) انجام می‌شود.
+           
             var result = await _faqCategoryService.CreateFAQCategoryAsync(viewModel);
 
             switch (result)

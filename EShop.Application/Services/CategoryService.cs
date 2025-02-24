@@ -111,7 +111,7 @@ namespace EShop.Application.Services
         {
             var categories = await _categoryRepository.GetAllCategoriesAsync();
 
-            // انتخاب دسته‌بندی‌های سطح بالا (بدون والد)
+            
             var topLevelCategories = categories
                 .Where(c => c.ParentCategoryId is null)
                 .OrderBy(c => c.DisplayOrder)

@@ -12,13 +12,13 @@ namespace EShop.Infra_Data.Repositories
         public async Task<List<Product>> GetAllAsync()
         {
             return await _contex.Products
-                .Where(p=>!p.IsDeleted)
+                .Where(p => !p.IsDeleted)
                 .ToListAsync();
         }
 
         #endregion
 
-                #region GetById
+        #region GetById
         public async Task<Product> GetByIdAsync(int id)
         {
             return await _contex.Products
@@ -53,12 +53,6 @@ namespace EShop.Infra_Data.Repositories
         }
 
         #endregion
-
-
-
-
-
-
 
 
     }

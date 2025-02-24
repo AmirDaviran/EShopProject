@@ -15,6 +15,6 @@ public class SiteTools
     public static string TicketAttachmentsPath { get; set; } = "/wwwroot/Image/TicketAttachments/";
     public static string FAQCategoryAttachmentsPath { get; set; } = "/wwwroot/Image/FAQCategory/";
     public static string ProducMainPicturetAttachmentsPath { get; set; } = "/wwwroot/Image/Product/MainPicture";
-
+    
     #endregion
 }

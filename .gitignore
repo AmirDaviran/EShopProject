@@ -381,3 +381,4 @@ FodyWeavers.xsd
 /EShop.Infra-Data/Migrations/20250221203738_FAQCategoryServiceFix.Designer.cs
 /EShop.Infra-Data/Migrations/20250222150127_FAQCategoryServiceFix2.cs
 /EShop.Infra-Data/Migrations/20250222150127_FAQCategoryServiceFix2.Designer.cs
+*.cs

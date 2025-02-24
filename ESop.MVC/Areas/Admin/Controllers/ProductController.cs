@@ -1,4 +1,5 @@
 ﻿using EShop.Application.Interfaces;
+using EShop.Application.Services;
 using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.ViewModels.Products.Product;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,10 @@ namespace EShop.Web.Areas.Admin.Controllers
     {
 
         #region List
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List( FilterProductViewModel model)
         {
-            var product = await _productService.GetAllAsync();
-            return View();
+            var result = await _productService.FilterAsync(model);
+            return View(result);
         }
 
         #endregion

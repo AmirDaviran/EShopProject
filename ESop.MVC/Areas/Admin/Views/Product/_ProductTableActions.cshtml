@@ -1,16 +1,23 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model EShop.Domain.ViewModels.Products.Product.ProductViewModel
+﻿@using EShop.Domain.ViewModels.Products.Product
+@model FilterProductViewModel
 
-<form method="get" asp-controller="Product" asp-action="List" id="filter-search">
+<form method="get" asp-action="List" id="filter-search">
     <div class="row mx-2">
         <!-- فیلتر تعداد نمایش داده‌ها -->
         <div class="col-md-2">
             <div class="dataTables_length" id="DataTables_Table_0_length">
                 <label>
-                    <select name="TakeEntity" class="form-select" onchange="this.form.submit()">
+                    <select name="TakeEntity" asp-for="TakeEntity" class="form-select" onchange="this.form.submit()">
                         @foreach (var option in new[] { 10, 25, 50, 100 })
                         {
-                            <option value="@option">@option</option>
+                            if (Model.TakeEntity == option)
+                            {
+                                <option value="@option" selected>@option</option>
+                            }
+                            else
+                            {
+                                <option value="@option">@option</option>
+                            }
                         }
                     </select>
                 </label>
@@ -23,24 +30,25 @@
                 <!-- فیلتر جستجو -->
                 <div id="DataTables_Table_0_filter" class="dataTables_filter">
                     <label>
-                        <input type="search" name="SearchTerm" class="form-control" placeholder="Search.." onkeypress="if(event.keyCode == 13) { this.form.submit(); }">
+                        <input type="search" name="SearchTerm" class="form-control" placeholder="Search.." value="@(Model?.SearchTerm ?? "")" onkeypress="if(event.keyCode == 13) { this.form.submit(); }">
                     </label>
-                    <a class="btn btn-primary add-new" asp-controller="Product" asp-action="List">
-                        <span class="d-none d-sm-inline-block">ریست</span>
+                    <a class="btn btn-primary add-new" asp-action="list">
+                        <span class="d-none d-sm-inline-block">ریست</span></>
                     </a>
                 </div>
+
 
                 <!-- دکمه‌های عملیات -->
                 <div class="btn-group d-flex align-items-center">
                     <button class="btn btn-secondary buttons-collection dropdown-toggle btn-outline-secondary mx-2" type="button">
                         <span><i class="bx bx-export me-1"></i>Export</span>
                     </button>
+
+                    <!-- دکمه افزودن کاربر -->
                     <a class="btn btn-primary add-new" asp-action="Create" asp-controller="Product" asp-area="Admin">
-                        <span>
-                            <i class="bx bx-plus me-0 me-sm-1"></i>
-                            <span class="d-none d-sm-inline-block">افزودن محصول جدید</span>
-                        </span>
+                        <span><i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">افزودن محصول جدید</span></span>
                     </a>
+
                 </div>
             </div>
         </div>

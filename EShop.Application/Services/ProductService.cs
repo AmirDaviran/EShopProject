@@ -4,10 +4,10 @@ using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.Interfaces;
 using EShop.Domain.ViewModels.Products.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Application.Services
 {
-    // استفاده از ساختار کلاسه جدید با پارامتر سازنده
     public class ProductService(IProductRepository _productRepository) : IProductService
     {
         #region Create
@@ -181,6 +181,38 @@ namespace EShop.Application.Services
              return UpdateProductResult.Success;
         }
 
+        #endregion
+
+        #region Filter
+        public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
+        {
+            var query = _productRepository.GetProductAsQueryable();
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(model.Title))
+            {
+                query = query.Where(user => EF.Functions.Like(user.Title, $"%{model.Title}%"));
+            }
+
+            #endregion
+
+            #region Paging
+            await model.Paging(query.Select(p => new ProductViewModel
+            {
+                CreatedDate = p.CreatedDate,
+                ExpertReview = p.ExpertReview,
+                Id = p.Id,
+                ImageName = p.ImageName,
+                Price = p.Price,
+                Review = p.Review,
+                Title = p.Title,
+                TitleDescription = p.TitleDescription
+            }));
+            #endregion
+
+            return model;
+        }
         #endregion
     }
 }

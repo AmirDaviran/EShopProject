@@ -1,5 +1,6 @@
 ﻿using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.ViewModels.Products.Product;
+using EShop.Domain.ViewModels.UserViewModel;
 namespace EShop.Application.Interfaces
 {
     public interface IProductService
@@ -9,6 +10,6 @@ namespace EShop.Application.Interfaces
         Task<UpdateProductResult> UpdateAsync(UpdateProductViewModel model);
         Task<CreateProductResult> CreateAsync(CreateProductViewModel model);
         Task<DeleteProductResult> DeleteAsync(int id);
-
+        Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model);
     }
 }

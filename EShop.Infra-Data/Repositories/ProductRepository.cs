@@ -54,6 +54,11 @@ namespace EShop.Infra_Data.Repositories
 
         #endregion
 
-
+        #region Product
+      public  IQueryable<Product> GetProductAsQueryable()
+        {
+            return _contex.Products.AsQueryable();
+        }
+        #endregion
     }
 }

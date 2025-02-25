@@ -1,0 +1,43 @@
+﻿@model EShop.Domain.ViewModels.Products.Specification.FilterSpecificationViewModel
+
+<form method="get" asp-controller="Specification" asp-action="List" id="filter-search">
+    <div class="row mx-2">
+        <!-- فیلتر تعداد نمایش داده‌ها -->
+        <div class="col-md-2">
+            <div class="dataTables_length" id="DataTables_Table_0_length">
+                <label asp-for="TakeEntity">
+                    <select asp-for="TakeEntity" class="form-select" onchange="this.form.submit()">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </label>
+            </div>
+        </div>
+
+        <!-- بخش جستجو و دکمه‌ها -->
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- فیلتر جستجو -->
+                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                    <label asp-for="SearchTerm">
+                        <input asp-for="SearchTerm" type="search" class="form-control" placeholder="Search.." />
+                    </label>
+                    <a class="btn btn-primary add-new" asp-action="List" asp-controller="Specification">ریست</a>
+                </div>
+
+                <!-- دکمه‌های عملیات -->
+                <div class="btn-group d-flex align-items-center">
+                    <button class="btn btn-secondary buttons-collection dropdown-toggle btn-outline-secondary mx-2" type="button">
+                        <i class="bx bx-export me-1"></i> Export
+                    </button>
+                    <a class="btn btn-primary add-new" asp-action="Create" asp-controller="Specification" asp-area="Admin">
+                        <i class="bx bx-plus me-0 me-sm-1"></i>
+                        <span class="d-none d-sm-inline-block">افزودن جزئیات محصول </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

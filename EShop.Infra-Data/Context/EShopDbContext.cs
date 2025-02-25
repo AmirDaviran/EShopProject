@@ -31,10 +31,11 @@ namespace EShop.Infra_Data.Context
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-      
+
         #endregion
 
         #region Specification
+        public DbSet<Specification> Specifications { get; set; }
         #endregion
 
         #region FAQ

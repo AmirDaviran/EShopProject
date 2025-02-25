@@ -1,4 +1,5 @@
 ﻿using EShop.Domain.Entities.BaseEntities;
+using EShop.Domain.Entities.ProductEntity.Mapping;
 
 namespace EShop.Domain.Entities.ProductEntity
 {
@@ -13,6 +14,10 @@ namespace EShop.Domain.Entities.ProductEntity
         public string? ExpertReview { get; set; }
         public string? ImageName { get; set; }
 
+        #endregion
+
+        #region Relations
+        public ICollection<ProductSpecificationMapping> ProductSpecificationMappings { get; set; }
         #endregion
     }
 }

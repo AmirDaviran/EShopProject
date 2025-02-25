@@ -20,6 +20,7 @@ namespace EShop.IOC
             services.AddScoped<IFAQCategoryRepository, FAQCategoryRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ISpecificationRepository, SpecificationRepository>();
 
             #endregion
 
@@ -33,6 +34,8 @@ namespace EShop.IOC
             services.AddScoped<IFAQService, FAQService>();
             services.AddScoped<IFAQCategoryService, FAQCategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ISpecificationService, SpecificationService>();
             #endregion
 
 

@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model EShop.Domain.ViewModels.Products.Specification.CreateSpecificationViewModel
+
+@{
+    ViewData["Title"] = "افزودن مشخصه";
+}
+
+<form method="post" asp-area="Admin" asp-controller="Specification" asp-action="Create" class="add-new-product pt-0" id="addNewProductForm" enctype="multipart/form-data">
+    <div class="d-flex flex-column align-items-center">
+        <!-- عنوان محصول -->
+        <div class="mb-3 w-50">
+            <label class="form-label" for="Title">عنوان </label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-package"></i></span>
+                <input type="text" asp-for="Name" class="form-control" id="Title" placeholder="نام مشخصه ">
+            </div>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <!-- دکمه‌های عملیات -->
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary me-2">افزودن محصول</button>
+            <a asp-action="List" asp-controller="Specification" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </div>
+</form>
+
+}

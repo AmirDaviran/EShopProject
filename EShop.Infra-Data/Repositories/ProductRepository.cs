@@ -13,7 +13,9 @@ namespace EShop.Infra_Data.Repositories
         public async Task<List<Product>> GetAllAsync()
         {
             return await _contex.Products
-                .Where(p => !p.IsDeleted)
+                .Where(product => !product.IsDeleted)
+                .Include(psm=>psm.ProductSpecificationMappings)
+                .ThenInclude(spec=>spec.Specification)
                 .ToListAsync();
         }
 
@@ -55,7 +57,6 @@ namespace EShop.Infra_Data.Repositories
 
         #endregion
 
-   
         #region Filter
 
         public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)

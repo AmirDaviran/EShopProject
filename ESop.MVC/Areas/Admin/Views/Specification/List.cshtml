@@ -1,0 +1,73 @@
+﻿@using EShop.Application.Utilities.Convertors
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model EShop.Domain.ViewModels.Products.Specification.FilterSpecificationViewModel
+
+@{
+    ViewData["Title"] = " افزودن مشخصات";
+}
+
+<div class="content-wrapper">
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <div class="card">
+            <div class="card-datatable table-responsive">
+
+                <partial name="_SpecificationTableActions" />
+
+                <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                    <table class="datatables-users table border-top dataTable no-footer dtr-column" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                        <!-- هدر جدول -->
+                        <thead>
+                            <tr>
+                                <th class="control sorting_disabled dtr-hidden" rowspan="1" colspan="1" style="display: none;"></th>
+                                <th class="sorting sorting_desc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 148.25px;" aria-sort="descending">شناسه</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 145.859px;">نام مشخصه</th>
+                                <th class="sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" style="width: 184.359px;">تاریخ ایجاد</th>
+                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 250px;">عملیات</th> <!-- افزایش عرض ستون عملیات -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Entities.Any())
+                            {
+                                @foreach (var product in Model.Entities)
+                                {
+                                    <tr>
+                                        <td>@product.Id</td>
+                                        <td>@product.Name</td>
+                                        <td>@product.CreateDate.ToStringShamsiDate()</td>
+                                        <td class="text-center">
+                                            <!-- هم‌راستا کردن دکمه‌ها در مرکز ستون -->
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <!-- چیدمان افقی با فاصله -->
+                                                <!-- دکمه ویرایش -->
+                                                <a class="btn btn-primary btn-sm" asp-controller="Specification" asp-action="Update" asp-route-id="@product.Id">
+                                                    <i class="bx bx-edit-alt me-1"></i> ویرایش
+                                                </a>
+
+                                                <!-- دکمه حذف -->
+                                                <form asp-action="Delete" asp-controller="Specification" asp-area="Admin" method="post" id="delete-form-@product.Id" style="margin: 0;">
+                                                    <input type="hidden" asp-for="@product.Id" name="id" />
+                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا مطمئن هستید که می‌خواهید این محصول را حذف کنید؟');">
+                                                        <i class="bx bx-trash me-1"></i> حذف
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr class="odd">
+                                    <td valign="top" colspan="7" class="text-center">هیچ محصولی یافت نشد</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <!-- پاورقی جدول (صفحه‌بندی و اطلاعات) -->
+                    <partial name="_AdminPagination" model="@Model.GetCurrentPaging()" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

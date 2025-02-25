@@ -115,45 +115,33 @@
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a asp-area="Admin" asp-controller="Product" asp-action="List" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-package"></i>
+                        <i class="menu-icon tf-icons bx bx-list-ol"></i>
                         <div>لیست محصولات</div>
+                    </a>
+                </li>
+            </ul>
+            <!-- Admin Specifications Management -->
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a asp-area="Admin" asp-controller="Specification" asp-action="List" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-layer-plus"></i>
+                        <div>لیست مشخصات محصول</div>
                     </a>
                 </li>
             </ul>
             <!-- Admin Color Management -->
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        <i class="menu-icon tf-icons bx bx-color"></i>
-                        <div>مدیریت رنگ ها</div>
-                    </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a class="menu-link">
-                                <i class="menu-icon tf-icons bx bxs-color-fill"></i>
-                                <div>لیست رنگ ها</div>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <!-- Product Specification Management -->
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-analyse"></i>
-                <div>مدیریت مشخصات محصول</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a asp-area="Admin" asp-controller="Specification" asp-action="Create" class="menu-link">
-                        <i class="menu-icon tf-icons bx bx-comment-add"></i>
-                        <div>افزودن مشخصات محصول</div>
+                    <a class="menu-link">
+                        <i class="menu-icon tf-icons bx bxs-color-fill"></i>
+                        <div>لیست رنگ ها</div>
                     </a>
                 </li>
             </ul>
         </li>
         <!-- End Of Admin Products Management -->
+        
+
         <!-- Frequently Asked Questions -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">

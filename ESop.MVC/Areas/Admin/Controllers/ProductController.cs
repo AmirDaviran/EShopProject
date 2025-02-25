@@ -112,15 +112,14 @@ namespace EShop.Web.Areas.Admin.Controllers
         {
            var result= await _productService.DeleteAsync(id);
 
-           switch (result)
+         
+           if (result == DeleteProductResult.Success)
            {
-               case DeleteProductResult.Success:
-                    TempData[SuccessMessage] = "محصول با موفقیت حذف شد";
-                    break;
-                case DeleteProductResult.NotFound:
-                    TempData[ErrorMessage] = "محصول مورد نظر یافت نشد";
-                    break;
-               
+               TempData[SuccessMessage] = "محصول با موفقیت حذف شد";
+           }
+           else if (result == DeleteProductResult.NotFound)
+           {
+               TempData[ErrorMessage] = "محصول مورد نظر یافت نشد";
            }
 
            return RedirectToAction(nameof(List));

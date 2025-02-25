@@ -11,23 +11,29 @@ namespace EShop.Domain.ViewModels.Products.Product
     public class UpdateProductViewModel
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "عنوان الزامی است")]
-        [StringLength(150, ErrorMessage = "حداکثر 150 کاراکتر مجاز است")]
+
+        [Display(Name = "عنوان فارسی محصول ")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(500, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "توضیح کوتاه الزامی است")]
-        [StringLength(300, ErrorMessage = "حداکثر 300 کاراکتر مجاز است")]
+        [Display(Name = "عنوان انگلیسی محصول")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(500, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string TitleDescription { get; set; }
 
-        [Required(ErrorMessage = "قیمت الزامی است")]
-        [Range(1, int.MaxValue, ErrorMessage = "قیمت باید بیشتر از 0 باشد")]
+        [Display(Name = "قیمت محصول")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int Price { get; set; }
 
-        [StringLength(2000, ErrorMessage = "حداکثر 2000 کاراکتر مجاز است")]
+        [Display(Name = "نقد و بررسی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string? Review { get; set; }
 
-        [StringLength(2000, ErrorMessage = "حداکثر 2000 کاراکتر مجاز است")]
+        [Display(Name = "نقد و بررسی تخصصی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string? ExpertReview { get; set; }
+
         public string? ImageName { get; set; }
         public IFormFile? ImageFile { get; set; }
     }

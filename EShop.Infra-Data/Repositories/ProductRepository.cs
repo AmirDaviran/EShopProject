@@ -1,5 +1,6 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Interfaces;
+using EShop.Domain.ViewModels.Products.Product;
 using EShop.Infra_Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,11 +55,41 @@ namespace EShop.Infra_Data.Repositories
 
         #endregion
 
-        #region Product
-      public  IQueryable<Product> GetProductAsQueryable()
+   
+        #region Filter
+
+        public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
         {
-            return _contex.Products.AsQueryable();
+            var query = _contex.Products
+                .Where(product=>!product.IsDeleted)
+                .AsQueryable();
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(model.Title))
+            {
+                query = query.Where(product => EF.Functions.Like(product.Title, $"%{model.Title}%"));
+            }
+
+            #endregion
+
+            #region Paging
+            await model.Paging(query.Select(product => new ProductViewModel
+            {
+                CreatedDate = product.CreatedDate,
+                ExpertReview = product.ExpertReview,
+                Id = product.Id,
+                ImageName = product.ImageName,
+                Price = product.Price,
+                Review = product.Review,
+                Title = product.Title,
+                TitleDescription = product.TitleDescription
+            }));
+            #endregion
+
+            return model;
         }
+
         #endregion
     }
 }

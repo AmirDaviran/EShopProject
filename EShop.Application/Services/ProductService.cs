@@ -42,8 +42,9 @@ namespace EShop.Application.Services
                 Price = model.Price,
                 Review = model.Review,
                 ExpertReview = model.ExpertReview,
-                ImageName = imageName
-            };
+                ImageName = imageName,
+                CreatedDate = DateTime.Now
+                };
 
             // ذخیره در دیتابیس
             await _productRepository.InsertAsync(product);
@@ -85,17 +86,17 @@ namespace EShop.Application.Services
 
         public async Task<List<ProductViewModel>> GetAllAsync()
         {
-            var ticket = await _productRepository.GetAllAsync();
-            return ticket.Select(t => new ProductViewModel()
+            var product = await _productRepository.GetAllAsync();
+            return product.Select(product => new ProductViewModel()
             {
-                CreatedDate = t.CreatedDate,
-                ExpertReview = t.ExpertReview,
-                Id = t.Id,
-                ImageName = t.ImageName,
-                Price = t.Price,
-                Review = t.Review,
-                Title = t.Title,
-                TitleDescription = t.TitleDescription
+                CreatedDate = product.CreatedDate,
+                ExpertReview = product.ExpertReview,
+                Id = product.Id,
+                ImageName = product.ImageName,
+                Price = product.Price,
+                Review = product.Review,
+                Title = product.Title,
+                TitleDescription = product.TitleDescription
             }).ToList();
         }
 
@@ -184,35 +185,10 @@ namespace EShop.Application.Services
         #endregion
 
         #region Filter
-        public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
-        {
-            var query = _productRepository.GetProductAsQueryable();
-
-            #region Filter
-
-            if (!string.IsNullOrEmpty(model.Title))
-            {
-                query = query.Where(user => EF.Functions.Like(user.Title, $"%{model.Title}%"));
-            }
-
-            #endregion
-
-            #region Paging
-            await model.Paging(query.Select(p => new ProductViewModel
-            {
-                CreatedDate = p.CreatedDate,
-                ExpertReview = p.ExpertReview,
-                Id = p.Id,
-                ImageName = p.ImageName,
-                Price = p.Price,
-                Review = p.Review,
-                Title = p.Title,
-                TitleDescription = p.TitleDescription
-            }));
-            #endregion
-
-            return model;
-        }
+      public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
+      {
+          return await _productRepository.FilterAsync(model);
+      }
         #endregion
     }
 }

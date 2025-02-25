@@ -1,5 +1,6 @@
 ﻿using EShop.Domain.Entities.Account;
 using EShop.Domain.Entities.ProductEntity;
+using EShop.Domain.ViewModels.Products.Product;
 
 namespace EShop.Domain.Interfaces
 {
@@ -8,7 +9,7 @@ namespace EShop.Domain.Interfaces
         Task<List<Product>> GetAllAsync();
         Task<Product> GetByIdAsync(int id);
         Task InsertAsync(Product product);
-        IQueryable<Product> GetProductAsQueryable();
+        Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model);
         void Update(Product product);
         Task SaveAsync();
 

@@ -45,7 +45,7 @@
                     </g>
                 </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">Sneat</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">ایشاپ</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -102,20 +102,13 @@
                 <i class="menu-icon tf-icons bx bxl-product-hunt"></i>
                 <div>مدیریت محصول</div>
             </a>
+            <!--Admin Category-->
             <ul class="menu-sub">
-                <!--Admin Category-->
-                <li class="menu-item" style="">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <li class="menu-item">
+                    <a asp-area="Admin" asp-controller="Category" asp-action="List" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-category"></i>
                         <div>دسته بندی</div>
                     </a>
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a asp-area="Admin" asp-controller="Category" asp-action="List" class="menu-link">
-                                <div>دسته بندی</div>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
             <!-- Admin Product Lists -->
@@ -136,7 +129,7 @@
                     </a>
                     <ul class="menu-sub">
                         <li class="menu-item">
-                            <a asp-area="Admin" asp-controller="Color" asp-action="Index" class="menu-link">
+                            <a class="menu-link">
                                 <i class="menu-icon tf-icons bx bxs-color-fill"></i>
                                 <div>لیست رنگ ها</div>
                             </a>
@@ -144,8 +137,8 @@
                     </ul>
                 </li>
             </ul>
-            </li>
-            <!-- Product Specification Management -->
+        </li>
+        <!-- Product Specification Management -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-analyse"></i>
@@ -161,7 +154,6 @@
             </ul>
         </li>
         <!-- End Of Admin Products Management -->
-
         <!-- Frequently Asked Questions -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">

@@ -36,6 +36,10 @@ namespace EShop.Application.Utilities.Convertors
 
         public static string ToStringShamsiDate(this DateTime dt)
         {
+            if (dt < new DateTime(622, 3, 21)) // شروع تقویم هجری شمسی
+            {
+                return "تاریخ نامعتبر";
+            }
             System.Globalization.PersianCalendar PC = new PersianCalendar();
             int intYear = PC.GetYear(dt);
             int intMonth = PC.GetMonth(dt);

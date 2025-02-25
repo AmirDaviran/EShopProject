@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EShop.Application.Utilities.Extensions
+namespace EShop.Application.Utilities.Convertors.Date
 {
     public static class DateExtensions
     {
-        public static string ToShamsi(this DateTime date)
+        public static string ToShamsi1(this DateTime date)
         {
             PersianCalendar pc = new PersianCalendar();
 

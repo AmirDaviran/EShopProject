@@ -1,5 +1,90 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using EShop.Domain.ViewModels.Products.Product
+@model UpdateProductViewModel
+
 @{
+    ViewData["Title"] = "ویرایش محصول";
+}
+
+<form method="post" asp-area="Admin" asp-controller="Product" asp-action="Update" class="add-new-product pt-0" id="addNewProductForm" enctype="multipart/form-data">
+    <div class="d-flex flex-column align-items-center">
+        <!-- عنوان محصول -->
+        <div class="mb-3 w-50">
+            <label class="form-label" for="Title">عنوان محصول</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-package"></i></span>
+                <input type="text" asp-for="Title" class="form-control" id="Title" placeholder="عنوان محصول">
+            </div>
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <!-- توضیحات کوتاه -->
+        <div class="mb-3 w-50">
+            <label class="form-label" for="TitleDescription">توضیحات کوتاه</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-pencil"></i></span>
+                <input type="text" asp-for="TitleDescription" class="form-control" id="TitleDescription" placeholder="توضیحات کوتاه">
+            </div>
+            <span asp-validation-for="TitleDescription" class="text-danger"></span>
+        </div>
+
+        <!-- قیمت -->
+        <div class="mb-3 w-50">
+            <label class="form-label" for="Price">قیمت</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-money"></i></span>
+                <input type="number" asp-for="Price" class="form-control" id="Price" placeholder="قیمت محصول">
+            </div>
+            <span asp-validation-for="Price" class="text-danger"></span>
+
+        </div>
+
+        <!-- انتخاب تصویر -->
+        <div class="mb-3 w-50">
+            <label class="form-label" for="ImageFile">تصویر محصول</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-image"></i></span>
+                <input type="file" asp-for="ImageFile" class="form-control" id="ImageFile">
+            </div>
+            <span asp-validation-for="ImageFile" class="text-danger"></span>
+        </div>
+
+        <!-- بررسی‌ها -->
+        <div class="mb-3 w-100 h-100">
+            <label class="form-label" for="Review">نقد و بررسی</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-comment"></i></span>
+                <textarea asp-for="Review" class="form-control" id="Review" placeholder="بررسی‌ها"></textarea>
+            </div>
+            <span asp-validation-for="Review" class="text-danger"></span>
+        </div>
+
+        <!-- بررسی تخصصی -->
+        <div class="mb-3 w-100 h-100">
+            <label class="form-label" for="ExpertReview">بررسی تخصصی</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-comment-detail"></i></span>
+                <textarea asp-for="ExpertReview" class="form-control" id="ExpertReview" placeholder="نقد و بررسی تخصصی"></textarea>
+            </div>
+            <span asp-validation-for="ExpertReview" class="text-danger"></span>
+        </div>
+
+
+        <!-- دکمه‌های عملیات -->
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary me-2">ویرایش محصول</button>
+            <a asp-action="List" asp-controller="Product" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#Review'))
+            .catch(error => console.error(error));
+
+        ClassicEditor
+            .create(document.querySelector('#ExpertReview'))
+            .catch(error => console.error(error));
+    </script>
 }

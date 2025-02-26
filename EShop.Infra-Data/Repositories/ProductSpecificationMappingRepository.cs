@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infra_Data.Repositories
 {
-    public class ProductSpecificationMappingRepository : IProductSpecificationMappingRepository
+    public class ProductSpecificationMappingRepository(EShopDbContext _context) : IProductSpecificationMappingRepository
     {
-        private readonly EShopDbContext _context;
-
-        public ProductSpecificationMappingRepository(EShopDbContext context)
-        {
-            _context = context;
-        }
+        
 
         public async Task<List<ProductSpecificationMapping>> GetByProductIdAsync(int productId)
         {

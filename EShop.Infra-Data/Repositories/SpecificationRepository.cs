@@ -52,7 +52,7 @@ public class SpecificationRepository(EShopDbContext _context) : ISpecificationRe
         _context.Specifications.Update(specification);
     }
 
-    public async Task<Specification> GetByIdAsync(int id)
+    public async Task<Specification> GetSpecificationByIdAsync(int id)
     {
         return await _context.Specifications
             .Where(spec =>spec.Id==id && !spec.IsDeleted)

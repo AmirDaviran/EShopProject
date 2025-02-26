@@ -42,7 +42,7 @@ public class SpecificationService(ISpecificationRepository _specificationReposit
 
     public async Task<DeleteSpecificationResult> DeleteAsync(int id)
     {
-        var spec = await _specificationRepository.GetByIdAsync(id);
+        var spec = await _specificationRepository.GetSpecificationByIdAsync(id);
 
         if (spec == null || spec.IsDeleted)
         {
@@ -77,7 +77,7 @@ public class SpecificationService(ISpecificationRepository _specificationReposit
             return UpdateSpecificationResult.InvalidInput;
         }
 
-        var spec = await _specificationRepository.GetByIdAsync(model.Id);
+        var spec = await _specificationRepository.GetSpecificationByIdAsync(model.Id);
         if (spec == null)
         {
             return UpdateSpecificationResult.NotFound;
@@ -97,7 +97,7 @@ public class SpecificationService(ISpecificationRepository _specificationReposit
 
     public async Task<UpdateSpecificationViewModel> GetForUpdateAsync(int id)
     {
-        var spec = await _specificationRepository.GetByIdAsync(id);
+        var spec = await _specificationRepository.GetSpecificationByIdAsync(id);
         if (spec == null)
         {
             return null;

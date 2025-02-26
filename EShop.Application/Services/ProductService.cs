@@ -59,7 +59,7 @@ namespace EShop.Application.Services
 
         public async Task<DeleteProductResult> DeleteAsync(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null || product.IsDeleted)
             {
                 return DeleteProductResult.NotFound;
@@ -106,7 +106,7 @@ namespace EShop.Application.Services
 
         public async Task<UpdateProductViewModel> GetForUpdateAsync(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null)
             {
                 return null;
@@ -138,7 +138,7 @@ namespace EShop.Application.Services
             }
 
             // دریافت محصول موجود
-            var product = await _productRepository.GetByIdAsync(model.Id);
+            var product = await _productRepository.GetProductByIdAsync(model.Id);
             if (product == null)
             {
                 return UpdateProductResult.NotFound;

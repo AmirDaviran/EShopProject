@@ -22,7 +22,7 @@ namespace EShop.Infra_Data.Repositories
         #endregion
 
         #region GetById
-        public async Task<Product> GetByIdAsync(int id)
+        public async Task<Product> GetProductByIdAsync(int id)
         {
             return await _contex.Products
                  .Where(p => p.Id == id && !p.IsDeleted)

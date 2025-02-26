@@ -5,7 +5,7 @@ namespace EShop.Domain.Interfaces;
 
 public interface ISpecificationRepository
 {
-    Task<Specification> GetByIdAsync(int id);
+    Task<Specification> GetSpecificationByIdAsync(int id);
     Task<FilterSpecificationViewModel> FilterAsync(FilterSpecificationViewModel model);
     Task InsertAsync(Specification specification);
     void Update(Specification specification);

@@ -1,7 +1,5 @@
 ﻿namespace EShop.Domain.Enums.ProductSpecificationMapping;
 
-public class ProductSpecificationMappingEnums
-{
 
     public enum CreateProductSpecificationResult
     { Success, InvalidInput, NotFound }
@@ -9,4 +7,3 @@ public class ProductSpecificationMappingEnums
     { Success, InvalidInput, NotFound }
     public enum DeleteProductSpecificationResult 
     { Success, NotFound }
-}

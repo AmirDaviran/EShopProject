@@ -1,8 +1,8 @@
 ﻿using EShop.Application.Interfaces;
+using EShop.Domain.Enums.ProductSpecificationMapping;
 using EShop.Domain.ViewModels.Products.Product_Specification;
 using EShop.Domain.ViewModels.Products.Specification;
 using Microsoft.AspNetCore.Mvc;
-using static EShop.Domain.Enums.ProductSpecificationMapping.ProductSpecificationMappingEnums;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
@@ -30,6 +30,9 @@ namespace EShop.Web.Areas.Admin.Controllers
 
         #endregion
 
+        #region Actions
+
+        #region Create
 
         [HttpGet]
         public async Task<IActionResult> List(int productId)
@@ -38,6 +41,10 @@ namespace EShop.Web.Areas.Admin.Controllers
             ViewBag.ProductId = productId;
             return View(mappings);
         }
+
+        #endregion
+
+        #region Create
 
         [HttpGet]
         public async Task<IActionResult> Create(int productId)
@@ -72,6 +79,13 @@ namespace EShop.Web.Areas.Admin.Controllers
             }
             return View(model);
         }
+
+        #endregion
+
+        #endregion
+
+
+
 
         [HttpGet]
         public async Task<IActionResult> Update(int mappingId)

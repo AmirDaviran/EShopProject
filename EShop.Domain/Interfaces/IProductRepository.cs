@@ -7,7 +7,7 @@ namespace EShop.Domain.Interfaces
     public interface IProductRepository
     {
         Task<List<Product>> GetAllAsync();
-        Task<Product> GetByIdAsync(int id);
+        Task<Product> GetProductByIdAsync(int id);
         Task InsertAsync(Product product);
         Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model);
         void Update(Product product);

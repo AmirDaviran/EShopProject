@@ -1,4 +1,6 @@
-﻿namespace EShop.Domain.ViewModels.Products.Product
+﻿using EShop.Domain.ViewModels.Products.Product_Specification;
+
+namespace EShop.Domain.ViewModels.Products.Product
 {
     public class ProductViewModel
     {
@@ -10,5 +12,8 @@
         public string? Review { get; set; }
         public string? ExpertReview { get; set; }
         public string? ImageName { get; set; }
+
     }
+
 }
+

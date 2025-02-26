@@ -70,15 +70,16 @@ namespace EShop.Infra_Data.Repositories
         {
             _context.Categories.Update(category);
         }
-        #endregion
-
-      
 
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
-        
+        #endregion
+
+
+
+
         #endregion
     }
 }

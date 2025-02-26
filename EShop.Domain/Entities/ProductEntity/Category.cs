@@ -9,18 +9,16 @@ public class Category : BaseEntity
     [MaxLength(100)]
     public string Title { get; set; }
 
-    //شناسه دسته والدین
     public int? ParentCategoryId { get; set; }
-
-    [ForeignKey(nameof(ParentCategoryId))]
-    public virtual Category? ParentCategory { get; set; }
-
-    public virtual ICollection<Category> SubCategories { get; set; } = new List<Category>();
 
     public int DisplayOrder { get; set; }
 
-   // public ICollection<CategorySpecificationMapping> CategorySpecificationMappings { get; set; }
 
-    
+    #region Relation
+    [ForeignKey(nameof(ParentCategoryId))]
+    public  Category? ParentCategory { get; set; }
+    public ICollection<Category> SubCategories { get; set; } = new List<Category>();
+   // public ICollection<Product> Products { get; set; } = new List<Product>(); 
+    #endregion
 
 }

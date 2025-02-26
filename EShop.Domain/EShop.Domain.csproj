@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\ProductEntity\Mapping\" />
+    <Folder Include="Enums\ProductSpecificationMapping\" />
   </ItemGroup>
 
 </Project>

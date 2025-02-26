@@ -13,5 +13,6 @@ namespace EShop.Domain.Interfaces
         void Update(Product product);
         Task SaveAsync();
 
+        //Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId); 
     }
 }

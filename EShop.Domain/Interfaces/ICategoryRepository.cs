@@ -20,7 +20,5 @@ namespace EShop.Domain.Interfaces
 
 
 
-        
-
     }
 }

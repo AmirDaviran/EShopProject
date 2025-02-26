@@ -1,0 +1,31 @@
+﻿@model EShop.Domain.ViewModels.Products.Product_Specification.SpecificationProductViewModel
+
+@{
+    ViewData["Title"] = "افزودن مشخصه محصول";
+    var productId = ViewBag.ProductId;
+    var specifications = ViewBag.Specifications as List<EShop.Domain.ViewModels.Products.Specification.DetailsSpecificationViewModel>;
+}
+
+<form method="post" asp-action="Create" asp-route-productId="@productId">
+    <div class="d-flex flex-column align-items-center">
+        <div class="mb-3 w-50">
+            <label class="form-label">مشخصه</label>
+            <select asp-for="SpecificationId" class="form-control">
+                @foreach (var spec in specifications)
+                {
+                    <option value="@spec.Id">@spec.Name</option>
+                }
+            </select>
+            <span asp-validation-for="SpecificationId" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-50">
+            <label class="form-label">مقدار</label>
+            <input asp-for="Value" class="form-control" />
+            <span asp-validation-for="Value" class="text-danger"></span>
+        </div>
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary">افزودن</button>
+            <a asp-action="List" asp-route-productId="@productId" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </div>
+</form>

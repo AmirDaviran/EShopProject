@@ -37,7 +37,7 @@
                                     <tr>
                                         <td>@product.Id</td>
                                         <td>@product.Title</td>
-                                        <td>@product.Price تومان</td>
+                                        <td>@product.Price.ToString("N0") تومان</td>
                                         <td><img src="@product.ImageName" width="30" alt="Product Image" /></td>
                                         <td>@product.CreatedDate.ToStringShamsiDate()</td>
                                         <td class="text-center">
@@ -45,7 +45,10 @@
                                             <div class="d-flex justify-content-center gap-2">
                                                 <!-- چیدمان افقی با فاصله -->
                                                 <!-- دکمه ویرایش -->
-                                                <a class="btn btn-primary btn-sm" asp-action="Update" asp-route-id="@product.Id">
+                                                <a class="btn rounded-pill btn-info" asp-controller="Specification" asp-action="List" asp-route-id="@product.Id">
+                                                    <i class="bx bx-edit-alt me-1"></i> مشخصات
+                                                </a>
+                                                <a class="btn btn-primary btn-sm"asp-controller="Product" asp-action="Update" asp-route-id="@product.Id">
                                                     <i class="bx bx-edit-alt me-1"></i> ویرایش
                                                 </a>
 

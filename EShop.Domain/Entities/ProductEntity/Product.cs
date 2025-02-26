@@ -13,11 +13,12 @@ namespace EShop.Domain.Entities.ProductEntity
         public string? Review { get; set; }
         public string? ExpertReview { get; set; }
         public string? ImageName { get; set; }
-
         #endregion
 
         #region Relations
         public ICollection<ProductSpecificationMapping> ProductSpecificationMappings { get; set; }
+        public ICollection<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+
         #endregion
     }
 }

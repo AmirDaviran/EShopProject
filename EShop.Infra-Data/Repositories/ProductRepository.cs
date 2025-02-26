@@ -14,8 +14,8 @@ namespace EShop.Infra_Data.Repositories
         {
             return await _contex.Products
                 .Where(product => !product.IsDeleted)
-                .Include(psm=>psm.ProductSpecificationMappings)
-                .ThenInclude(spec=>spec.Specification)
+                .Include(psm => psm.ProductSpecificationMappings)
+                .ThenInclude(spec => spec.Specification)
                 .ToListAsync();
         }
 
@@ -26,7 +26,7 @@ namespace EShop.Infra_Data.Repositories
         {
             return await _contex.Products
                  .Where(p => p.Id == id && !p.IsDeleted)
-                 .FirstOrDefaultAsync();
+               .FirstOrDefaultAsync();
         }
 
         #endregion
@@ -62,8 +62,8 @@ namespace EShop.Infra_Data.Repositories
         public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
         {
             var query = _contex.Products
-                .Where(product=>!product.IsDeleted)
-                .AsQueryable();
+                .Where(product => !product.IsDeleted)
+              .AsQueryable();
 
             #region Filter
 
@@ -84,7 +84,7 @@ namespace EShop.Infra_Data.Repositories
                 Price = product.Price,
                 Review = product.Review,
                 Title = product.Title,
-                TitleDescription = product.TitleDescription
+                TitleDescription = product.TitleDescription,
             }));
             #endregion
 
@@ -92,5 +92,7 @@ namespace EShop.Infra_Data.Repositories
         }
 
         #endregion
+
+      
     }
 }

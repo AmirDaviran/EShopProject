@@ -2,6 +2,7 @@
 using EShop.Domain.Entities.ContactUs;
 using EShop.Domain.Entities.FAQ;
 using EShop.Domain.Entities.ProductEntity;
+using EShop.Domain.Entities.ProductEntity.Mapping;
 using EShop.Domain.Entities.TicketSystem;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +32,9 @@ namespace EShop.Infra_Data.Context
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
-
+        public DbSet<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+        public DbSet<CategorySpecificationMapping> CategorySpecificationMappings { get; set; }
+        public DbSet<ProductSpecificationMapping> ProductSpecificationMappings { get; set; }
         #endregion
 
         #region Specification

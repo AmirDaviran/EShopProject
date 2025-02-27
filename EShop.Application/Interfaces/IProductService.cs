@@ -1,6 +1,5 @@
 ﻿using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.ViewModels.Products.Product;
-using EShop.Domain.ViewModels.UserViewModel;
 namespace EShop.Application.Interfaces
 {
     public interface IProductService

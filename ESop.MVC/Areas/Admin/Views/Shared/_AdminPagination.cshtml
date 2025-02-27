@@ -7,7 +7,7 @@
                 @for (int i = Model.StartPage; i <= Model.EndPage; i++)
                 {
                     <li class="paginate_button page-item @(Model.Page==i?"active":"")">
-                        <a onclick="fillPageId('@i')" aria-controls="tableGroup" data-dt-idx="@i" tabindex="0" class="page-link">
+                        <a onclick="fillPageId('@i')" aria-controls="tableGroup" data-dt-idx="@i" tabindex="0" class="page-link page-number">
                             @i
                         </a>
                     </li>
@@ -16,3 +16,9 @@
         </div>
     </div>
 </div>
+
+<style>
+    .page-number {
+        cursor: pointer; /* نمایش علامت اشاره‌گر دست */
+    }
+</style>

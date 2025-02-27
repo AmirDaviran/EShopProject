@@ -16,7 +16,7 @@ namespace EShop.Application.Services
         public async Task<CreateProductResult> CreateAsync(CreateProductViewModel model)
         {
             // اعتبارسنجی اولیه
-            if (model == null || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 || model.ImageFile == null)
+            if (model == null || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 || model.ImageFile == null || model.CategoryId <= 0)
             {
                 return CreateProductResult.InvalidInput;
             }
@@ -48,7 +48,9 @@ namespace EShop.Application.Services
                 ProductCategoryMappings = new List<ProductCategoryMapping>
                 {
                     new ProductCategoryMapping
-                        { CategoryId = model.CategoryId, CreatedDate = DateTime.Now } // کامنت: اضافه کردن دسته‌بندی
+                        { CategoryId = model.CategoryId,
+                            CreatedDate = DateTime.Now
+                        } // کامنت: اضافه کردن دسته‌بندی
                 }
             };
             // ذخیره در دیتابیس
@@ -132,10 +134,8 @@ namespace EShop.Application.Services
         public async Task<UpdateProductResult> UpdateAsync(UpdateProductViewModel model)
         {
             // اعتبارسنجی اولیه
-            if (model == null || model.Id <= 0)
-            {
+            if (model == null || model.Id <= 0 || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 || model.CategoryId <= 0)
                 return UpdateProductResult.InvalidInput;
-            }
 
             // دریافت محصول موجود
             var product = await _productRepository.GetProductByIdAsync(model.Id);

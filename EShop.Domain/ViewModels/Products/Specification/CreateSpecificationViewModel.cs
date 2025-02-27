@@ -4,8 +4,8 @@ namespace EShop.Domain.ViewModels.Products.Specification;
 
 public class CreateSpecificationViewModel
 {
-    [Display(Name = "مشخصه ")]
+    [Display(Name = "نام مشخصه")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-    [MaxLength(250, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
+    [MaxLength(250, ErrorMessage = "{0} نمی‌تواند بیشتر از {1} کاراکتر باشد")]
     public string Name { get; set; }
 }

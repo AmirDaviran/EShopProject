@@ -10,4 +10,5 @@ public interface ISpecificationService
     Task<UpdateSpecificationViewModel> GetForUpdateAsync(int id);
     Task<UpdateSpecificationResult> UpdateAsync(UpdateSpecificationViewModel model);
     Task<DeleteSpecificationResult> DeleteAsync(int id);
+    Task<List<SpecificationListViewModel>> GetAllAsync();
 }

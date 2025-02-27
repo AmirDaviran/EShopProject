@@ -69,6 +69,8 @@ namespace EShop.Infra_Data.Repositories
         {
             var query = _context.Products
                 .Where(product => !product.IsDeleted)
+                .Include(product=>product.ProductCategoryMappings)
+                .ThenInclude(pcm=>pcm.Category)
               .AsQueryable();
 
             #region Filter
@@ -88,6 +90,9 @@ namespace EShop.Infra_Data.Repositories
                 ImageName = product.ImageName,
                 Price = product.Price,
                 Title = product.Title,
+                CategoryTitle = product.ProductCategoryMappings.Any()
+                    ? product.ProductCategoryMappings.First().Category.Title
+                    : null // شرط ساده به جای ?.
             }));
             #endregion
 

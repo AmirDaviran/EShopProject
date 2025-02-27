@@ -26,6 +26,8 @@ namespace EShop.Application.Services
 
         #endregion
 
+        #region AddSpecificationToProduct
+
         public async Task<bool> AddSpecificationToProductAsync(AddSpecificationToProductViewModel model) // کامنت: تغییر به ویو مدل جدید
         {
             if (model == null || string.IsNullOrWhiteSpace(model.Value))
@@ -44,6 +46,8 @@ namespace EShop.Application.Services
             return true;
         }
 
+        #endregion
+
         public async Task<List<ProductSpecificationListViewModel>> GetSpecificationsByProductIdAsync(int productId) // کامنت: تغییر به ویو مدل جدید
         {
             return await _mappingRepository.GetByProductIdAsync(productId);
@@ -55,6 +59,25 @@ namespace EShop.Application.Services
             await _mappingRepository.SaveAsync();
             return true;
         }
+
+        public async Task<bool> UpdateSpecificationAsync(int mappingId, AddSpecificationToProductViewModel model)
+        {
+            if (model == null || string.IsNullOrWhiteSpace(model.Value) || model.ProductId <= 0)
+                return false;
+
+            var mapping = await _mappingRepository.GetByIdAsync(mappingId);
+            if (mapping == null || mapping.IsDeleted)
+                return false;
+
+            // آپدیت مشخصه
+            mapping.SpecificationId = model.SpecificationId;
+            mapping.Value = model.Value;
+
+            _mappingRepository.Update(mapping);
+            await _mappingRepository.SaveAsync();
+            return true;
+        }
+
 
     }
 }

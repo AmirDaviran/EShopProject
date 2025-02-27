@@ -1,4 +1,6 @@
-﻿namespace EShop.Domain.ViewModels.Products.Product;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EShop.Domain.ViewModels.Products.Product;
 
 public class ProductListViewModel
 {
@@ -7,5 +9,5 @@ public class ProductListViewModel
     public int Price { get; set; }
     public string? ImageName { get; set; }
     public DateTime CreatedDate { get; set; }
-
+    public string? CategoryTitle { get; set; } 
 }

@@ -7,6 +7,15 @@
 
 <form method="post" asp-area="Admin" asp-controller="Product" asp-action="Update" class="add-new-product pt-0" id="addNewProductForm" enctype="multipart/form-data">
     <div class="d-flex flex-column align-items-center">
+
+        <div class="mb-3 w-50">
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-category"></i></span>
+                <select asp-for="CategoryId" class="form-control" id="CategoryId" asp-items="ViewBag.Categories">
+                    <option value="">لطفاً یک دسته‌بندی انتخاب کنید</option>
+                </select>
+            </div>
+        </div>
         <!-- عنوان محصول -->
         <div class="mb-3 w-50">
             <label class="form-label" for="Title">عنوان محصول</label>

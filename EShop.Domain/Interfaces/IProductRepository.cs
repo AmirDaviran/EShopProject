@@ -1,5 +1,4 @@
-﻿using EShop.Domain.Entities.Account;
-using EShop.Domain.Entities.ProductEntity;
+﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.ViewModels.Products.Product;
 
 namespace EShop.Domain.Interfaces

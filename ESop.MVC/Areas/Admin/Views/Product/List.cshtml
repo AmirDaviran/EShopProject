@@ -13,6 +13,7 @@
                 <thead>
                     <tr>
                         <th>آیدی</th>
+                        <th>دسته‌بندی</th>
                         <th>عنوان</th>
                         <th>قیمت</th>
                         <th>تصویر</th>
@@ -27,12 +28,28 @@
                         {
                             <tr>
                                 <td>@product.Id</td>
+                                <td>@product.CategoryTitle</td>
                                 <td>@product.Title</td>
                                 <td>@product.Price.ToString("N0") تومان</td>
                                 <td><img src="@product.ImageName" width="30" alt="Product Image" /></td>
                                 <td>@product.CreatedDate.ToStringShamsiDate()</td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-2">
+                                        <div class="btn-group">
+                                            <a class="btn btn-warning btn-sm" asp-controller="ProductSpecificationMapping" asp-action="List" asp-route-productId="@product.Id">
+                                                <i class="bx bx-list-ul me-1"></i> مشخصات
+                                            </a>
+                                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <span class="visually-hidden">Toggle Dropdown</span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" asp-controller="ProductSpecificationMapping" asp-action="Add" asp-route-productId="@product.Id">
+                                                        افزودن مشخصات
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                         <a class="btn btn-primary btn-sm" asp-action="Update" asp-route-id="@product.Id">
                                             <i class="bx bx-edit-alt me-1"></i> ویرایش
                                         </a>
@@ -49,7 +66,7 @@
                     }
                     else
                     {
-                        <tr><td colspan="6" class="text-center">هیچ محصولی یافت نشد</td></tr>
+                        <tr><td colspan="7" class="text-center">هیچ محصولی یافت نشد</td></tr>
                     }
                 </tbody>
             </table>

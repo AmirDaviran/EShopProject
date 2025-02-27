@@ -5,6 +5,7 @@ using EShop.Domain.Enums.SpecificationEnum;
 using EShop.Domain.Interfaces;
 using EShop.Domain.ViewModels.Products.Product;
 using EShop.Domain.ViewModels.Products.Specification;
+using EShop.Infra_Data.Repositories;
 
 namespace EShop.Application.Services;
 
@@ -110,6 +111,11 @@ public class SpecificationService(ISpecificationRepository _specificationReposit
                 Name = spec.Name
             };
         }
+    }
+
+    public  async Task<List<SpecificationListViewModel>> GetAllAsync()
+    {
+        return await _specificationRepository.GetAllAsync();
     }
     #endregion
 }

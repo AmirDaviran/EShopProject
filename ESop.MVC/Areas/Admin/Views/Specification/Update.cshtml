@@ -1,28 +1,20 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model EShop.Domain.ViewModels.Products.Specification.UpdateSpecificationViewModel
-
+﻿@model EShop.Domain.ViewModels.Products.Specification.UpdateSpecificationViewModel
 @{
-    ViewData["Title"] = "ویرایش  مشخصه";
+    ViewData["Title"] = "ویرایش مشخصه";
 }
-
-<form method="post" asp-area="Admin" asp-controller="Specification" asp-action="Update" class="add-new-product pt-0" id="addNewProductForm" enctype="multipart/form-data">
+<form method="post" asp-area="Admin" asp-controller="Specification" asp-action="Update" class="add-new-product pt-0" enctype="multipart/form-data">
     <div class="d-flex flex-column align-items-center">
-        <!-- عنوان محصول -->
         <div class="mb-3 w-50">
-            <label class="form-label" for="Title">نام مشخصه </label>
+            <label class="form-label" for="Name">نام مشخصه</label>
             <div class="input-group input-group-merge">
                 <span class="input-group-text"><i class="bx bx-package"></i></span>
-                <input type="text" asp-for="Name" class="form-control" id="Title" placeholder="نام مشخصه ">
+                <input type="text" asp-for="Name" class="form-control" id="Name" placeholder="نام مشخصه">
             </div>
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
-
-        <!-- دکمه‌های عملیات -->
         <div class="mb-3 w-50 text-center">
-            <button type="submit" class="btn btn-primary me-2">افزودن مشخصه</button>
+            <button type="submit" class="btn btn-primary me-2">ویرایش مشخصه</button>
             <a asp-action="List" asp-controller="Specification" class="btn btn-secondary">بازگشت</a>
         </div>
     </div>
 </form>
-
-}

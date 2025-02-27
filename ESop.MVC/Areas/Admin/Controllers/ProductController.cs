@@ -3,10 +3,11 @@ using EShop.Application.Services;
 using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.ViewModels.Products.Product;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EShop.Web.Areas.Admin.Controllers
 {
-    public class ProductController(IProductService _productService) : AdminBaseController
+    public class ProductController(IProductService _productService,ICategoryService _categoryService) : AdminBaseController
     {
 
         #region List
@@ -23,6 +24,7 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
+            ViewBag.Categories = new SelectList(await _categoryService.GetAllCategoriesAsync(), "Id", "Title");
             return View(new CreateProductViewModel());
         }
 
@@ -53,6 +55,7 @@ namespace EShop.Web.Areas.Admin.Controllers
                     TempData[ErrorMessage] = "عکس آپلود نشد";
                     break;
             }
+            ViewBag.Categories = new SelectList(await _categoryService.GetAllCategoriesAsync(), "Id", "Title");
             return View(model);
         }
 
@@ -69,6 +72,7 @@ namespace EShop.Web.Areas.Admin.Controllers
                 TempData[ErrorMessage] = "محصول مورد نظر یافت نشد";
                 return RedirectToAction(nameof(List));
             }
+            ViewBag.Categories = new SelectList(await _categoryService.GetAllCategoriesAsync(), "Id", "Title");
             return View(model);
         }
 
@@ -100,6 +104,7 @@ namespace EShop.Web.Areas.Admin.Controllers
                     TempData[ErrorMessage] = "عکس آپلود نشد";
                     break;
                 }
+            ViewBag.Categories = new SelectList(await _categoryService.GetAllCategoriesAsync(), "Id", "Title");
             return View(model);
         }
 

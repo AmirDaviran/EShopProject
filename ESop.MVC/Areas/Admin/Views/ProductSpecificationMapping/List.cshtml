@@ -22,6 +22,9 @@
                 <td>@spec.SpecificationName</td>
                 <td>@spec.Value</td>
                 <td>
+                        <a asp-action="Update" asp-route-mappingId="@spec.MappingId" asp-route-productId="@productId" class="btn btn-primary btn-sm">
+                        <i class="bx bx-edit-alt me-1"></i> ویرایش
+                    </a>
                     <form asp-action="Delete" method="post" style="display:inline;">
                         <input type="hidden" name="mappingId" value="@spec.MappingId" />
                         <input type="hidden" name="productId" value="@productId" />

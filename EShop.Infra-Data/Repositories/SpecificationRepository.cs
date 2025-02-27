@@ -1,5 +1,6 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Interfaces;
+using EShop.Domain.ViewModels.Products.Product;
 using EShop.Domain.ViewModels.Products.Specification;
 using EShop.Infra_Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ public class SpecificationRepository(EShopDbContext _context) : ISpecificationRe
         }));
 
         #endregion
+
         return model;
     }
 
@@ -55,7 +57,21 @@ public class SpecificationRepository(EShopDbContext _context) : ISpecificationRe
     public async Task<Specification> GetSpecificationByIdAsync(int id)
     {
         return await _context.Specifications
-            .Where(spec =>spec.Id==id && !spec.IsDeleted)
+            .Where(spec => spec.Id == id && !spec.IsDeleted)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<List<SpecificationListViewModel>> GetAllAsync()
+    {
+        var specs = await _context.Specifications
+            .Where(spec => !spec.IsDeleted)
+            .Select(spec => new SpecificationListViewModel
+            {
+                Id = spec.Id,
+                Name = spec.Name,
+                CreateDate = spec.CreatedDate
+            })
+            .ToListAsync();
+        return specs;
     }
 }

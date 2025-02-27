@@ -1,4 +1,5 @@
 ﻿using EShop.Application.Interfaces;
+using EShop.Domain.Enums.ProductSpecificationMapping;
 using EShop.Domain.ViewModels.Products.Product_Specification;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,9 +8,15 @@ namespace EShop.Web.Areas.Admin.Controllers
 {
     public class ProductSpecificationMappingController : AdminBaseController
     {
+        #region Fields
+
         private readonly IProductSpecificationMappingService _mappingService;
         private readonly IProductService _productService;
         private readonly ISpecificationService _specificationService;
+
+        #endregion
+
+        #region Constructor
 
         public ProductSpecificationMappingController(
             IProductSpecificationMappingService mappingService,
@@ -20,6 +27,8 @@ namespace EShop.Web.Areas.Admin.Controllers
             _productService = productService;
             _specificationService = specificationService;
         }
+
+        #endregion
 
         #region List
 
@@ -44,7 +53,6 @@ namespace EShop.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Add(int productId)
         {
-            // گرفتن لیست مشخصات برای دراپ‌داون
             var specifications = await _specificationService.GetAllAsync();
             ViewBag.Specifications = new SelectList(specifications, "Id", "Name");
 
@@ -57,7 +65,6 @@ namespace EShop.Web.Areas.Admin.Controllers
         {
             if (!ModelState.IsValid)
             {
-                // در صورت خطا، لیست مشخصات رو دوباره به ویو بفرست
                 var specifications = await _specificationService.GetAllAsync();
                 ViewBag.Specifications = new SelectList(specifications, "Id", "Name");
                 TempData[ErrorMessage] = "لطفاً اطلاعات را به درستی وارد کنید.";
@@ -65,13 +72,24 @@ namespace EShop.Web.Areas.Admin.Controllers
             }
 
             var result = await _mappingService.AddSpecificationToProductAsync(model);
-            if (result)
+            switch (result)
             {
-                TempData[SuccessMessage] = "مشخصه با موفقیت به محصول اضافه شد";
-                return RedirectToAction(nameof(List), new { productId = model.ProductId });
+                case ProductSpecificationMappingResult.Success:
+                    TempData[SuccessMessage] = "مشخصه با موفقیت به محصول اضافه شد";
+                    return RedirectToAction(nameof(List), new { productId = model.ProductId });
+                case ProductSpecificationMappingResult.InvalidInput:
+                    TempData[ErrorMessage] = "ورودی نامعتبر است";
+                    break;
+                case ProductSpecificationMappingResult.Failed:
+                    TempData[ErrorMessage] = "خطا در اضافه کردن مشخصه";
+                    break;
+                default:
+                    TempData[WarningMessage] = "وضعیت نامشخص در اضافه کردن مشخصه";
+                    break;
             }
 
-            TempData[ErrorMessage] = "خطا در اضافه کردن مشخصه";
+            var specsOnError = await _specificationService.GetAllAsync();
+            ViewBag.Specifications = new SelectList(specsOnError, "Id", "Name");
             return View(model);
         }
 
@@ -116,13 +134,25 @@ namespace EShop.Web.Areas.Admin.Controllers
             }
 
             var result = await _mappingService.UpdateSpecificationAsync(mappingId, model);
-            if (result)
+            switch (result)
             {
-                TempData[SuccessMessage] = "مشخصه با موفقیت ویرایش شد";
-                return RedirectToAction(nameof(List), new { productId = model.ProductId });
+                case ProductSpecificationMappingResult.Success:
+                    TempData[SuccessMessage] = "مشخصه با موفقیت ویرایش شد";
+                    return RedirectToAction(nameof(List), new { productId = model.ProductId });
+                case ProductSpecificationMappingResult.InvalidInput:
+                    TempData[ErrorMessage] = "ورودی نامعتبر است";
+                    break;
+                case ProductSpecificationMappingResult.NotFound:
+                    TempData[ErrorMessage] = "مشخصه مورد نظر یافت نشد";
+                    break;
+                case ProductSpecificationMappingResult.Failed:
+                    TempData[ErrorMessage] = "خطا در ویرایش مشخصه";
+                    break;
+                default:
+                    TempData[WarningMessage] = "وضعیت نامشخص در ویرایش مشخصه";
+                    break;
             }
 
-            TempData[ErrorMessage] = "خطا در ویرایش مشخصه";
             var specsOnError = await _specificationService.GetAllAsync();
             ViewBag.Specifications = new SelectList(specsOnError, "Id", "Name", model.SpecificationId);
             ViewBag.MappingId = mappingId;
@@ -137,14 +167,25 @@ namespace EShop.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Delete(int mappingId, int productId)
         {
             var result = await _mappingService.RemoveSpecificationFromProductAsync(mappingId);
-            if (result)
-                TempData[SuccessMessage] = "مشخصه با موفقیت حذف شد";
-            else
-                TempData[ErrorMessage] = "خطا در حذف مشخصه";
+            switch (result)
+            {
+                case ProductSpecificationMappingResult.Success:
+                    TempData[SuccessMessage] = "مشخصه با موفقیت حذف شد";
+                    break;
+                case ProductSpecificationMappingResult.NotFound:
+                    TempData[ErrorMessage] = "مشخصه مورد نظر یافت نشد";
+                    break;
+                case ProductSpecificationMappingResult.Failed:
+                    TempData[ErrorMessage] = "خطا در حذف مشخصه";
+                    break;
+                default:
+                    TempData[WarningMessage] = "وضعیت نامشخص در حذف مشخصه";
+                    break;
+            }
 
             return RedirectToAction(nameof(List), new { productId });
         }
-    }
 
-    #endregion
+        #endregion
     }
+}

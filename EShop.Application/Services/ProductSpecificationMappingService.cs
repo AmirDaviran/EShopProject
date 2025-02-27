@@ -17,21 +17,24 @@ namespace EShop.Application.Services
         #endregion
 
         #region Constructor
-        public ProductSpecificationMappingService(IProductSpecificationMappingRepository mappingRepository, IProductRepository productRepository, ISpecificationRepository specificationRepository)
+        public ProductSpecificationMappingService(
+            IProductSpecificationMappingRepository mappingRepository,
+            IProductRepository productRepository,
+            ISpecificationRepository specificationRepository)
         {
             _mappingRepository = mappingRepository;
             _productRepository = productRepository;
             _specificationRepository = specificationRepository;
         }
-
         #endregion
 
         #region AddSpecificationToProduct
 
-        public async Task<bool> AddSpecificationToProductAsync(AddSpecificationToProductViewModel model) // کامنت: تغییر به ویو مدل جدید
+        public async Task<ProductSpecificationMappingResult> AddSpecificationToProductAsync(AddSpecificationToProductViewModel model)
         {
+            // اعتبارسنجی ورودی
             if (model == null || string.IsNullOrWhiteSpace(model.Value))
-                return false;
+                return ProductSpecificationMappingResult.InvalidInput;
 
             var mapping = new ProductSpecificationMapping
             {
@@ -43,31 +46,46 @@ namespace EShop.Application.Services
 
             await _mappingRepository.InsertAsync(mapping);
             await _mappingRepository.SaveAsync();
-            return true;
+            return ProductSpecificationMappingResult.Success;
         }
 
         #endregion
 
-        public async Task<List<ProductSpecificationListViewModel>> GetSpecificationsByProductIdAsync(int productId) // کامنت: تغییر به ویو مدل جدید
+        #region GetSpecificationsByProductId
+
+        public async Task<List<ProductSpecificationListViewModel>> GetSpecificationsByProductIdAsync(int productId)
         {
             return await _mappingRepository.GetByProductIdAsync(productId);
         }
 
-        public async Task<bool> RemoveSpecificationFromProductAsync(int mappingId)
+        #endregion
+
+        #region RemoveSpecificationFromProduct
+
+        public async Task<ProductSpecificationMappingResult> RemoveSpecificationFromProductAsync(int mappingId)
         {
+            var mapping = await _mappingRepository.GetByIdAsync(mappingId);
+            if (mapping == null || mapping.IsDeleted)
+                return ProductSpecificationMappingResult.NotFound;
+
             await _mappingRepository.DeleteAsync(mappingId);
             await _mappingRepository.SaveAsync();
-            return true;
+            return ProductSpecificationMappingResult.Success;
         }
 
-        public async Task<bool> UpdateSpecificationAsync(int mappingId, AddSpecificationToProductViewModel model)
+        #endregion
+
+        #region UpdateSpecification
+
+        public async Task<ProductSpecificationMappingResult> UpdateSpecificationAsync(int mappingId, AddSpecificationToProductViewModel model)
         {
+            // اعتبارسنجی ورودی
             if (model == null || string.IsNullOrWhiteSpace(model.Value) || model.ProductId <= 0)
-                return false;
+                return ProductSpecificationMappingResult.InvalidInput;
 
             var mapping = await _mappingRepository.GetByIdAsync(mappingId);
             if (mapping == null || mapping.IsDeleted)
-                return false;
+                return ProductSpecificationMappingResult.NotFound;
 
             // آپدیت مشخصه
             mapping.SpecificationId = model.SpecificationId;
@@ -75,15 +93,18 @@ namespace EShop.Application.Services
 
             _mappingRepository.Update(mapping);
             await _mappingRepository.SaveAsync();
-            return true;
+            return ProductSpecificationMappingResult.Success;
         }
 
-      public async Task<ProductSpecificationFilterViewModel> FilterAsync(ProductSpecificationFilterViewModel model)
-      {
-          return await _mappingRepository.FilterAsync(model);
-      }
+        #endregion
 
+        #region Filter
 
+        public async Task<ProductSpecificationFilterViewModel> FilterAsync(ProductSpecificationFilterViewModel model)
+        {
+            return await _mappingRepository.FilterAsync(model);
+        }
 
+        #endregion
     }
 }

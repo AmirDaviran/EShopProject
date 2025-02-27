@@ -8,7 +8,8 @@ namespace EShop.Infra_Data.Repositories
 {
     public class ProductSpecificationMappingRepository(EShopDbContext _context) : IProductSpecificationMappingRepository
     {
-        
+
+        #region GetByProductId
 
         public async Task<List<ProductSpecificationListViewModel>> GetByProductIdAsync(int productId)
         {
@@ -25,6 +26,10 @@ namespace EShop.Infra_Data.Repositories
                 .ToListAsync();
         }
 
+        #endregion
+
+        #region GetById
+
         public async Task<ProductSpecificationMapping> GetByIdAsync(int id)
         {
             return await _context.ProductSpecificationMappings
@@ -32,15 +37,27 @@ namespace EShop.Infra_Data.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        #endregion
+
+        #region Insert
+
         public async Task InsertAsync(ProductSpecificationMapping mapping)
         {
             await _context.ProductSpecificationMappings.AddAsync(mapping);
         }
 
+        #endregion
+
+        #region Update
+
         public void Update(ProductSpecificationMapping mapping)
         {
             _context.ProductSpecificationMappings.Update(mapping);
         }
+
+        #endregion
+
+        #region Delete
 
         public async Task DeleteAsync(int id)
         {
@@ -53,10 +70,16 @@ namespace EShop.Infra_Data.Repositories
             }
         }
 
+        #endregion
+
+        #region Save
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }
+
+        #endregion
 
         #region Filter
 

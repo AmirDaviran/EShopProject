@@ -8,9 +8,10 @@ namespace EShop.Application.Interfaces
         Task<bool> AddSpecificationToProductAsync(AddSpecificationToProductViewModel model); // کامنت: تغییر نوع ورودی
         Task<List<ProductSpecificationListViewModel>> GetSpecificationsByProductIdAsync(int productId); // کامنت: تغییر نوع بازگشت
         Task<bool> RemoveSpecificationFromProductAsync(int mappingId);
-
         Task<bool> UpdateSpecificationAsync(int mappingId, AddSpecificationToProductViewModel model);
+        Task<ProductSpecificationFilterViewModel> FilterAsync(ProductSpecificationFilterViewModel model);
+
     }
 
-   
+
 }

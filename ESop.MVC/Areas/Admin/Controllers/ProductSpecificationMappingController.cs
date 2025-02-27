@@ -24,11 +24,17 @@ namespace EShop.Web.Areas.Admin.Controllers
         #region List
 
         [HttpGet]
-        public async Task<IActionResult> List(int productId)
+        public async Task<IActionResult> List(int productId, ProductSpecificationFilterViewModel model)
         {
-            var specifications = await _mappingService.GetSpecificationsByProductIdAsync(productId);
-            ViewBag.ProductId = productId;
-            return View(specifications);
+            if (productId <= 0 && model.ProductId <= 0)
+            {
+                return RedirectToAction("List", "Product"); // یا یک صفحه خطا
+            }
+
+            model.ProductId = productId > 0 ? productId : model.ProductId; // اولویت با productId از URL
+            var result = await _mappingService.FilterAsync(model);
+            ViewBag.ProductId = model.ProductId; // ارسال به ویو
+            return View(result);
         }
 
         #endregion

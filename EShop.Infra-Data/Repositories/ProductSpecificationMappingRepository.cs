@@ -57,5 +57,40 @@ namespace EShop.Infra_Data.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        #region Filter
+
+        public async Task<ProductSpecificationFilterViewModel> FilterAsync(ProductSpecificationFilterViewModel model)
+        {
+            var query = _context.ProductSpecificationMappings
+                .Where(psm => !psm.IsDeleted && psm.ProductId==model.ProductId)
+                .Include(spc => spc.Specification)
+                .AsQueryable();
+
+            #region Filter
+
+            if (!string.IsNullOrEmpty(model.SearchTerm))
+            {
+                query = query.Where(psm => EF.Functions.Like(psm.Value, $"%{model.SearchTerm}%") ||
+                                           EF.Functions.Like(psm.Specification.Name, $"%{model.SearchTerm}%"));
+            }
+            #endregion
+
+            #region Paging
+
+            await model.Paging(query.Select(psm => new ProductSpecificationListViewModel()
+            {
+                Value = psm.Value,
+                MappingId = psm.Id,
+                SpecificationId = psm.SpecificationId,
+                SpecificationName = psm.Specification.Name
+            }));
+
+            #endregion
+
+            return model;
+        }
+
+        #endregion
     }
 }

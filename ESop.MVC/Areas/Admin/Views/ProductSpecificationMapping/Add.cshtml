@@ -3,21 +3,36 @@
     ViewData["Title"] = "اضافه کردن مشخصه به محصول";
 }
 
-<form asp-action="Add" method="post" class="form">
+<form asp-action="Add" method="post" class="add-new-product pt-0">
     <input type="hidden" asp-for="ProductId" />
-    <div class="form-group">
-        <label asp-for="SpecificationId">نام مشخصه</label>
-        <select asp-for="SpecificationId" class="form-control" asp-items="ViewBag.Specifications">
-            <option value="">لطفاً یک مشخصه انتخاب کنید</option>
-        </select>
-        <span asp-validation-for="SpecificationId" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Value">مقدار</label>
-        <input asp-for="Value" class="form-control" />
-        <span asp-validation-for="Value" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">ثبت</button>
-    <a asp-action="List" asp-route-productId="@Model.ProductId" class="btn btn-secondary">بازگشت</a>
-</form>
 
+    <div class="d-flex flex-column align-items-center">
+        <!-- انتخاب مشخصه -->
+        <div class="mb-3 w-50">
+            <label asp-for="SpecificationId" class="form-label">نام مشخصه</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-list-ul"></i></span>
+                <select asp-for="SpecificationId" class="form-control" asp-items="ViewBag.Specifications">
+                    <option value="">لطفاً یک مشخصه انتخاب کنید</option>
+                </select>
+            </div>
+            <span asp-validation-for="SpecificationId" class="text-danger"></span>
+        </div>
+
+        <!-- مقدار مشخصه -->
+        <div class="mb-3 w-50">
+            <label asp-for="Value" class="form-label">مقدار</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text"><i class="bx bx-edit"></i></span>
+                <input asp-for="Value" class="form-control" placeholder="مقدار مشخصه">
+            </div>
+            <span asp-validation-for="Value" class="text-danger"></span>
+        </div>
+
+        <!-- دکمه‌های عملیات -->
+        <div class="mb-3 w-50 text-center">
+            <button type="submit" class="btn btn-primary me-2">ثبت</button>
+            <a asp-action="List" asp-route-productId="@Model.ProductId" class="btn btn-secondary">بازگشت</a>
+        </div>
+    </div>
+</form>

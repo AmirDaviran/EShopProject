@@ -75,9 +75,9 @@ namespace EShop.Infra_Data.Repositories
 
             #region Filter
 
-            if (!string.IsNullOrEmpty(model.Title))
+            if (!string.IsNullOrEmpty(model.SearchTerm))
             {
-                query = query.Where(product => EF.Functions.Like(product.Title, $"%{model.Title}%"));
+                query = query.Where(product => EF.Functions.Like(product.Title, $"%{model.SearchTerm}%"));
             }
 
             #endregion

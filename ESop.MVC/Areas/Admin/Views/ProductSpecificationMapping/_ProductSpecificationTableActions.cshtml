@@ -1,0 +1,51 @@
+﻿@model EShop.Domain.ViewModels.Products.Product_Specification.ProductSpecificationFilterViewModel
+@{
+    int productId = Model.ProductId; // ProductId از مدل گرفته می‌شود
+}
+
+<form method="get" asp-controller="ProductSpecificationMapping" asp-action="List" id="filter-search">
+    <div class="row mx-2">
+        <div class="col-md-2">
+            <div class="dataTables_length" id="DataTables_Table_0_length">
+                <label>
+                    تعداد نمایش:
+                    <select name="TakeEntity" asp-for="TakeEntity" class="form-select" onchange="this.form.submit()">
+                        @foreach (var option in new[] { 10, 25, 50, 100 })
+                        {
+                            if (Model.TakeEntity == option)
+                            {
+                                <option value="@option" selected>@option</option>
+                            }
+                            else
+                            {
+                                <option value="@option">@option</option>
+                            }
+                        }
+                    </select>
+                </label>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center">
+                <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                    <label>
+                        جستجو:
+                        <input name="SearchTerm" type="search" class="form-control" placeholder="Search.." value="@Model.SearchTerm" onkeypress="if(event.keyCode == 13) { this.form.submit(); }" />
+                    </label>
+                    <button type="submit" class="btn btn-primary mx-2">جستجو</button>
+                    <a class="btn btn-primary add-new" asp-action="List" asp-controller="ProductSpecificationMapping" asp-route-productId="@Model.ProductId">ریست</a>
+                </div>
+                <div class="btn-group d-flex align-items-center">
+                    <button class="btn btn-secondary buttons-collection dropdown-toggle btn-outline-secondary mx-2" type="button">
+                        <i class="bx bx-export me-1"></i> Export
+                    </button>
+                    <a class="btn btn-primary add-new" asp-action="Add" asp-controller="ProductSpecificationMapping" asp-area="Admin" asp-route-productId="@Model.ProductId">
+                        <i class="bx bx-plus me-0 me-sm-1"></i>
+                        <span class="d-none d-sm-inline-block">افزودن مشخصه جدید</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="productId" value="@Model.ProductId" /> <!-- اطمینان از ارسال productId -->
+</form>

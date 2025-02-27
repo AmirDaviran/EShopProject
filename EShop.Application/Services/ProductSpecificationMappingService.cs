@@ -78,6 +78,12 @@ namespace EShop.Application.Services
             return true;
         }
 
+      public async Task<ProductSpecificationFilterViewModel> FilterAsync(ProductSpecificationFilterViewModel model)
+      {
+          return await _mappingRepository.FilterAsync(model);
+      }
+
+
 
     }
 }

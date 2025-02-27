@@ -1,6 +1,7 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Application.Utilities.Extensions.Upload;
 using EShop.Domain.Entities.ProductEntity;
+using EShop.Domain.Entities.ProductEntity.Mapping;
 using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.Interfaces;
 using EShop.Domain.ViewModels.Products.Product;
@@ -43,9 +44,13 @@ namespace EShop.Application.Services
                 Review = model.Review,
                 ExpertReview = model.ExpertReview,
                 ImageName = imageName,
-                CreatedDate = DateTime.Now
-                };
-
+                CreatedDate = DateTime.Now,
+                ProductCategoryMappings = new List<ProductCategoryMapping>
+                {
+                    new ProductCategoryMapping
+                        { CategoryId = model.CategoryId, CreatedDate = DateTime.Now } // کامنت: اضافه کردن دسته‌بندی
+                }
+            };
             // ذخیره در دیتابیس
             await _productRepository.InsertAsync(product);
             await _productRepository.SaveAsync();
@@ -84,20 +89,9 @@ namespace EShop.Application.Services
 
         #region GetAll
 
-        public async Task<List<ProductViewModel>> GetAllAsync()
+        public async Task<List<ProductListViewModel>> GetAllAsync()
         {
-            var product = await _productRepository.GetAllAsync();
-            return product.Select(product => new ProductViewModel()
-            {
-                CreatedDate = product.CreatedDate,
-                ExpertReview = product.ExpertReview,
-                Id = product.Id,
-                ImageName = product.ImageName,
-                Price = product.Price,
-                Review = product.Review,
-                Title = product.Title,
-                TitleDescription = product.TitleDescription
-            }).ToList();
+            return await _productRepository.GetAllAsync();
         }
 
         #endregion
@@ -121,7 +115,13 @@ namespace EShop.Application.Services
                     Price = product.Price,
                     Review = product.Review,
                     Title = product.Title,
-                    TitleDescription = product.TitleDescription
+                    TitleDescription = product.TitleDescription,
+                    CategoryId = product.ProductCategoryMappings?.FirstOrDefault()?.CategoryId ?? 0 // کامنت: گرفتن اولین دسته‌بندی
+                    //    int categoryId = 0;
+                    //    if (product.ProductCategoryMappings != null && product.ProductCategoryMappings.Any())
+                    //    {
+                    //    categoryId = product.ProductCategoryMappings.First().CategoryId;
+                    //}
                 };
             }
         }
@@ -175,20 +175,42 @@ namespace EShop.Application.Services
             product.Review = model.Review;
             product.ExpertReview = model.ExpertReview;
 
+            //  به‌روزرسانی دسته‌بندی
+            var existingCategory = product.ProductCategoryMappings?.FirstOrDefault();
+            if (existingCategory != null)
+            {
+                existingCategory.CategoryId = model.CategoryId;
+            }
+            else
+            {
+                product.ProductCategoryMappings = new List<ProductCategoryMapping>
+                {
+                    new ProductCategoryMapping { CategoryId = model.CategoryId, CreatedDate = DateTime.Now }
+                };
+            }
+
             // ذخیره تغییرات
             _productRepository.Update(product);
-             await _productRepository.SaveAsync();
+            await _productRepository.SaveAsync();
 
-             return UpdateProductResult.Success;
+            return UpdateProductResult.Success;
         }
 
         #endregion
 
         #region Filter
-      public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
-      {
-          return await _productRepository.FilterAsync(model);
-      }
+        public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
+        {
+            return await _productRepository.FilterAsync(model);
+        }
         #endregion
+
+        #region GetProductsByCategoryId
+        public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId)
+        {
+            return await _productRepository.GetProductsByCategoryIdAsync(categoryId);
+        }
+        #endregion
+
     }
 }

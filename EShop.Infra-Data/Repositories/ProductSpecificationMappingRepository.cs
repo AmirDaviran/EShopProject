@@ -1,5 +1,6 @@
 ﻿using EShop.Domain.Entities.ProductEntity.Mapping;
 using EShop.Domain.Interfaces;
+using EShop.Domain.ViewModels.Products.Product_Specification;
 using EShop.Infra_Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +10,18 @@ namespace EShop.Infra_Data.Repositories
     {
         
 
-        public async Task<List<ProductSpecificationMapping>> GetByProductIdAsync(int productId)
+        public async Task<List<ProductSpecificationListViewModel>> GetByProductIdAsync(int productId)
         {
             return await _context.ProductSpecificationMappings
                 .Where(psm => psm.ProductId == productId && !psm.IsDeleted)
                 .Include(psm => psm.Specification)
+                .Select(psm => new ProductSpecificationListViewModel
+                {
+                    MappingId = psm.Id,
+                    SpecificationId = psm.SpecificationId,
+                    SpecificationName = psm.Specification.Name,
+                    Value = psm.Value
+                })
                 .ToListAsync();
         }
 
@@ -36,7 +44,8 @@ namespace EShop.Infra_Data.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var mapping = await GetByIdAsync(id);
+            var mapping = await _context.ProductSpecificationMappings
+                .FirstOrDefaultAsync(psm => psm.Id == id && !psm.IsDeleted);
             if (mapping != null)
             {
                 mapping.IsDeleted = true;

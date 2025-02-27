@@ -2,7 +2,7 @@
 
 namespace EShop.Domain.Entities.ProductEntity.Mapping
 {
-    public class ProductSelectedCategory : BaseEntity
+    public class ProductCategoryMapping : BaseEntity
     {
         #region Properties
         public int ProductId {  get; set; }

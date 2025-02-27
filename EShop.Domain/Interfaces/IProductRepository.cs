@@ -6,13 +6,12 @@ namespace EShop.Domain.Interfaces
 {
     public interface IProductRepository
     {
-        Task<List<Product>> GetAllAsync();
+        Task<List<ProductListViewModel>> GetAllAsync();
         Task<Product> GetProductByIdAsync(int id);
         Task InsertAsync(Product product);
         Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model);
         void Update(Product product);
         Task SaveAsync();
-
-        //Task<List<Product>> GetProductsByCategoryIdAsync(int categoryId); 
+        Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId);
     }
 }

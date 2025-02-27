@@ -26,35 +26,14 @@ namespace EShop.Application.Services
 
         #endregion
 
-        #region GetByProductId
-
-        public async Task<List<SpecificationProductViewModel>> GetByProductIdAsync(int productId)
+        public async Task<bool> AddSpecificationToProductAsync(AddSpecificationToProductViewModel model) // کامنت: تغییر به ویو مدل جدید
         {
-            var mappings = await _mappingRepository.GetByProductIdAsync(productId);
-            return mappings.Select(m => new SpecificationProductViewModel
-            {
-                SpecificationId = m.SpecificationId,
-                Value = m.Value
-            }).ToList();
-        }
-
-        #endregion
-
-        #region Create
-
-        public async Task<CreateProductSpecificationResult> CreateAsync(int productId, SpecificationProductViewModel model)
-        {
-            if (model == null || string.IsNullOrWhiteSpace(model.Value) || model.SpecificationId <= 0)
-                return CreateProductSpecificationResult.InvalidInput;
-
-            var product = await _productRepository.GetProductByIdAsync(productId);
-            var specification = await _specificationRepository.GetSpecificationByIdAsync(model.SpecificationId);
-            if (product == null || specification == null)
-                return CreateProductSpecificationResult.NotFound;
+            if (model == null || string.IsNullOrWhiteSpace(model.Value))
+                return false;
 
             var mapping = new ProductSpecificationMapping
             {
-                ProductId = productId,
+                ProductId = model.ProductId,
                 SpecificationId = model.SpecificationId,
                 Value = model.Value,
                 CreatedDate = DateTime.Now
@@ -62,46 +41,20 @@ namespace EShop.Application.Services
 
             await _mappingRepository.InsertAsync(mapping);
             await _mappingRepository.SaveAsync();
-            return CreateProductSpecificationResult.Success;
+            return true;
         }
 
-        #endregion
-
-        #region UpdateAsync
-
-        public async Task<UpdateProductSpecificationResult> UpdateAsync(int mappingId, SpecificationProductViewModel model)
+        public async Task<List<ProductSpecificationListViewModel>> GetSpecificationsByProductIdAsync(int productId) // کامنت: تغییر به ویو مدل جدید
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Value) || model.SpecificationId <= 0)
-                return UpdateProductSpecificationResult.InvalidInput;
-
-            var mapping = await _mappingRepository.GetByIdAsync(mappingId);
-            if (mapping == null)
-                return UpdateProductSpecificationResult.NotFound;
-
-            mapping.SpecificationId = model.SpecificationId;
-            mapping.Value = model.Value;
-
-            _mappingRepository.Update(mapping);
-            await _mappingRepository.SaveAsync();
-            return UpdateProductSpecificationResult.Success;
+            return await _mappingRepository.GetByProductIdAsync(productId);
         }
 
-        #endregion
-
-        #region Delete
-
-        public async Task<DeleteProductSpecificationResult> DeleteAsync(int mappingId)
+        public async Task<bool> RemoveSpecificationFromProductAsync(int mappingId)
         {
-            var mapping = await _mappingRepository.GetByIdAsync(mappingId);
-            if (mapping == null)
-                return DeleteProductSpecificationResult.NotFound;
-
             await _mappingRepository.DeleteAsync(mappingId);
             await _mappingRepository.SaveAsync();
-            return DeleteProductSpecificationResult.Success;
+            return true;
         }
-
-        #endregion
 
     }
 }

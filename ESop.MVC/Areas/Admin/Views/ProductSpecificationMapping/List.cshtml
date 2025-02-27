@@ -1,51 +1,36 @@
-﻿@model List<EShop.Domain.ViewModels.Products.Product_Specification.SpecificationProductViewModel>
-
+﻿@model List<EShop.Domain.ViewModels.Products.Product_Specification.ProductSpecificationListViewModel>
 @{
-    ViewData["Title"] = "لیست مشخصات محصول";
-    var productId = ViewBag.ProductId;
+    ViewData["Title"] = "مدیریت مشخصات محصول";
+    int productId = ViewBag.ProductId;
 }
 
 <div class="content-wrapper">
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="card">
-            <div class="card-datatable table-responsive">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5>مشخصات محصول</h5>
-                    <a class="btn btn-primary" asp-action="Create" asp-route-productId="@productId">افزودن مشخصه</a>
-                </div>
-                <table class="table border-top">
-                    <thead>
-                        <tr>
-                            <th>شناسه مشخصه</th>
-                            <th>مقدار</th>
-                            <th>عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null && Model.Any())
-                        {
-                            foreach (var spec in Model)
-                            {
-                                <tr>
-                                    <td>@spec.SpecificationId</td>
-                                    <td>@spec.Value</td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm" asp-action="Update" asp-route-mappingId="@spec.SpecificationId">ویرایش</a>
-                                        <form asp-action="Delete" method="post" style="display:inline;">
-                                            <input type="hidden" name="mappingId" value="@spec.SpecificationId" />
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا مطمئن هستید؟');">حذف</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr><td colspan="3" class="text-center">هیچ مشخصه‌ای یافت نشد</td></tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <h2>مشخصات محصول</h2>
+    <a asp-action="Add" asp-route-productId="@productId" class="btn btn-primary mb-3">اضافه کردن مشخصه جدید</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>نام مشخصه</th>
+            <th>مقدار</th>
+            <th>عملیات</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var spec in Model)
+        {
+            <tr>
+                <td>@spec.SpecificationName</td>
+                <td>@spec.Value</td>
+                <td>
+                    <form asp-action="Delete" method="post" style="display:inline;">
+                        <input type="hidden" name="mappingId" value="@spec.MappingId" />
+                        <input type="hidden" name="productId" value="@productId" />
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('آیا مطمئن هستید؟')">حذف</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <a asp-controller="Product" asp-action="List" class="btn btn-secondary">بازگشت به لیست محصولات</a>
 </div>

@@ -26,7 +26,7 @@ public class SpecificationRepository(EShopDbContext _context) : ISpecificationRe
 
         #region Paging
 
-        await model.Paging(query.Select(spec => new DetailsSpecificationViewModel()
+        await model.Paging(query.Select(spec => new SpecificationListViewModel()
         {
             Id = spec.Id,
             Name = spec.Name,

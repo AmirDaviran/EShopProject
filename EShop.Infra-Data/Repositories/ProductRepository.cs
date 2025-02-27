@@ -7,15 +7,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EShop.Infra_Data.Repositories
 {
-    public class ProductRepository(EShopDbContext _contex) : IProductRepository
+    public class ProductRepository(EShopDbContext _context) : IProductRepository
     {
         #region GetAll
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<List<ProductListViewModel>> GetAllAsync() 
         {
-            return await _contex.Products
+            return await _context.Products
                 .Where(product => !product.IsDeleted)
-                .Include(psm => psm.ProductSpecificationMappings)
-                .ThenInclude(spec => spec.Specification)
+                .Select(product => new ProductListViewModel
+                {
+                    Id = product.Id,
+                    Title = product.Title,
+                    Price = product.Price,
+                    ImageName = product.ImageName,
+                    CreatedDate = product.CreatedDate
+                })
                 .ToListAsync();
         }
 
@@ -24,7 +30,7 @@ namespace EShop.Infra_Data.Repositories
         #region GetById
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            return await _contex.Products
+            return await _context.Products
                  .Where(p => p.Id == id && !p.IsDeleted)
                .FirstOrDefaultAsync();
         }
@@ -35,7 +41,7 @@ namespace EShop.Infra_Data.Repositories
 
         public async Task InsertAsync(Product product)
         {
-            await _contex.Products.AddAsync(product);
+            await _context.Products.AddAsync(product);
         }
 
         #endregion
@@ -43,7 +49,7 @@ namespace EShop.Infra_Data.Repositories
         #region SaveAsync
         public async Task SaveAsync()
         {
-            await _contex.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         #endregion
@@ -52,7 +58,7 @@ namespace EShop.Infra_Data.Repositories
 
         public void Update(Product product)
         {
-            _contex.Products.Update(product);
+            _context.Products.Update(product);
         }
 
         #endregion
@@ -61,7 +67,7 @@ namespace EShop.Infra_Data.Repositories
 
         public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
         {
-            var query = _contex.Products
+            var query = _context.Products
                 .Where(product => !product.IsDeleted)
               .AsQueryable();
 
@@ -75,16 +81,13 @@ namespace EShop.Infra_Data.Repositories
             #endregion
 
             #region Paging
-            await model.Paging(query.Select(product => new ProductViewModel
+            await model.Paging(query.Select(product => new ProductListViewModel
             {
                 CreatedDate = product.CreatedDate,
-                ExpertReview = product.ExpertReview,
                 Id = product.Id,
                 ImageName = product.ImageName,
                 Price = product.Price,
-                Review = product.Review,
                 Title = product.Title,
-                TitleDescription = product.TitleDescription,
             }));
             #endregion
 
@@ -93,6 +96,23 @@ namespace EShop.Infra_Data.Repositories
 
         #endregion
 
-      
+        #region GetProductsByCategoryId
+
+        public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId) 
+        {
+            return await _context.ProductCategoryMappings
+                .Where(psc => psc.CategoryId == categoryId && !psc.IsDeleted) // کامنت: فیلتر بر اساس CategoryId
+                .Select(psc => new ProductListViewModel
+                {
+                    Id = psc.Product.Id,
+                    Title = psc.Product.Title,
+                    Price = psc.Product.Price,
+                    ImageName = psc.Product.ImageName,
+                    CreatedDate = psc.Product.CreatedDate
+                })
+                .ToListAsync();
+        }
+
+        #endregion
     }
 }

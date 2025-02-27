@@ -1,6 +1,7 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Enums.CategoryEnums;
-using EShop.Domain.ViewModels.Products;
+using EShop.Domain.ViewModels.Products.Category;
+
 namespace EShop.Application.Interfaces
 {
     public interface ICategoryService

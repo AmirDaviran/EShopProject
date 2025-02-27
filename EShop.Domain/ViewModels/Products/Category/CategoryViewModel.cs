@@ -1,4 +1,4 @@
-﻿namespace EShop.Domain.ViewModels.Products
+﻿namespace EShop.Domain.ViewModels.Products.Category
 {
     public class CategoryViewModel
     {

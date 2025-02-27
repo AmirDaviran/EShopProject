@@ -1,6 +1,6 @@
 ﻿using EShop.Application.Interfaces;
 using EShop.Domain.Enums.CategoryEnums;
-using EShop.Domain.ViewModels.Products;
+using EShop.Domain.ViewModels.Products.Category;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

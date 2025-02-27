@@ -35,5 +35,8 @@ namespace EShop.Domain.ViewModels.Products.Product
         [Required(ErrorMessage = "تصویر محصول الزامی است")]
         public IFormFile ImageFile { get; set; }
 
+        [Display(Name = "دسته‌بندی")]
+        [Required(ErrorMessage = "لطفا {0} را انتخاب کنید")] 
+        public int CategoryId { get; set; }
     }
 }

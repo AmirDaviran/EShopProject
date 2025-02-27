@@ -36,5 +36,9 @@ namespace EShop.Domain.ViewModels.Products.Product
 
         public string? ImageName { get; set; }
         public IFormFile? ImageFile { get; set; }
+
+        [Display(Name = "دسته‌بندی")]
+        [Required(ErrorMessage = "لطفا {0} را انتخاب کنید")] // کامنت: اجباری کردن انتخاب دسته‌بندی
+        public int CategoryId { get; set; }
     }
 }

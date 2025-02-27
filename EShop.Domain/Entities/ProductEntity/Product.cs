@@ -17,7 +17,7 @@ namespace EShop.Domain.Entities.ProductEntity
 
         #region Relations
         public ICollection<ProductSpecificationMapping> ProductSpecificationMappings { get; set; }
-        public ICollection<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+        public ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; }
 
         #endregion
     }

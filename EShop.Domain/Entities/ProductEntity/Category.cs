@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using EShop.Domain.Entities.BaseEntities;
+using EShop.Domain.Entities.ProductEntity.Mapping;
 
 namespace EShop.Domain.Entities.ProductEntity;
 
@@ -18,7 +19,7 @@ public class Category : BaseEntity
     [ForeignKey(nameof(ParentCategoryId))]
     public  Category? ParentCategory { get; set; }
     public ICollection<Category> SubCategories { get; set; } = new List<Category>();
-   // public ICollection<Product> Products { get; set; } = new List<Product>(); 
+    public ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; }
     #endregion
 
 }

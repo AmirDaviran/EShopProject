@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="Enums\ProductSpecificationMapping\" />
+    <Folder Include="ViewModels\Products\ClientSide\" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,19 @@
+﻿@model EShop.Domain.ViewModels.Products.Product.ClientSide.ProductReviewsViewModel
+
+@if (!string.IsNullOrEmpty(Model.Review))
+{
+    <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
+        <div class="product-tab-title">
+            <h2>نقد و بررسی اجمالی</h2>
+        </div>
+        <div class="expandable-text pt-1" style="height: 250px;">
+            <div class="expandable-text_text">
+                <p>@Model.Review</p>
+            </div>
+            <div class="expandable-text-expand-btn justify-content-start text-sm">
+                <span class="show-more active">ادامه مطلب <i class="ri-arrow-down-s-line ms-2"></i></span>
+                <span class="show-less d-none">مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i></span>
+            </div>
+        </div>
+    </div>
+}

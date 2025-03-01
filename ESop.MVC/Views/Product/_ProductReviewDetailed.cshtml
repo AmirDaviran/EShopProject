@@ -1,0 +1,19 @@
+﻿@model EShop.Domain.ViewModels.Products.Product.ClientSide.ProductReviewsViewModel
+
+@if (!string.IsNullOrEmpty(Model.ExpertReview))
+{
+    <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
+        <div class="product-tab-title">
+            <h2>نقد و بررسی تخصصی</h2>
+        </div>
+        <div class="expandable-text pt-1" style="height: 840px;">
+            <div class="expandable-text_text">
+                @Html.Raw(Model.ExpertReview)
+            </div>
+            <div class="expandable-text-expand-btn justify-content-start text-sm">
+                <span class="show-more active">نمایش کامل نقد و بررسی تخصصی <i class="ri-arrow-down-s-line ms-2"></i></span>
+                <span class="show-less d-none">نمایش خلاصه <i class="ri-arrow-up-s-line ms-2"></i></span>
+            </div>
+        </div>
+    </div>
+}

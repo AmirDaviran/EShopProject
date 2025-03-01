@@ -1,6 +1,7 @@
 ﻿using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.ViewModels.Products.ClientSide;
 using EShop.Domain.ViewModels.Products.Product;
+using EShop.Domain.ViewModels.Products.Product.ClientSide;
 namespace EShop.Application.Interfaces
 {
     public interface IProductService
@@ -13,14 +14,13 @@ namespace EShop.Application.Interfaces
         Task<CreateProductResult> CreateAsync(CreateProductViewModel model);
         Task<DeleteProductResult> DeleteAsync(int id);
         Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model);
-        Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId);
+        //Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId);
 
         #endregion
 
         #region Client Side
 
-        Task<ProductDetailViewModel> GetProductDetailAsync(int productId);
-        Task<List<RelatedProductViewModel>> GetRelatedProductsAsync(int categoryId);
+        Task<MyProductSectionsViewModel> GetMyProductSectionsAsync(int productId);
 
         #endregion
     }

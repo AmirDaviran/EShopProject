@@ -9,6 +9,8 @@ namespace EShop.Infra_Data.Repositories
 {
     public class ProductRepository(EShopDbContext _context) : IProductRepository
     {
+        #region AdminSide
+
         #region GetAll
         public async Task<List<ProductListViewModel>> GetAllAsync() 
         {
@@ -31,8 +33,8 @@ namespace EShop.Infra_Data.Repositories
         public async Task<Product> GetProductByIdAsync(int id)
         {
             return await _context.Products
-                 .Where(p => p.Id == id && !p.IsDeleted)
-               .FirstOrDefaultAsync();
+                .Where(p => p.Id == id && !p.IsDeleted)
+                .FirstOrDefaultAsync();
         }
 
         #endregion
@@ -71,7 +73,7 @@ namespace EShop.Infra_Data.Repositories
                 .Where(product => !product.IsDeleted)
                 .Include(product=>product.ProductCategoryMappings)
                 .ThenInclude(pcm=>pcm.Category)
-              .AsQueryable();
+                .AsQueryable();
 
             #region Filter
 
@@ -116,6 +118,22 @@ namespace EShop.Infra_Data.Repositories
                     CreatedDate = psc.Product.CreatedDate
                 })
                 .ToListAsync();
+        }
+
+#endregion
+
+        #endregion
+
+        #region ClientSide
+        public async Task<Product> GetMyProductDataAsync(int productId)
+        {
+            return await _context.Set<Product>()
+                .Include(p => p.ProductSpecificationMappings)
+                .ThenInclude(psm => psm.Specification)
+                .Include(p => p.ProductCategoryMappings)
+                .ThenInclude(pcm => pcm.Category)
+                .ThenInclude(c => c.ParentCategory)
+                .FirstOrDefaultAsync(p => p.Id == productId);
         }
 
         #endregion

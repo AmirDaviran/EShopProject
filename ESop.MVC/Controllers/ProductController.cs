@@ -1,42 +1,22 @@
 ﻿using EShop.Application.Interfaces;
-using EShop.Domain.ViewModels.Products.ClientSide;
+using EShop.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EShop.Web.Controllers
+public class ProductController : BaseController
 {
-    public class ProductController : BaseController
+    private readonly IProductService _productService;
+
+    public ProductController(IProductService myProductService)
     {
-        #region Fields
-
-        private readonly IProductService _productService;
-        private readonly ICategoryService _categoryService;
-        private readonly IProductSpecificationMappingService _productSpecificationMappingService;
-
-        #endregion
-
-        #region Constructor
-
-        public ProductController(IProductService productService, ICategoryService categoryService, IProductSpecificationMappingService productSpecificationMappingService)
-        {
-            _productService = productService;
-            _categoryService = categoryService;
-            _productSpecificationMappingService = productSpecificationMappingService;
-        }
-
-        #endregion
-        
-            [HttpGet]
-            public async Task<IActionResult> Details(int id)
-            {
-                var product = await _productService.GetProductDetailAsync(id);
-                if (product == null) return NotFound();
-
-                var relatedProducts = await _productService.GetRelatedProductsAsync(
-                    product.ProductId); // فرضاً از دسته‌بندی محصول استفاده می‌کنیم
-                product.RelatedProducts = relatedProducts;
-
-                return View(product);
-            }
-        }
+        _productService = myProductService;
     }
 
+    public async Task<IActionResult> Details(int id)
+    {
+        var mySections = await _productService.GetMyProductSectionsAsync(id);
+        if (mySections == null) return NotFound();
+
+        var viewModel = new { MySections = mySections };
+        return View(viewModel);
+    }
+}

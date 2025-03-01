@@ -1,0 +1,21 @@
+﻿@model EShop.Domain.ViewModels.Products.Product.ClientSide.ProductSpecificationsViewModel
+
+<div class="expandable-text mb-3" style="height: 95px;">
+    <div class="expandable-text_text">
+        <div class="product-params">
+            <ul>
+                @foreach (var spec in Model.Specifications)
+                {
+                    <li>
+                        <span class="label">@spec.Name:</span>
+                        <span class="title">@spec.Value</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <div class="expandable-text-expand-btn">
+        <span class="show-more">بیشتر بخوانید <i class="ri-arrow-down-s-line"></i></span>
+        <span class="show-less d-none">بستن <i class="ri-arrow-up-s-line"></i></span>
+    </div>
+</div>

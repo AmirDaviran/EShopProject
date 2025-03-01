@@ -1,0 +1,17 @@
+﻿@model EShop.Domain.ViewModels.Products.Product.ClientSide.ProductCategoriesViewModel
+
+<nav class="mb-2" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        @foreach (var category in Model.Categories)
+        {
+            <li class="breadcrumb-item">
+                @if (category.ParentCategoryId.HasValue && !string.IsNullOrEmpty(category.ParentCategoryTitle))
+                {
+                    <span>@category.ParentCategoryTitle > </span>
+                }
+                <a href="#">@category.Title</a>
+            </li>
+        }
+    </ol>
+</nav>
+

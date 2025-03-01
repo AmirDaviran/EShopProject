@@ -4,9 +4,8 @@ using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Entities.ProductEntity.Mapping;
 using EShop.Domain.Enums.ProductEnums;
 using EShop.Domain.Interfaces;
-using EShop.Domain.ViewModels.Products.ClientSide;
 using EShop.Domain.ViewModels.Products.Product;
-using static EShop.Application.Services.ProductService;
+using EShop.Domain.ViewModels.Products.Product.ClientSide;
 
 namespace EShop.Application.Services
 {
@@ -21,6 +20,7 @@ namespace EShop.Application.Services
         #endregion
 
         #region Constructor
+
         public ProductService(
             IProductRepository productRepository,
             ICategoryRepository categoryRepository,
@@ -41,7 +41,8 @@ namespace EShop.Application.Services
         public async Task<CreateProductResult> CreateAsync(CreateProductViewModel model)
         {
             // اعتبارسنجی اولیه
-            if (model == null || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 || model.ImageFile == null || model.CategoryId <= 0)
+            if (model == null || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 ||
+                model.ImageFile == null || model.CategoryId <= 0)
             {
                 return CreateProductResult.InvalidInput;
             }
@@ -73,7 +74,8 @@ namespace EShop.Application.Services
                 ProductCategoryMappings = new List<ProductCategoryMapping>
                 {
                     new ProductCategoryMapping
-                    { CategoryId = model.CategoryId,
+                    {
+                        CategoryId = model.CategoryId,
                         CreatedDate = DateTime.Now
                     } // کامنت: اضافه کردن دسته‌بندی
                 }
@@ -143,7 +145,9 @@ namespace EShop.Application.Services
                     Review = product.Review,
                     Title = product.Title,
                     TitleDescription = product.TitleDescription,
-                    CategoryId = product.ProductCategoryMappings?.FirstOrDefault()?.CategoryId ?? 0 // کامنت: گرفتن اولین دسته‌بندی
+                    CategoryId =
+                        product.ProductCategoryMappings?.FirstOrDefault()?.CategoryId ??
+                        0 // کامنت: گرفتن اولین دسته‌بندی
                     //    int categoryId = 0;
                     //    if (product.ProductCategoryMappings != null && product.ProductCategoryMappings.Any())
                     //    {
@@ -156,10 +160,12 @@ namespace EShop.Application.Services
         #endregion
 
         #region Update
+
         public async Task<UpdateProductResult> UpdateAsync(UpdateProductViewModel model)
         {
             // اعتبارسنجی اولیه
-            if (model == null || model.Id <= 0 || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 || model.CategoryId <= 0)
+            if (model == null || model.Id <= 0 || string.IsNullOrWhiteSpace(model.Title) || model.Price <= 0 ||
+                model.CategoryId <= 0)
                 return UpdateProductResult.InvalidInput;
 
             // دریافت محصول موجود
@@ -184,7 +190,8 @@ namespace EShop.Application.Services
                 }
 
                 // آپلود تصویر جدید
-                var newImageName = await model.ImageFile.SaveAttachmentAsync(SiteTools.ProducMainPicturetAttachmentsPath);
+                var newImageName =
+                    await model.ImageFile.SaveAttachmentAsync(SiteTools.ProducMainPicturetAttachmentsPath);
                 if (string.IsNullOrEmpty(newImageName))
                 {
                     return UpdateProductResult.ImageUploadFailed;
@@ -224,91 +231,67 @@ namespace EShop.Application.Services
         #endregion
 
         #region Filter
+
         public async Task<FilterProductViewModel> FilterAsync(FilterProductViewModel model)
         {
             return await _productRepository.FilterAsync(model);
         }
+
         #endregion
 
-        #region GetProductsByCategoryId
-        public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId)
-        {
-            return await _productRepository.GetProductsByCategoryIdAsync(categoryId);
-        }
-        #endregion
+        //#region GetProductsByCategoryId
+
+        //public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId)
+        //{
+        //    return await _productRepository.GetProductsByCategoryIdAsync(categoryId);
+        //}
+
+        //#endregion
 
         #endregion
 
         #region Client Side
 
-        #region GetProductDetail
-        public async Task<ProductDetailViewModel> GetProductDetailAsync(int productId)
+        public async Task<MyProductSectionsViewModel> GetMyProductSectionsAsync(int productId)
         {
-            var product = await _productRepository.GetProductByIdAsync(productId);
-            if (product == null || product.IsDeleted) return null;
+            var product = await _productRepository.GetMyProductDataAsync(productId);
+            if (product == null) return null;
 
-            var specs = await _specMappingRepository.GetByProductIdAsync(productId);
-            var category = product.ProductCategoryMappings?.FirstOrDefault()?.Category;
-
-            return new ProductDetailViewModel
+            return new MyProductSectionsViewModel
             {
-                ProductId = product.Id,
-                Title = product.Title,
-                TitleDescription = product.TitleDescription,
-                Price = product.Price,
-                ImageUrl = @SiteTools.ProducMainPicturetAttachmentsPath,
-                Review = product.Review,
-                ExpertReview = product.ExpertReview,
-                Variants = new List<ProductVariantViewModel>
+                ProductDetails = new ProductDetailsViewModel
                 {
-                    new ProductVariantViewModel { ColorName = "آبی", ColorCode = "#2196f3", IsSelected = true },
-                    new ProductVariantViewModel { ColorName = "سفید", ColorCode = "#fff" },
-                    new ProductVariantViewModel { ColorName = "صورتی", ColorCode = "#ff80ab" }
+                    Title = product.Title,
+                    TitleDescription = product.TitleDescription,
+                    Price = product.Price,
+                    ImageName = product.ImageName
                 },
-                Specifications = specs.Select(s => new ProductSpecificationViewModel
+                ProductSpecifications = new ProductSpecificationsViewModel
                 {
-                    Name = s.SpecificationName,
-                    Value = s.Value
-                }).ToList(),
-                Sellers = new List<SellerViewModel>
-                {
-                    new SellerViewModel
-                    {
-                        SellerName = "یکتاکالا",
-                        Price = product.Price,
-                        Warranty = "گارانتی ۱۸ ماهه",
-                        SatisfactionRate = 88.4,
-                        Stock = 1
-                    }
+                    Specifications = product.ProductSpecificationMappings
+                        .Select(psm => new SpecificationViewModel
+                        {
+                            Name = psm.Specification.Name,
+                            Value = psm.Value
+                        }).ToList()
                 },
-                AverageRating = 4.4,
-                RatingCount = 742,
-                CategoryTitle = category?.Title ?? "نامشخص"
+                ProductCategories = new ProductCategoriesViewModel
+                {
+                    Categories = product.ProductCategoryMappings
+                        .Select(pcm => new CategoryViewModel
+                        {
+                            Title = pcm.Category.Title,
+                            ParentCategoryId = pcm.Category.ParentCategoryId,
+                            ParentCategoryTitle = pcm.Category.ParentCategory?.Title
+                        }).ToList()
+                },
+                ProductReviews = new ProductReviewsViewModel
+                {
+                    Review = product.Review,
+                    ExpertReview = product.ExpertReview
+                }
             };
         }
-
-        #endregion
-
-        #region GetRelatedProducts
-
-        public async Task<List<RelatedProductViewModel>> GetRelatedProductsAsync(int categoryId)
-        {
-            var products = await _productRepository.GetProductsByCategoryIdAsync(categoryId);
-            return products.Select(p => new RelatedProductViewModel
-            {
-                ProductId = p.Id,
-                Title = p.Title,
-                Price = p.Price,
-                ImageUrl = @SiteTools.ProducMainPicturetAttachmentsPath,
-                Rating = 4.4,
-                RatingCount = 436,
-                VariantColors = new List<string> { "#d4d4d4", "#e86841", "#b82c32" }
-            }).Take(8).ToList();
-        }
-
-        #endregion
-
-
         #endregion
     }
 }

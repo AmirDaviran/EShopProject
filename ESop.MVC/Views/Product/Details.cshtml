@@ -1,420 +1,59 @@
-﻿@model EShop.Domain.ViewModels.Products.ClientSide.ProductDetailViewModel
-@{
-    ViewData["Title"] = Model.Title;
-}
+﻿@model dynamic
 
-<div class="container">
-    <!-- start of breadcrumb -->
-    <nav class="mb-5" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">خانه</a></li>
-            <li class="breadcrumb-item"><a href="#">کالای دیجیتال</a></li>
-            <li class="breadcrumb-item"><a href="#">موبایل</a></li>
-            <li class="breadcrumb-item"><a href="#">@Model.CategoryTitle</a></li>
-        </ol>
-    </nav>
-    <!-- end of breadcrumb -->
-    <!-- start of product-detail-container -->
-    <div class="product-detail-container mb-5">
+<main class="page-content">
+    <div class="container">
+        <!-- مسیر ناوبری اصلی (استاتیک) -->
+        <partial name="_Breadcrumb" />
+
+        <!-- بخش جزئیات محصول -->
+        <div class="product-detail-container mb-5">
+            <div class="row">
+                <div class="col-lg-4 col-md-5 mb-md-0 mb-4">
+                    <partial name="_ProductGallery" />
+                </div>
+                <div class="col-xl-5 col-lg-4 col-md-7 mb-lg-0 mb-4">
+                    <!-- دسته‌بندی‌ها (داینامیک) -->
+                    <partial name="_DetailsBreadcrumb" model="Model.MySections.ProductCategories" />
+
+                    <!-- جزئیات محصول (داینامیک) -->
+                    <partial name="_ProductDetails" model="Model.MySections.ProductDetails" />
+
+                    <partial name="_ProductVariants" />
+
+                    <!-- مشخصات فنی (داینامیک) -->
+                    <partial name="_ProductParameters" model="Model.MySections.ProductSpecifications" />
+
+                    <partial name="_ProductAdditionalInfo" />
+                    <partial name="_FreeShippingWidget" />
+                </div>
+                <div class="col-xl-3 col-lg-4">
+                    <partial name="_ProductSellerInfo" />
+                </div>
+            </div>
+        </div>
+
+        <!-- لیست فروشندگان (استاتیک) -->
+        <partial name="_SuppliersList" />
+
+        <!-- اسلایدر محصولات مشابه (استاتیک) -->
+        <partial name="_ProductSlider" />
+
+        <!-- تب‌ها و محتوا -->
         <div class="row">
-            <div class="col-lg-4 col-md-5 mb-md-0 mb-4">
-                <div class="ui-sticky ui-sticky-top">
-                    <div class="product-gallery">
-                        <div class="product-options">
-                            <ul>
-                                <li><a href="#"><i class="ri-heart-3-fill"></i></a></li>
-                                <li><a href="#" data-remodal-target="share-modal"><i class="ri-share-forward-fill"></i></a></li>
-                                <li><a href="#" data-remodal-target="notification-modal"><i class="ri-notification-fill"></i></a></li>
-                                <li><a href="#"><i class="ri-line-chart-fill"></i></a></li>
-                                <li><a href="#"><i class="ri-scales-3-fill"></i></a></li>
-                                <li><a href="#"><i class="ri-play-list-add-fill"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="gallery-img-container">
-                            <div class="gallery-img">
-                                <img src="@Model.ImageUrl" class="zoom-img" alt="@Model.Title" style="visibility: visible;">
-                            </div>
-                            <div class="gallery-thumbs">
-                                <ul>
-                                    <li data-fancybox="gallery-a" data-src="@Model.ImageUrl"><img src="@Model.ImageUrl" alt=""></li>
-                                    <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/02.png"><img src="./theme-assets/images/gallery/02.png" alt=""></li>
-                                    <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/03.png"><img src="./theme-assets/images/gallery/03.png" alt=""></li>
-                                    <li data-fancybox="gallery-a" data-src="./theme-assets/images/gallery/04.png"><img src="./theme-assets/images/gallery/04.png" alt=""></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-xl-9 col-lg-8">
+                <partial name="_ProductTabs" />
+
+                <!-- نقد و بررسی (داینامیک) -->
+                <partial name="_ProductReviewSummary" model="Model.MySections.ProductReviews" />
+                <partial name="_ProductReviewDetailed" model="Model.MySections.ProductReviews" />
+
+                <partial name="_ProductSpecs" />
+                <partial name="_ProductComments" />
+                <partial name="_ProductQuestions" />
             </div>
-            <div class="col-xl-5 col-lg-4 col-md-7 mb-lg-0 mb-4">
-                <nav class="mb-2" aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">اپل</a></li>
-                        <li class="breadcrumb-item"><a href="#">@Model.CategoryTitle</a></li>
-                    </ol>
-                </nav>
-                <h2 class="product-title">@Model.Title</h2>
-                <div class="product-en mb-3">
-                    <span>@Model.TitleDescription</span>
-                </div>
-                <div class="product-user-suggestion mb-2">
-                    <i class="ri-thumb-up-fill text-success me-1"></i>
-                    <span class="fs-7 me-2">۷۹٪ (۱۷۰ نفر) از خریداران، این کالا را پیشنهاد کرده‌اند.</span>
-                    <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="خریداران کالا با انتخاب یکی از گزینه‌های پیشنهاد یا عدم پیشنهاد، تجربه خرید خود را با کاربران به اشتراک می‌گذارند."><i class="ri-information-line"></i></span>
-                </div>
-                <div class="product-user-meta fa-num mb-4">
-                    <span class="product-users-rating">
-                        <i class="ri-star-fill icon me-1"></i>
-                        <span class="fw-bold me-1">@Model.AverageRating</span>
-                        <span class="text-muted fs-7">(@Model.RatingCount)</span>
-                    </span>
-                    <span class="divider"></span>
-                    <a href="#" class="link border-bottom-0 fs-7">۶۳۷ دیدگاه کاربران</a>
-                    <span class="divider"></span>
-                    <a href="#" class="link border-bottom-0 fs-7">۴۰۵ پرسش و پاسخ</a>
-                </div>
-                <div class="product-variants-container mb-3">
-                    <div class="product-variant-selected-container">
-                        <span class="product-variant-selected-label">رنگ:</span>
-                        <span class="product-variant-selected">@Model.Variants.FirstOrDefault(v => v.IsSelected)?.ColorName</span>
-                    </div>
-                    <div class="product-variants">
-                        @foreach (var variant in Model.Variants)
-                        {
-                            <div class="product-variant-item">
-                                <div class="custom-radio-circle">
-                                    <input type="radio" class="custom-radio-circle-input" name="productColor" id="color_@variant.ColorName" @(variant.IsSelected ? "checked" : "") />
-                                    <label for="color_@variant.ColorName" class="custom-radio-circle-label" data-variant-label="@variant.ColorName">
-                                        <span class="color" style="background-color: @variant.ColorCode;" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@variant.ColorName" aria-label="@variant.ColorName"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="expandable-text mb-3" style="height: 95px;">
-                    <div class="expandable-text_text">
-                        <div class="product-params">
-                            <ul>
-                                @foreach (var spec in Model.Specifications.Take(4))
-                                {
-                                    <li>
-                                        <span class="label">@spec.Name:</span>
-                                        <span class="title">@spec.Value</span>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="expandable-text-expand-btn">
-                        <span class="show-more">بیشتر بخوانید <i class="ri-arrow-down-s-line"></i></span>
-                        <span class="show-less d-none">بستن <i class="ri-arrow-up-s-line"></i></span>
-                    </div>
-                </div>
-                <div class="product-additional-info-container mb-3">
-                    <span class="icon"><i class="ri-information-line"></i></span>
-                    <div class="product-additional-info">
-                        <p>هشدار سامانه همتا: در صورت انجام معامله، از فروشنده کد فعالسازی را گرفته و حتما در حضور ایشان، دستگاه را از طریق #7777*، برای سیمکارت خود فعالسازی نمایید.</p>
-                        <p>امکان برگشت کالا در گروه موبایل با دلیل "انصراف از خرید" تنها در صورتی مورد قبول است که پلمپ کالا باز نشده باشد.</p>
-                    </div>
-                </div>
-                <div class="widget p-0">
-                    <div class="widget-content widget--free-shipping">
-                        <div class="free-shipping--detail">
-                            <div class="title d-flex align-items-center"><i class="ri-truck-fill me-1"></i> ارسال رایگان سفارش</div>
-                            <div class="subtitle">سفارش‌های بالای ۳۰۰ هزار تومان</div>
-                        </div>
-                        <div class="free-shipping--banner">
-                            <img src="./theme-assets/images/theme/free-shipping--banner.png" alt="ارسال رایگان سفارش">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-4">
-                <div class="product-seller-info ui-box">
-                    @foreach (var seller in Model.Sellers)
-                    {
-                        <div class="seller-info-changeable">
-                            <div class="product-seller-counter">
-                                <span class="label">فروشنده</span>
-                                <a href="#" class="anchor-link link border-bottom-0 fs-7 fa-num">4 فروشنده دیگر</a>
-                            </div>
-                            <div class="product-seller-row">
-                                <div class="product-seller-row-icon">
-                                    <img src="./theme-assets/images/seller-logo-small.svg" alt="">
-                                </div>
-                                <div class="product-seller-row-detail">
-                                    <div class="product-seller-name mb-1">@seller.SellerName</div>
-                                    <div class="seller-final-score-container">
-                                        <div class="seller-rate-container">
-                                            <span class="seller-rate fa-num">@seller.SatisfactionRate٪</span>
-                                            <span class="label">رضایت خریداران</span>
-                                            <span class="divider"></span>
-                                            <span class="label">عملکرد</span>
-                                            <span class="seller-final-score">عالی</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-seller-row">
-                                <div class="product-seller-row-icon">
-                                    <i class="ri-shield-check-fill"></i>
-                                </div>
-                                <div class="product-seller-row-detail">
-                                    <div class="product-seller-row-detail-title">@seller.Warranty</div>
-                                </div>
-                            </div>
-                            <div class="product-seller-row product-seller-row--clickable">
-                                <div class="product-seller-row-icon">
-                                    <i class="ri-checkbox-multiple-fill"></i>
-                                </div>
-                                <div class="product-seller-row-detail">
-                                    <div class="product-seller-row-detail-title">موجود در انبار</div>
-                                    <div class="product-seller-row-detail-subtitle"><i></i> آماده ارسال</div>
-                                </div>
-                            </div>
-                            <div class="product-seller-row">
-                                <div class="product-seller-row-icon">
-                                    <i class="ri-copper-coin-fill text-warning"></i>
-                                </div>
-                                <div class="product-seller-row-detail">
-                                    <div class="product-seller-row-detail-title">۱۵۰ امتیاز در باشگاه مشتریان</div>
-                                </div>
-                            </div>
-                            <div class="product-seller-row product-seller-row--price">
-                                <div class="product-seller-row--price-now fa-num">
-                                    <span class="price">@seller.Price.ToString("N0")</span>
-                                    <span class="currency">تومان</span>
-                                </div>
-                            </div>
-                            <div class="product-seller-row product-remaining-in-stock">
-                                <span>تنها <span class="mx-2">@seller.Stock</span> عدد در انبار باقیست - پیش از اتمام بخرید</span>
-                            </div>
-                        </div>
-                        <div class="product-seller--add-to-cart">
-                            <a href="#" class="btn btn-primary w-100" data-toast="" data-toast-type="success" data-toast-color="green" data-toast-position="topRight" data-toast-icon="ri-check-fill" data-toast-title="موفق!" data-toast-message="به سبد اضافه شد!">
-                                افزودن به سبد خرید
-                            </a>
-                        </div>
-                    }
-                </div>
+            <div class="col-xl-3 col-lg-4 d-lg-block d-none">
+                <partial name="_MiniBuyBox" />
             </div>
         </div>
     </div>
-
-    <div class="ui-box bg-white mb-5">
-        <div class="ui-box-title">لیست فروشندگان این کالا</div>
-        <div class="ui-box-content">
-            <div class="suppliers-items">
-                @foreach (var seller in Model.Sellers)
-                {
-                    <div class="suppliers-item">
-                        <div class="suppliers-item-col suppliers-item-col--info">
-                            <div class="suppliers-seller-icon">
-                                <img src="./theme-assets/images/seller-logo-small.svg" alt="">
-                            </div>
-                            <div class="suppliers-seller-info">
-                                <div class="suppliers-seller-name fw-bold">@seller.SellerName</div>
-                                <div class="suppliers-seller-rate fs-7">
-                                    <span class="text-success fw-bold fa-num">@seller.SatisfactionRate%</span>
-                                    <span class="text-muted">رضایت خریداران</span>
-                                    <span class="text-muted">|</span>
-                                    <span class="text-muted">عملکرد</span>
-                                    <span class="text-success fw-bold">عالی</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--conditions">
-                            <div class="suppliers-item-sender">
-                                <i class="ri-truck-line"></i>
-                                <span class="text-dark">ارسال @seller.SellerName</span>
-                            </div>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--guarantee">
-                            <i class="ri-shield-check-line"></i>
-                            <span class="text-dark fa-num">@seller.Warranty</span>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--price">
-                            <span class="price-now fa-num">@seller.Price.ToString("N0")</span>
-                            <span class="currency">تومان</span>
-                        </div>
-                        <div class="suppliers-item-col suppliers-item-col--action">
-                            <a href="#" class="btn btn-sm btn-outline-primary fw-bold px-4">افزودن به سبد</a>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-
-    <div class="ui-box mb-5">
-        <div class="ui-box-title">محصولات مشابه</div>
-        <div class="ui-box-content">
-            <div class="swiper product-swiper-slider swiper-initialized swiper-horizontal swiper-pointer-events swiper-rtl">
-                <div class="swiper-wrapper" id="swiper-wrapper-b8eeb442c75b5641" aria-live="polite" style="transform: translate3d(0px, 0px, 0px);">
-                    @foreach (var related in Model.RelatedProducts)
-                    {
-                        <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 8" style="width: 230.8px; margin-left: 10px;">
-                            <div class="product-card">
-                                <div class="product-thumbnail">
-                                    <a href="/Product/Detail/@related.ProductId">
-                                        <img src="@related.ImageUrl" alt="@related.Title">
-                                    </a>
-                                </div>
-                                <div class="product-card-body">
-                                    <h2 class="product-title">
-                                        <a href="/Product/Detail/@related.ProductId">@related.Title</a>
-                                    </h2>
-                                    <div class="product-variant">
-                                        @foreach (var color in related.VariantColors)
-                                        {
-                                            <span class="color" style="background-color: @color;"></span>
-                                        }
-                                        <span>+</span>
-                                    </div>
-                                    <div class="product-price fa-num">
-                                        @if (related.OldPrice.HasValue)
-                                        {
-                                            <div class="d-flex align-items-center">
-                                                <del class="price-old">@related.OldPrice.Value.ToString("N0")</del>
-                                                <span class="discount ms-2">%@(Math.Round((related.OldPrice.Value - related.Price) / related.OldPrice.Value * 100))</span>
-                                            </div>
-                                        }
-                                        <span class="price-now">@related.Price.ToString("N0") <span class="currency">تومان</span></span>
-                                    </div>
-                                </div>
-                                <div class="product-card-footer">
-                                    <div class="d-flex align-items-center justify-content-between border-top mt-2 py-2">
-                                        <div class="product-actions">
-                                            <ul>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به سبد خرید" aria-label="افزودن به سبد خرید"><i class="ri-shopping-cart-line"></i></a></li>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="مشاهده سریع" aria-label="مشاهده سریع" data-remodal-target="quick-view-modal"><i class="ri-search-line"></i></a></li>
-                                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="افزودن به علاقمندی" aria-label="افزودن به علاقمندی"><i class="ri-heart-3-line"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <div class="product-rating fa-num">
-                                            <i class="ri-star-fill star"></i>
-                                            <strong>@related.Rating</strong>
-                                            <span>(@related.RatingCount)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <div class="swiper-pagination swiper-pagination-clickable swiper-pagination-bullets swiper-pagination-horizontal swiper-pagination-bullets-dynamic" style="width: 80px;">
-                    <span class="swiper-pagination-bullet swiper-pagination-bullet-active swiper-pagination-bullet-active-main" tabindex="0" role="button" aria-label="Go to slide 1" aria-current="true" style="right: 24px;"></span>
-                    <span class="swiper-pagination-bullet swiper-pagination-bullet-active-next" tabindex="0" role="button" aria-label="Go to slide 2" style="right: 24px;"></span>
-                    <span class="swiper-pagination-bullet swiper-pagination-bullet-active-next-next" tabindex="0" role="button" aria-label="Go to slide 3" style="right: 24px;"></span>
-                    <span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 4" style="right: 24px;"></span>
-                </div>
-                <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-2c672c5feed7a4fe" aria-disabled="false"></div>
-                <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-2c672c5feed7a4fe" aria-disabled="false"></div>
-                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xl-9 col-lg-8">
-            <div class="ui-sticky ui-sticky-top mb-4">
-                <div class="product-tabs">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item"><a class="nav-link active" href="#scrollspyHeading1" data-scroll="scrollspyHeading1">نقد و بررسی</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#scrollspyHeading2" data-scroll="scrollspyHeading2">بررسی تخصصی</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#scrollspyHeading3" data-scroll="scrollspyHeading3">مشخصات</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#scrollspyHeading4" data-scroll="scrollspyHeading4">دیدگاه کاربران</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#scrollspyHeading5" data-scroll="scrollspyHeading5">پرسش و پاسخ</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="product-tab-content product-content-expert-summary tab-content border-bottom pb-2 mb-4" id="scrollspyHeading1">
-                <div class="product-tab-title">
-                    <h2>نقد و بررسی اجمالی</h2>
-                    <h3 class="subtitle">@Model.TitleDescription</h3>
-                </div>
-                <div class="expandable-text pt-1" style="height: 250px;">
-                    <div class="expandable-text_text">
-                        <p>@Model.Review</p>
-                    </div>
-                    <div class="expandable-text-expand-btn justify-content-start text-sm">
-                        <span class="show-more active">ادامه مطلب <i class="ri-arrow-down-s-line ms-2"></i></span>
-                        <span class="show-less d-none">مشاهده کمتر <i class="ri-arrow-up-s-line ms-2"></i></span>
-                    </div>
-                </div>
-            </div>
-            <div class="product-tab-content product-content-expert-articles tab-content border-bottom pb-2 mb-4" id="scrollspyHeading2">
-                <div class="product-tab-title">
-                    <h2>نقد و بررسی تخصصی</h2>
-                    <h3 class="subtitle">@Model.TitleDescription</h3>
-                </div>
-                <div class="expandable-text pt-1" style="height: 840px;">
-                    <div class="expandable-text_text">
-                        <p>@Model.ExpertReview</p>
-                    </div>
-                    <div class="expandable-text-expand-btn justify-content-start text-sm">
-                        <span class="show-more active">نمایش کامل نقد و بررسی تخصصی <i class="ri-arrow-down-s-line ms-2"></i></span>
-                        <span class="show-less d-none">نمایش خلاصه <i class="ri-arrow-up-s-line ms-2"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-lg-4 d-lg-block d-none">
-            <div class="ui-sticky ui-sticky-top">
-                <div class="mini-buy-box ui-box bg-transparent p-4">
-                    <div class="d-flex border-bottom pb-3 mb-3">
-                        <div class="product-thumbnail">
-                            <img src="@Model.ImageUrl" alt="@Model.Title">
-                        </div>
-                        <div class="product-details">
-                            <div class="product-title">
-                                <h1>@Model.Title</h1>
-                            </div>
-                            <div class="product-options">
-                                <div class="product-option">
-                                    <span class="color" style="background-color: @Model.Variants.FirstOrDefault(v => v.IsSelected)?.ColorCode;"></span>
-                                    <span class="color-label ms-2">@Model.Variants.FirstOrDefault(v => v.IsSelected)?.ColorName</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-features">
-                        @if (Model.Sellers.Any())
-                        {
-                            var seller = Model.Sellers.First();
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="ri-store-3-line text-success me-2"></i>
-                                <span>@seller.SellerName</span>
-                            </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="ri-shield-check-line text-info me-2"></i>
-                                <span>@seller.Warranty</span>
-                            </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <i class="ri-checkbox-multiple-line text-primary me-2"></i>
-                                <span>موجود در انبار فروشنده</span>
-                            </div>
-                        }
-                    </div>
-                    <div class="product-price">
-                        <span class="price-value">@Model.Sellers.First().Price.ToString("N0")</span>
-                        <span class="currency ms-1">تومان</span>
-                    </div>
-                    <a href="#" class="btn btn-block btn-primary fw-bold">افزودن به سبد خرید</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        var swiper = new Swiper('.product-swiper-slider', {
-            slidesPerView: 4,
-            spaceBetween: 10,
-            pagination: { el: '.swiper-pagination', clickable: true },
-            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-        });
-    </script>
-}
+</main>

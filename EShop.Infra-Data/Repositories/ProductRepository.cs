@@ -1,6 +1,7 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.Interfaces;
 using EShop.Domain.ViewModels.Products.Product;
+using EShop.Domain.ViewModels.Products.Product.ClientSide;
 using EShop.Infra_Data.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,7 @@ namespace EShop.Infra_Data.Repositories
         #region AdminSide
 
         #region GetAll
-        public async Task<List<ProductListViewModel>> GetAllAsync() 
+        public async Task<List<ProductListViewModel>> GetAllAsync()
         {
             return await _context.Products
                 .Where(product => !product.IsDeleted)
@@ -71,8 +72,8 @@ namespace EShop.Infra_Data.Repositories
         {
             var query = _context.Products
                 .Where(product => !product.IsDeleted)
-                .Include(product=>product.ProductCategoryMappings)
-                .ThenInclude(pcm=>pcm.Category)
+                .Include(product => product.ProductCategoryMappings)
+                .ThenInclude(pcm => pcm.Category)
                 .AsQueryable();
 
             #region Filter
@@ -105,7 +106,7 @@ namespace EShop.Infra_Data.Repositories
 
         #region GetProductsByCategoryId
 
-        public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId) 
+        public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId)
         {
             return await _context.ProductCategoryMappings
                 .Where(psc => psc.CategoryId == categoryId && !psc.IsDeleted) // کامنت: فیلتر بر اساس CategoryId
@@ -120,14 +121,16 @@ namespace EShop.Infra_Data.Repositories
                 .ToListAsync();
         }
 
-#endregion
+        #endregion
 
         #endregion
 
         #region ClientSide
+
+        #region GetMyProductData
         public async Task<Product> GetMyProductDataAsync(int productId)
         {
-            return await _context.Set<Product>()
+            return await _context.Products
                 .Include(p => p.ProductSpecificationMappings)
                 .ThenInclude(psm => psm.Specification)
                 .Include(p => p.ProductCategoryMappings)
@@ -135,6 +138,53 @@ namespace EShop.Infra_Data.Repositories
                 .ThenInclude(c => c.ParentCategory)
                 .FirstOrDefaultAsync(p => p.Id == productId);
         }
+
+        #endregion
+
+        #region Filter
+        public async Task<FilterClientSideProductViewModel> FilterClientAsync(FilterClientSideProductViewModel model)
+        {
+            var query = _context.Products
+                .Where(product => !product.IsDeleted)
+                .AsQueryable();
+
+            #region فیلتر جستجو
+            if (!string.IsNullOrEmpty(model.SearchTerm))
+            {
+                query = query.Where(product => EF.Functions.Like(product.Title, $"%{model.SearchTerm}%"));
+            }
+            #endregion
+
+            #region مرتب‌سازی
+            switch (model.SortBy)
+            {
+                               case "cheapest":
+                    query = query.OrderBy(p => p.Price);
+                    break;
+                case "most-expensive":
+                    query = query.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    query = query.OrderByDescending(p => p.CreatedDate);
+                    break;
+            }
+            #endregion
+
+            #region صفحه‌بندی
+            await model.Paging(query.Select(product => new ProducClientSidetListViewModel
+            {
+                Id = product.Id,
+                Image = product.ImageName,
+                Price = product.Price,
+                Title = product.Title,
+                CreatedDate = product.CreatedDate
+            }));
+            #endregion
+
+            return model;
+        }
+
+        #endregion
 
         #endregion
     }

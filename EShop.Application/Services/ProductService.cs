@@ -239,19 +239,12 @@ namespace EShop.Application.Services
 
         #endregion
 
-        //#region GetProductsByCategoryId
-
-        //public async Task<List<ProductListViewModel>> GetProductsByCategoryIdAsync(int categoryId)
-        //{
-        //    return await _productRepository.GetProductsByCategoryIdAsync(categoryId);
-        //}
-
-        //#endregion
 
         #endregion
 
         #region Client Side
 
+        #region GetMyProductSections
         public async Task<MyProductSectionsViewModel> GetMyProductSectionsAsync(int productId)
         {
             var product = await _productRepository.GetMyProductDataAsync(productId);
@@ -293,5 +286,15 @@ namespace EShop.Application.Services
             };
         }
         #endregion
+
+        #region Filter
+        public async Task<FilterClientSideProductViewModel> FilterClientAsync(FilterClientSideProductViewModel model)
+        {
+          return  await _productRepository.FilterClientAsync(model);
+        }
+        #endregion
+
+        #endregion
+
     }
 }

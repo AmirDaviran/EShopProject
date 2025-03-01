@@ -21,7 +21,7 @@ namespace EShop.Application.Interfaces
         #region Client Side
 
         Task<MyProductSectionsViewModel> GetMyProductSectionsAsync(int productId);
-
+        Task<FilterClientSideProductViewModel> FilterClientAsync(FilterClientSideProductViewModel model);
         #endregion
     }
 }

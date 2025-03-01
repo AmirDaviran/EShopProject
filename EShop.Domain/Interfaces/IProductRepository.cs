@@ -1,5 +1,6 @@
 ﻿using EShop.Domain.Entities.ProductEntity;
 using EShop.Domain.ViewModels.Products.Product;
+using EShop.Domain.ViewModels.Products.Product.ClientSide;
 
 namespace EShop.Domain.Interfaces
 {
@@ -19,7 +20,7 @@ namespace EShop.Domain.Interfaces
         #region ClientSide
 
         Task<Product> GetMyProductDataAsync(int productId);
-
+        Task<FilterClientSideProductViewModel> FilterClientAsync(FilterClientSideProductViewModel model);
         #endregion
     }
 }
